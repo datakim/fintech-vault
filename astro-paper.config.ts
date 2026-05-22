@@ -28,9 +28,12 @@ export default defineAstroPaperConfig({
     },
     search: "pagefind",
   },
-  // GitHub만 활성화. URL은 추후 본인 저장소 주소로 채워주세요.
-  // (이 v6 테마는 active 플래그가 없어 배열에 넣은 항목만 노출됩니다.)
-  socials: [{ name: "github", url: "" }],
+  // 배열에 넣은 항목만 노출됩니다 (이 v6 테마는 active 플래그가 없음).
+  // GitHub URL은 추후 본인 저장소/프로필 주소로 채워주세요.
+  socials: [
+    { name: "github", url: "" },
+    { name: "linkedin", url: "https://www.linkedin.com/in/datamanyo/" },
+  ],
   shareLinks: [
     { name: "whatsapp", url: "https://wa.me/?text=" },
     { name: "facebook", url: "https://www.facebook.com/sharer.php?u=" },
