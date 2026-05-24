@@ -1,7 +1,7 @@
 ---
 title: "금융 AI에서의 에이전틱 엔지니어링"
 description: "AI가 틀릴 수 있음을 전제로 자동화하는 것 — 금융 AI에서 에이전틱 엔지니어링이 무엇이고 왜 중요한가."
-pubDatetime: 2026-05-22T12:00:00Z
+pubDatetime: 2026-05-23T03:00:00Z
 tags:
   - financial-ai
   - ai-agent

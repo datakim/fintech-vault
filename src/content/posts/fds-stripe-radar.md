@@ -1,7 +1,7 @@
 ---
 title: "[FDS] Stripe는 어떻게 100ms 안에 결제 사기를 판단할까?"
 description: "금융 AI에서 FDS는 ML과 DL을 어떻게 사용할까? Stripe Radar 사례로 보는 결제 사기 탐지의 실제."
-pubDatetime: 2026-05-22T13:00:00Z
+pubDatetime: 2026-05-24T03:00:00Z
 tags:
   - fds
   - financial-ai

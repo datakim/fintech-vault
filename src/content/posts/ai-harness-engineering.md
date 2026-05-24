@@ -1,7 +1,7 @@
 ---
 title: "AI Agent는 더 좋은 프롬프트가 아니라 더 좋은 Harness에서 나온다"
 description: "프롬프트를 한 번도 건드리지 않고 실패하던 에이전트를 성공시키는 방법. Harness Engineering이 무엇이고 왜 중요한가."
-pubDatetime: 2026-05-22T00:00:00Z
+pubDatetime: 2026-05-21T03:00:00Z
 tags:
   - ai-agent
   - llm
