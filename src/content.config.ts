@@ -34,4 +34,23 @@ const pages = defineCollection({
   }),
 });
 
-export const collections = { posts, pages };
+const books = defineCollection({
+  loader: glob({ pattern: "**/[^_]*.{md,mdx}", base: "./src/content/books" }),
+  schema: ({ image }) =>
+    z.object({
+      author: z.string().default(config.site.author),
+      pubDatetime: z.date(),
+      modDatetime: z.date().optional().nullable(),
+      title: z.string(),
+      bookTitle: z.string().optional(),
+      featured: z.boolean().optional(),
+      draft: z.boolean().optional(),
+      tags: z.array(z.string()).default(["books"]),
+      ogImage: image().or(z.string()).optional(),
+      description: z.string(),
+      canonicalURL: z.string().optional(),
+      timezone: z.string().optional(),
+    }),
+});
+
+export const collections = { posts, pages, books };

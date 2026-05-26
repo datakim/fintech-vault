@@ -1,0 +1,67 @@
+---
+import { type CollectionEntry, getCollection, render } from "astro:content";
+import PostLayout from "@/layouts/PostLayout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import Datetime from "@/components/Datetime.astro";
+import { slugifyStr } from "@/utils/slugify";
+import config from "@/config";
+
+export async function getStaticPaths() {
+  const books = await getCollection("books", ({ data }) => !data.draft);
+  return books.map(book => ({
+    params: { slug: book.id },
+    props: { book },
+  }));
+}
+
+type Props = { book: CollectionEntry<"books"> };
+
+const { book } = Astro.props;
+const {
+  title,
+  description,
+  canonicalURL,
+  pubDatetime,
+  modDatetime,
+  timezone,
+} = book.data;
+
+const { Content } = await render(book);
+---
+
+<PostLayout
+  title={`${title} | ${config.site.title}`}
+  description={description}
+  canonicalURL={canonicalURL}
+  pubDatetime={pubDatetime}
+  modDatetime={modDatetime}
+>
+  <Header />
+
+  <main id="main-content" class="app-layout mt-8" data-pagefind-body>
+    <h1
+      style={{ viewTransitionName: slugifyStr(title.replaceAll(".", "-")) }}
+      class="text-accent inline-block text-2xl font-bold sm:text-3xl"
+    >
+      {title}
+    </h1>
+
+    <div class="my-2 flex items-center gap-2">
+      <Datetime {pubDatetime} {modDatetime} {timezone} size="lg" />
+    </div>
+
+    <article
+      id="article"
+      class:list={[
+        "mt-8 w-full",
+        "app-prose max-w-app",
+        "prose-pre:bg-(--shiki-light-bg) dark:prose-pre:bg-(--shiki-dark-bg)",
+      ]}
+    >
+      <Content />
+    </article>
+  </main>
+
+  <Footer />
+</PostLayout>
