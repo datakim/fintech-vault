@@ -13,14 +13,9 @@ tags:
 
 > **핵심 요약:** 알리페이는 2026년 5월, 자사의 AI支付가 누적 3억 건의 AI 에이전트 결제를 처리했고 주요 범용 에이전트 프레임워크의 약 95%를 지원한다고 발표했다. 동시에 Token Pay와 AI Wallet을 공개하며, 기존의 AI付·AI收와 함께 AI 시대를 겨냥한 결제 인프라를 확장하고 있다. 중요한 점은 이것이 단순한 "말로 결제하기" 기능이 아니라, 사용자의 위임을 받은 AI가 상품과 서비스를 호출하고, 결제하고, 수금하고, 정산하는 에이전트 기반 상거래 인프라의 초기 대규모 상용화 사례라는 점이다.
 
-<!--
-이미지 1: "Alipay Unveils Next-generation AI Payment Infrastructure"
-- 영문 인포그래픽 (Token Pay / AI Wallet / AI Pay / AI Payment Processing Product + ACT, Intelligent Security System)
-- 위치 의도: 본문 시작 직전 오버뷰
-- 사용법: 이미지를 public/images/alipay/overview.png 등에 저장한 뒤 아래 한 줄을 활성화
-  ![Alipay Unveils Next-generation AI Payment Infrastructure](/images/alipay/overview.png)
-  _Alipay의 차세대 AI 결제 인프라 구성. (출처: Alipay 발표 자료)_
--->
+![Alipay Unveils Next-generation AI Payment Infrastructure](/images/alipay/overview.png)
+
+_Alipay의 차세대 AI 결제 인프라 구성. (출처: Alipay 발표 자료)_
 
 ## 1. 왜 지금 'AI 결제'인가?
 
@@ -58,14 +53,9 @@ AI收는 상인이나 개인 개발자가 AI 에이전트를 통해 유료 서�
 
 예를 들어 사용자가 AI 에이전트에게 "최신 AI 업계 분석 보고서를 요약해줘"라고 요청한다고 해보자. 에이전트는 서버에 필요한 자원을 요청하고, 가격을 조회한다. 사용자가 0.02위안을 지불하면, 해당 금액이 서비스 제공자의 AI收 계좌로 들어가고, 에이전트는 결과를 제공한다. 보도에서 제시된 예시 역시 0.02위안 단위의 호출 기반 결제다.
 
-<!--
-이미지 3: "支付宝推出 AI收 — 三步接入、即时按次收款"
-- 중국어 프로모 그래픽 (입주签约 → 创建应用 → 安装服务端SDK 3단계)
-- 위치 의도: 이 섹션 중간(개발자 온보딩 흐름을 보여주기에 적합)
-- 사용법: 이미지를 public/images/alipay/ai-shou-3step.png 에 저장한 뒤 아래 줄을 활성화
-  ![AI收 3단계 온보딩: 입주 → 앱 생성 → SDK 설치](/images/alipay/ai-shou-3step.png)
-  _AI收는 입주 → 앱 생성 → SDK 설치 3단계로 호출 단위 즉시 수금에 연결된다. (출처: Alipay)_
--->
+![AI收 3단계 온보딩: 입주 → 앱 생성 → SDK 설치](/images/alipay/ai-shou-3step.png)
+
+_AI收는 입주 → 앱 생성 → SDK 설치 3단계로 호출 단위 즉시 수금에 연결된다. (출처: Alipay)_
 
 이 지점에서 중요한 것은 "결제"보다 **수금**이다.
 
@@ -106,14 +96,9 @@ AI付, AI收, Token Pay, AI Wallet은 이 흐름 위에서 각각 다른 역할�
 | **Token Pay** | AI 모델 기업 전용 결제 솔루션 | API 호출 기반 B2B 정산 |
 | **AI Wallet** | 사용자용 AI 지갑 | 에이전트의 지출 내역 가시화 및 통제 |
 
-<!--
-이미지 2: "Agent AI付 支付笔数突破3亿笔 — 成为全球首个大规模商用的AI原生支付基建"
-- 중국어 발표 무대 사진 (단상 + 스크린에 3억 건 텍스트)
-- 위치 의도: 이 섹션 본문(3억 건 통계 부근)
-- 사용법: 이미지를 public/images/alipay/3억건-stage.jpg 에 저장한 뒤 아래 줄을 활성화
-  ![Alipay AI支付 3억 건 발표 무대](/images/alipay/3억건-stage.jpg)
-  _2026년 5월, 알리페이는 AI支付가 3억 건의 AI 에이전트 결제를 처리했다고 발표했다. (출처: Alipay 발표 무대)_
--->
+![Alipay AI支付 3억 건 발표 무대](/images/alipay/3eok-stage.jpg)
+
+_2026년 5월, 알리페이는 AI支付가 3억 건의 AI 에이전트 결제를 처리했다고 발표했다. (출처: Alipay 발표 무대)_
 
 알리페이는 2026년 5월 AI支付가 3억 건의 AI 에이전트 결제를 처리했고, 주요 범용 에이전트 프레임워크의 95%를 지원한다고 발표했다. 동시에 Token Pay와 AI Wallet도 공개했다. 이 수치는 독립 검증된 산업 통계라기보다는 알리페이의 발표 기준으로 보는 것이 적절하지만, 그럼에도 방향성은 분명하다. 알리페이는 AI 시대의 결제 인프라를 단일 기능이 아니라 **결제, 수금, 정산, 지갑, 프로토콜**을 포함한 풀스택 구조로 보고 있다.
 
