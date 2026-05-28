@@ -31,15 +31,30 @@ export const GET: APIRoute = async ({ props, url }) => {
   const regularFontPath = getFontPathByWeight(fonts, 400);
   const boldFontPath = getFontPathByWeight(fonts, 700);
 
-  if (regularFontPath === undefined || boldFontPath === undefined) {
+  const krFonts = fontData["--font-noto-sans-kr"];
+  const krRegularFontPath = getFontPathByWeight(krFonts, 400);
+  const krBoldFontPath = getFontPathByWeight(krFonts, 700);
+
+  if (
+    regularFontPath === undefined ||
+    boldFontPath === undefined ||
+    krRegularFontPath === undefined ||
+    krBoldFontPath === undefined
+  ) {
     throw new Error("Cannot find the font path.");
   }
 
-  const [regularData, boldData] = await Promise.all([
+  const [regularData, boldData, krRegularData, krBoldData] = await Promise.all([
     fetch(experimental_getFontFileURL(regularFontPath, url)).then(res =>
       res.arrayBuffer()
     ),
     fetch(experimental_getFontFileURL(boldFontPath, url)).then(res =>
+      res.arrayBuffer()
+    ),
+    fetch(experimental_getFontFileURL(krRegularFontPath, url)).then(res =>
+      res.arrayBuffer()
+    ),
+    fetch(experimental_getFontFileURL(krBoldFontPath, url)).then(res =>
       res.arrayBuffer()
     ),
   ]);
@@ -181,6 +196,18 @@ export const GET: APIRoute = async ({ props, url }) => {
         {
           name: "Google Sans Code",
           data: boldData,
+          weight: 700,
+          style: "normal",
+        },
+        {
+          name: "Noto Sans KR",
+          data: krRegularData,
+          weight: 400,
+          style: "normal",
+        },
+        {
+          name: "Noto Sans KR",
+          data: krBoldData,
           weight: 700,
           style: "normal",
         },
