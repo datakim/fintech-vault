@@ -23,9 +23,40 @@ const sortedPosts = getSortedPosts(posts);
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
 const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 const homePath = getRelativeLocaleUrl(locale, "");
+
+// 홈 페이지용 WebSite/Person 구조화 데이터 — 검색엔진이 사이트의 정체와 저자를 명확히 인식하도록.
+const linkedin = socials.find(s => s.name === "linkedin")?.url;
+const authorUrl = config.site.profile || linkedin;
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": `${config.site.url}/#website`,
+  name: config.site.title,
+  url: config.site.url,
+  description: config.site.description,
+  inLanguage: config.site.lang,
+  author: {
+    "@type": "Person",
+    "@id": `${config.site.url}/#person`,
+    name: config.site.author,
+    ...(authorUrl && { url: authorUrl }),
+    ...(linkedin && { sameAs: [linkedin] }),
+  },
+  publisher: {
+    "@type": "Person",
+    "@id": `${config.site.url}/#person`,
+  },
+};
 ---
 
 <Layout>
+  <Fragment slot="head">
+    <script
+      type="application/ld+json"
+      is:inline
+      set:html={JSON.stringify(websiteSchema)}
+    />
+  </Fragment>
   <Header />
   <main
     id="main-content"

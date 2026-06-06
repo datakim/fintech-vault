@@ -19,6 +19,10 @@ interface SiteConfig {
   dir?: "ltr" | "rtl" | "auto";
   /** Google Search Console verification meta tag value */
   googleVerification?: string;
+  /** Naver Search Advisor verification meta tag value (naver-site-verification) */
+  naverVerification?: string;
+  /** Bing Webmaster Tools verification meta tag value (msvalidate.01) */
+  bingVerification?: string;
 }
 
 interface PostsConfig {
@@ -115,7 +119,10 @@ type ResolvedSiteConfig = Required<
     | "ogImage"
   >
 > &
-  Pick<SiteConfig, "profile" | "googleVerification">;
+  Pick<
+    SiteConfig,
+    "profile" | "googleVerification" | "naverVerification" | "bingVerification"
+  >;
 
 export interface ResolvedAstroPaperConfig {
   site: ResolvedSiteConfig;

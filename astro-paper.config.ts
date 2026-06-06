@@ -11,6 +11,14 @@ export default defineAstroPaperConfig({
     lang: "ko",
     timezone: "Asia/Seoul",
     dir: "ltr",
+    // 검색엔진 사이트 검증 메타 태그 값(content 속성 값만 적습니다).
+    // - Google: 이미 public/google105fb3fcb81b9d7f.html 파일로 인증된 상태라 비워둬도 됩니다.
+    // - Naver:  https://searchadvisor.naver.com/ 에 사이트 등록 → "HTML 태그" 인증 선택 →
+    //           <meta name="naver-site-verification" content="여기"> 의 "여기" 값만 붙여넣기.
+    // - Bing:   https://www.bing.com/webmasters 에 등록 → "HTML 태그" 인증 →
+    //           <meta name="msvalidate.01" content="여기"> 의 "여기" 값.
+    naverVerification: "",
+    bingVerification: "",
   },
   posts: {
     perPage: 4,

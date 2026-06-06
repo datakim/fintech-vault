@@ -28,6 +28,17 @@ const rssHref = getRelativeLocaleUrl(
   Astro.currentLocale ?? config.site.lang,
   "rss.xml"
 );
+
+// og:locale ("ko" → "ko_KR", "en" → "en_US"). Facebook/Kakao 미리보기 정확도 향상.
+const langCode = Astro.currentLocale ?? site.lang;
+const ogLocale =
+  langCode === "ko"
+    ? "ko_KR"
+    : langCode === "ja"
+      ? "ja_JP"
+      : langCode === "zh"
+        ? "zh_CN"
+        : "en_US";
 ---
 
 <!doctype html>
@@ -64,6 +75,7 @@ const rssHref = getRelativeLocaleUrl(
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:image" content={socialImageURL} />
+    <meta property="og:locale" content={ogLocale} />
 
     <!-- Twitter / X -->
     <meta property="twitter:card" content="summary_large_image" />
@@ -92,6 +104,19 @@ const rssHref = getRelativeLocaleUrl(
           name="google-site-verification"
           content={site.googleVerification}
         />
+      )
+    }
+    {
+      site.naverVerification && (
+        <meta
+          name="naver-site-verification"
+          content={site.naverVerification}
+        />
+      )
+    }
+    {
+      site.bingVerification && (
+        <meta name="msvalidate.01" content={site.bingVerification} />
       )
     }
 

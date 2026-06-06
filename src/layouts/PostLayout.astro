@@ -9,20 +9,39 @@ type Props = {
   canonicalURL?: string;
   pubDatetime?: Date;
   modDatetime?: Date | null;
+  tags?: string[];
 };
 
 const { site } = config;
 
-const { title, description, ogImage, canonicalURL, pubDatetime, modDatetime } =
-  Astro.props;
+const {
+  title,
+  description,
+  ogImage,
+  canonicalURL,
+  pubDatetime,
+  modDatetime,
+  tags,
+} = Astro.props;
+
+const pageUrl = canonicalURL ?? new URL(Astro.url.pathname, Astro.site).href;
+const logoUrl = new URL("favicon.svg", Astro.site ?? Astro.url).href;
 
 const structuredData = {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
+  "@id": `${pageUrl}#blogposting`,
+  mainEntityOfPage: { "@type": "WebPage", "@id": pageUrl },
   headline: title ?? site.title,
-  image: ogImage,
+  ...(description && { description }),
+  url: pageUrl,
+  inLanguage: site.lang,
+  ...(ogImage && {
+    image: { "@type": "ImageObject", url: ogImage },
+  }),
   ...(pubDatetime && { datePublished: pubDatetime.toISOString() }),
   ...(modDatetime && { dateModified: modDatetime.toISOString() }),
+  ...(tags && tags.length > 0 && { keywords: tags.join(", ") }),
   author: [
     {
       "@type": "Person",
@@ -30,6 +49,17 @@ const structuredData = {
       ...(site.profile && { url: site.profile }),
     },
   ],
+  publisher: {
+    "@type": "Organization",
+    name: site.title,
+    url: site.url,
+    logo: { "@type": "ImageObject", url: logoUrl },
+  },
+  isPartOf: {
+    "@type": "Blog",
+    name: site.title,
+    url: site.url,
+  },
 };
 ---
 
@@ -54,6 +84,9 @@ const structuredData = {
         />
       )
     }
+
+    <meta property="article:author" content={site.author} />
+    {tags && tags.map(tag => <meta property="article:tag" content={tag} />)}
 
     <script
       type="application/ld+json"
