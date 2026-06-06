@@ -17,7 +17,7 @@ export default defineAstroPaperConfig({
     //           <meta name="naver-site-verification" content="여기"> 의 "여기" 값만 붙여넣기.
     // - Bing:   https://www.bing.com/webmasters 에 등록 → "HTML 태그" 인증 →
     //           <meta name="msvalidate.01" content="여기"> 의 "여기" 값.
-    naverVerification: "",
+    naverVerification: "111197347ee238c010bcc0bf4751da62c4c1e194",
     bingVerification: "",
   },
   posts: {
