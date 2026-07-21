@@ -1,0 +1,40 @@
+<svg viewBox="0 0 800 440" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, 'Pretendard', 'Noto Sans KR', sans-serif">
+  <rect x="0" y="0" width="800" height="440" rx="12" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="400" y="40" text-anchor="middle" font-size="17" font-weight="700" fill="#1e293b">설계와 프로덕션 사이, 네 가지 난제</text>
+
+  <!-- latency -->
+  <rect x="45" y="65" width="345" height="160" rx="12" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.5"/>
+  <text x="217" y="95" text-anchor="middle" font-size="15" font-weight="700" fill="#4338ca">① 지연시간</text>
+  <text x="217" y="122" text-anchor="middle" font-size="12.5" fill="#334155">클립 하나에 수 초 → 프레임 하나에 ~30ms</text>
+  <text x="217" y="144" text-anchor="middle" font-size="12.5" fill="#334155">클릭했는데 몇 초 뒤 반응하면 게임이 아니다</text>
+  <rect x="70" y="163" width="295" height="42" rx="6" fill="#ffffff" stroke="#c7d2fe"/>
+  <text x="217" y="181" text-anchor="middle" font-size="11.5" fill="#4f46e5">해법: self-forcing, 모델 소형화,</text>
+  <text x="217" y="197" text-anchor="middle" font-size="11.5" fill="#4f46e5">KV 캐시 압축, 엣지 GPU</text>
+
+  <!-- consistency -->
+  <rect x="410" y="65" width="345" height="160" rx="12" fill="#ecfdf5" stroke="#059669" stroke-width="1.5"/>
+  <text x="582" y="95" text-anchor="middle" font-size="15" font-weight="700" fill="#047857">② 일관성</text>
+  <text x="582" y="122" text-anchor="middle" font-size="12.5" fill="#334155">작은 오차가 쌓이면 세계가 서서히 무너진다</text>
+  <text x="582" y="144" text-anchor="middle" font-size="12.5" fill="#334155">몇 프레임이 아니라 몇 분을 버텨야 한다</text>
+  <rect x="435" y="163" width="295" height="42" rx="6" fill="#ffffff" stroke="#a7f3d0"/>
+  <text x="582" y="181" text-anchor="middle" font-size="11.5" fill="#059669">해법: 데이터 모델로 고정 + 컨텍스트 확장</text>
+  <text x="582" y="197" text-anchor="middle" font-size="11.5" fill="#059669">(10분 전 생성이 지금을 조건 짓게)</text>
+
+  <!-- multiplayer -->
+  <rect x="45" y="245" width="345" height="160" rx="12" fill="#fff7ed" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="217" y="275" text-anchor="middle" font-size="15" font-weight="700" fill="#b45309">③ 멀티플레이어</text>
+  <text x="217" y="302" text-anchor="middle" font-size="12.5" fill="#334155">군중을 그리는 것 ≠ 2만 명의 상태를 굴리는 것</text>
+  <text x="217" y="324" text-anchor="middle" font-size="12.5" fill="#334155">내 행동이 남의 화면에도 나타나야 한다</text>
+  <rect x="70" y="343" width="295" height="42" rx="6" fill="#ffffff" stroke="#fde68a"/>
+  <text x="217" y="361" text-anchor="middle" font-size="11.5" fill="#b45309">해법: 서버가 진실 결정, 각자 뷰만 생성,</text>
+  <text x="217" y="377" text-anchor="middle" font-size="11.5" fill="#b45309">내 기기에서 예측 시뮬레이션</text>
+
+  <!-- creator control -->
+  <rect x="410" y="245" width="345" height="160" rx="12" fill="#fdf2f8" stroke="#db2777" stroke-width="1.5"/>
+  <text x="582" y="275" text-anchor="middle" font-size="15" font-weight="700" fill="#be185d">④ 크리에이터 컨트롤</text>
+  <text x="582" y="302" text-anchor="middle" font-size="12.5" fill="#334155">재미는 그래픽이 아니라 규칙에서 나온다</text>
+  <text x="582" y="324" text-anchor="middle" font-size="12.5" fill="#334155">생성되는 세계도 창작자의 규칙을 따라야 한다</text>
+  <rect x="435" y="343" width="295" height="42" rx="6" fill="#ffffff" stroke="#fbcfe8"/>
+  <text x="582" y="361" text-anchor="middle" font-size="11.5" fill="#db2777">해법: 게임 카트리지 하네스 —</text>
+  <text x="582" y="377" text-anchor="middle" font-size="11.5" fill="#db2777">결정론적 게임 로직으로 모델을 감싼다</text>
+</svg>

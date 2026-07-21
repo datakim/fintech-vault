@@ -1,0 +1,38 @@
+<svg viewBox="0 0 800 320" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, 'Pretendard', 'Noto Sans KR', sans-serif">
+  <defs>
+    <marker id="arrow2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="800" height="320" rx="12" fill="#f8fafc" stroke="#e2e8f0"/>
+
+  <!-- panel 1 -->
+  <rect x="40" y="50" width="200" height="150" rx="10" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="140" y="36" text-anchor="middle" font-size="14" font-weight="700" fill="#334155">① 테이블 위의 병을 본다</text>
+  <line x1="60" y1="170" x2="220" y2="170" stroke="#94a3b8" stroke-width="2"/>
+  <rect x="120" y="110" width="24" height="60" rx="5" fill="#bfdbfe" stroke="#3b82f6"/>
+  <rect x="126" y="98" width="12" height="16" rx="3" fill="#93c5fd" stroke="#3b82f6"/>
+
+  <line x1="250" y1="125" x2="290" y2="125" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow2)"/>
+
+  <!-- panel 2 -->
+  <rect x="300" y="50" width="200" height="150" rx="10" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="400" y="36" text-anchor="middle" font-size="14" font-weight="700" fill="#334155">② 카메라를 딴 데로 돌린다</text>
+  <circle cx="360" cy="105" r="18" fill="#fde68a" stroke="#f59e0b"/>
+  <path d="M 320 185 L 350 140 L 380 165 L 415 120 L 470 185 Z" fill="#d1fae5" stroke="#10b981"/>
+  <text x="400" y="185" text-anchor="middle" font-size="11" fill="#64748b"></text>
+
+  <line x1="510" y1="125" x2="550" y2="125" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow2)"/>
+
+  <!-- panel 3 -->
+  <rect x="560" y="50" width="200" height="150" rx="10" fill="#fff7ed" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="660" y="36" text-anchor="middle" font-size="14" font-weight="700" fill="#b45309">③ 다시 돌아보면?</text>
+  <line x1="580" y1="170" x2="740" y2="170" stroke="#94a3b8" stroke-width="2"/>
+  <rect x="640" y="110" width="24" height="60" rx="5" fill="none" stroke="#f59e0b" stroke-dasharray="4 3"/>
+  <text x="652" y="150" text-anchor="middle" font-size="22" font-weight="700" fill="#d97706">?</text>
+  <text x="660" y="192" text-anchor="middle" font-size="11" fill="#b45309">병이 그대로 있을 보장이 없다</text>
+
+  <text x="400" y="245" text-anchor="middle" font-size="14" fill="#334155">모델은 장면을 <tspan font-weight="700">기억</tspan>하는 게 아니라 매번 <tspan font-weight="700">다시 생성</tspan>한다</text>
+  <text x="400" y="268" text-anchor="middle" font-size="12" fill="#64748b">"캐릭터가 다시 돌아봤을 때, 세계는 그대로일까? 대부분의 비디오 모델에서는 아니다" — Anupam Singh</text>
+  <text x="400" y="300" text-anchor="middle" font-size="12" fill="#94a3b8">비디오 월드모델의 지속성 문제: 화면 밖으로 나간 것은 조용히 바뀐다</text>
+</svg>
