@@ -1,0 +1,47 @@
+<svg viewBox="0 0 800 430" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, 'Pretendard', 'Noto Sans KR', sans-serif">
+  <defs>
+    <marker id="arrow4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="800" height="430" rx="12" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="400" y="38" text-anchor="middle" font-size="17" font-weight="700" fill="#1e293b">업샘플러에 들어가는 세 종류의 조건 신호</text>
+
+  <!-- dense -->
+  <rect x="40" y="65" width="360" height="96" rx="10" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.5"/>
+  <text x="220" y="90" text-anchor="middle" font-size="14" font-weight="700" fill="#4338ca">① 밀집 신호 — 픽셀마다 값이 있다</text>
+  <text x="220" y="114" text-anchor="middle" font-size="12" fill="#334155">거칠게 렌더링한 프레임 + 깊이맵(픽셀별 거리)</text>
+  <text x="220" y="136" text-anchor="middle" font-size="12" fill="#334155">출력과 같은 격자 → 입력에 붙이거나 ControlNet식 주입</text>
+  <text x="220" y="153" text-anchor="middle" font-size="11" fill="#6366f1">→ 모든 픽셀이 제 위치와 색에 고정된다</text>
+
+  <!-- global -->
+  <rect x="40" y="175" width="360" height="96" rx="10" fill="#ecfdf5" stroke="#059669" stroke-width="1.5"/>
+  <text x="220" y="200" text-anchor="middle" font-size="14" font-weight="700" fill="#047857">② 전역 신호 — 장면 전체에 하나</text>
+  <text x="220" y="224" text-anchor="middle" font-size="12" fill="#334155">한낮, 가벼운 비, 왼쪽에 낮게 뜬 해 같은 설정</text>
+  <text x="220" y="246" text-anchor="middle" font-size="12" fill="#334155">모델 활성값 전체를 스케일·시프트 (modulation)</text>
+  <text x="220" y="263" text-anchor="middle" font-size="11" fill="#059669">→ 프레임 전체의 분위기를 한 번에 바꾼다</text>
+
+  <!-- structured -->
+  <rect x="40" y="285" width="360" height="96" rx="10" fill="#fff7ed" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="220" y="310" text-anchor="middle" font-size="14" font-weight="700" fill="#b45309">③ 구조화 신호 — 텍스트 같은 설명</text>
+  <text x="220" y="334" text-anchor="middle" font-size="12" fill="#334155">"금속 스포츠카, 위치 (120, 0, 48), 초속 40m" + 스타일 프롬프트</text>
+  <text x="220" y="356" text-anchor="middle" font-size="12" fill="#334155">cross-attention으로 주입</text>
+  <text x="220" y="373" text-anchor="middle" font-size="11" fill="#d97706">→ 프레임의 어느 부분이든 필요할 때 참조한다</text>
+
+  <!-- arrows -->
+  <line x1="400" y1="113" x2="490" y2="195" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow4)"/>
+  <line x1="400" y1="223" x2="490" y2="223" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow4)"/>
+  <line x1="400" y1="333" x2="490" y2="251" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow4)"/>
+
+  <!-- model & output -->
+  <rect x="500" y="175" width="150" height="96" rx="12" fill="#4f46e5"/>
+  <text x="575" y="218" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">Super</text>
+  <text x="575" y="240" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">Upsampler</text>
+
+  <line x1="650" y1="223" x2="690" y2="223" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow4)"/>
+  <rect x="695" y="185" width="75" height="76" rx="8" fill="#ffffff" stroke="#059669" stroke-width="1.5"/>
+  <text x="732" y="218" text-anchor="middle" font-size="13" font-weight="700" fill="#047857">2K</text>
+  <text x="732" y="238" text-anchor="middle" font-size="12" fill="#334155">최종 프레임</text>
+
+  <text x="400" y="412" text-anchor="middle" font-size="12" fill="#94a3b8">모델은 차를 움직이거나 거리를 바꾸지 않는다 — 정해진 장면 위에 사실감만 입힌다</text>
+</svg>
