@@ -2,7 +2,10 @@
 
 이 저장소는 **AstroPaper v6 기반 개인 테크 블로그**다. 배포는 Vercel(`main` 브랜치에 push하면 자동 빌드·배포). 라이브: https://fintech-vault.vercel.app
 
-이 파일은 "주제를 주면 글을 써서 배포까지" 하는 작업의 규칙을 담는다. 아래 규칙을 지키면 매번 같은 품질로 글이 올라간다.
+- **로컬 경로:** `/Users/elliot/Claude/Projects/fintech-vault`
+- **원격:** https://github.com/datakim/fintech-vault (`main` 브랜치)
+
+이 파일은 "주제를 주면 글을 써서 배포까지" 하는 작업의 규칙을 담는다. 아래 규칙을 지키면 매번 같은 품질로 글이 올라간다. 모든 파일 경로는 이 저장소 루트 기준의 상대경로이므로, 저장소가 어느 폴더에 있든 규칙은 그대로 적용된다.
 
 ---
 
