@@ -25,3 +25,10 @@ pnpm-debug.log*
 
 # pagefind
 public/pagefind
+
+# 원고·참고 자료 — 절대 공개 저장소에 올리지 않는다
+*.pdf
+*.PDF
+
+# 작업용 원본 표지 (웹용 사본은 public/ 에만 둔다)
+/입체표지_*.png
