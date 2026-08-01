@@ -36,6 +36,6 @@ public/pagefind
 # 다이어그램 도구: 폰트와 가상환경은 재생성 가능하므로 제외 (tools/diagrams/README.md 참고)
 tools/diagrams/fontenv/
 tools/diagrams/NanumPen.ttf
-tools/diagrams/out/
-tools/diagrams/final/
+tools/diagrams/out*/
+tools/diagrams/final*/
 __pycache__/
