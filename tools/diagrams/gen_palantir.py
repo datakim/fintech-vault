@@ -95,8 +95,8 @@ def d3_action():
     b.append(T(110, 246, "통제된 연산", 20, GREEN, weight="bold"))
     b.append(T(110, 272, "(governed)", 15, INK_LIGHT))
     steps = ["입력", "검증 규칙", "권한 확인", "실행", "원본 반영", "감사 기록"]
-    x = 190
-    bw = 96
+    x = 180
+    bw = 88
     for i, s in enumerate(steps):
         hot = s in ("검증 규칙", "권한 확인", "감사 기록")
         b.append(box(r, x, 224, bw, 48, "amber" if hot else None,
@@ -104,8 +104,8 @@ def d3_action():
         b.append(T(x + bw / 2, 254, s, 16, AMBER if hot else INK,
                    weight="bold" if hot else "normal"))
         if i < len(steps) - 1:
-            b.append(arr(r, x + bw + 2, 248, x + bw + 12, 248, INK_LIGHT, 1.3, 6))
-        x += bw + 14
+            b.append(arr(r, x + bw + 2, 248, x + bw + 10, 248, INK_LIGHT, 1.3, 6))
+        x += bw + 12
 
     b.append(T(420, 300, "노란 칸이 붙어 있느냐가 사람이 눌러도 되는 버튼과 아닌 버튼을 가른다", 17, INK))
     b.append(T(420, 366, "에이전트에게 실행 권한을 줄 때 필요한 게 정확히 이 차이다", 20, INK))
