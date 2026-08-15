@@ -3,6 +3,8 @@ title: "About"
 description: "Elliot과 이 블로그에 대한 소개"
 ---
 
+<p style="margin-top:0"><a href="/en/about/">Read in English</a></p>
+
 이커머스 기업 핀테크 조직에서 데이터 사이언티스트로 일하고 있고,
 아주대 AI대학원에서 겸임교수로 금융 AI를 가르치고 있습니다.
 
