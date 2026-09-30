@@ -1,6 +1,6 @@
 ---
 title: "How the Two Lineages of World Models Got Here: Seventy Years, Made Simple"
-description: "Fine, there are neural and symbolic lineages of world models — but where did each start, and how did it arrive here? The one that tried to write the world down in logic and the one that tried to learn it from data, the walls each hit, and where each turned. Written to be readable with no background."
+description: "Fine, there are neural and symbolic lineages of world models, but where did each start, and how did it arrive here? The one that tried to write the world down in logic and the one that tried to learn it from data, the walls each hit, and where each turned. Written to be readable with no background."
 pubDatetime: 2026-08-01T07:30:00Z
 koSlug: world-model-two-histories
 tags:
@@ -10,7 +10,7 @@ tags:
   - engineering
 ---
 
-I wrote earlier about [there being two lineages of world models](/en/norms-are-not-in-the-data/) — the neural one that learns from data, and the symbolic one where people write down the rules. After finishing it I was a bit unsatisfied, because I had given the conclusion while leaving out **where each started and how it got here.**
+I wrote earlier about [there being two lineages of world models](/en/norms-are-not-in-the-data/): the neural one that learns from data, and the symbolic one where people write down the rules. After finishing it I was a bit unsatisfied, because I had given the conclusion while leaving out **where each started and how it got here.**
 
 The history makes it much easier to understand. Neither lineage went the way it was first imagined; each turned direction every time it hit a wall, and that is how they ended up looking as they do. Knowing what those walls were makes the current shape follow naturally.
 
@@ -30,7 +30,7 @@ One side answered: people can write down the rules. The other answered: let the 
 
 Start with the side that writes it down.
 
-## Symbolic — a history of narrowing what to write down
+## Symbolic: a history of narrowing what to write down
 
 ![A timeline of the symbolic lineage](/lineage-symbolic-en.svg)
 
@@ -42,13 +42,13 @@ The first idea was simple. Write facts about the world as logical statements and
 
 ### Stage 2. Writing actions down (1971)
 
-The big turn happens here. STRIPS, built at Stanford to drive a robot called Shakey, laid out a way to write down **actions**. It goes like this.
+The big turn happens here. STRIPS, built at SRI (then the Stanford Research Institute) to drive a robot called Shakey, laid out a way to write down **actions**. It goes like this.
 
 > **Open the door**
 > Preconditions: you are at the door, and the door is not locked
 > Effects: the door is in an open state
 
-A move from writing facts to writing actions. This is the ancestor of today's planning languages, and the axis I described in the earlier post — what changes are permitted — was born here.
+A move from writing facts to writing actions. This is the ancestor of today's planning languages, and the axis I described in the earlier post (what changes are permitted) was born here.
 
 **And then it hits a wall.** Writing what changes when a door opens is easy; the problem was writing what **does not** change. Opening a door leaves the room's colour the same, your position the same, the other doors the same, the windows the same. All of that has to be written down for the machine not to get confused, and the moment the world grows even slightly, the list of things that stay put becomes unmanageable. This is the frame problem.
 
@@ -70,7 +70,7 @@ Google's Knowledge Graph changed the current. Perfect logical inference was set 
 
 Meanwhile, independent of the academic argument, the approach kept running in narrow places where failure is expensive. Medical terminology systems, financial data standards, digital twins in factories, order-state management in payment systems. Nobody called any of it a world model.
 
-## Neural — a history of drawing less and less
+## Neural: a history of drawing less and less
 
 Now the other road.
 
@@ -98,7 +98,7 @@ The paper that gave this field the name World Models came out in 2018. Its struc
 | Second | predicts the next bundle | memory and imagination |
 | Third | decides what to do from that | hands |
 
-See with your eyes, imagine what comes next, act. The most famous part is that **training happened inside imagination.** Rather than practising in the real game environment, the agent was trained inside a fake world the model imagined — and it transferred to the real environment. This is the prototype of the idea in the earlier post that a world model is a factory for training data.
+See with your eyes, imagine what comes next, act. The most famous part is that **training happened inside imagination.** Rather than practising in the real game environment, the agent was trained inside a fake world the model imagined, and it transferred to the real environment. This is the prototype of the idea in the earlier post that a world model is a factory for training data.
 
 ### Stage 4. Into something usable (2019–2023)
 
@@ -106,13 +106,13 @@ DeepMind's Dreamer line refined the recipe until it solved genuinely hard proble
 
 ### Stage 5. Realising you don't have to draw it all (2020–)
 
-An interesting fork. Reconstructing the frame exactly is enormously expensive — you have to get right where each individual leaf will sway. But does winning the game require the position of the leaves?
+An interesting fork. Reconstructing the frame exactly is enormously expensive, because you have to get right where each individual leaf will sway. But does winning the game require the position of the leaves?
 
 MuZero abandoned frame reconstruction entirely and predicted **only what the decision needs.** And it did better. LeCun goes a step further and argues for dropping pixel prediction altogether: pixels carry far too much detail that neither needs nor can be predicted, so predict at a more abstract level.
 
 ### Stage 6. And then a counter-current appears (2024–)
 
-Just as the argument for abandoning pixels was gaining ground, video generation models that draw every pixel started producing striking results — describe a world in text and get one you can walk around in.
+Just as the argument for abandoning pixels was gaining ground, video generation models that draw every pixel started producing striking results: describe a world in text and get one you can walk around in.
 
 So opinion is now split inside the neural lineage too. **Draw the pixels, or throw them away.** The argument is unresolved.
 
@@ -158,11 +158,11 @@ The field moves so fast that everything feels like a first encounter, when in fa
 
 ## References
 
-- D. Ha & J. Schmidhuber, ["World Models"](https://arxiv.org/abs/1803.10122) (2018) — the paper that gave the field its name
-- D. Hafner et al., the Dreamer line — imagination-based training as a practical technique
+- D. Ha & J. Schmidhuber, ["World Models"](https://arxiv.org/abs/1803.10122) (2018): the paper that gave the field its name
+- D. Hafner et al., the Dreamer line: imagination-based training as a practical technique
 - J. Schrittwieser et al., ["Mastering Atari, Go, Chess and Shogi by Planning with a Learned Model"](https://arxiv.org/abs/1911.08265) (MuZero, 2019)
-- Y. LeCun, ["A Path Towards Autonomous Machine Intelligence"](https://openreview.net/forum?id=BZ5a1r-kVsf) (2022) — the JEPA proposal
+- Y. LeCun, ["A Path Towards Autonomous Machine Intelligence"](https://openreview.net/forum?id=BZ5a1r-kVsf) (2022): the JEPA proposal
 - R. Fikes & N. Nilsson, "STRIPS: A New Approach to the Application of Theorem Proving to Problem Solving" (1971)
-- J. McCarthy & P. Hayes, "Some Philosophical Problems from the Standpoint of Artificial Intelligence" (1969) — the frame problem
+- J. McCarthy & P. Hayes, "Some Philosophical Problems from the Standpoint of Artificial Intelligence" (1969): the frame problem
 
 _Written as of 1 August 2026. Compressing seventy years leaves a great deal of important work out, and the years given are representative points. Read it as a way of grasping the broad shape._

@@ -9,7 +9,7 @@
   <!-- offline -->
   <text x="60" y="45" font-size="15" font-weight="700" fill="#b45309">기존 방식 (오프라인 생성)</text>
   <rect x="60" y="60" width="500" height="70" rx="10" fill="#fff7ed" stroke="#f59e0b" stroke-width="1.5"/>
-  <text x="310" y="90" text-anchor="middle" font-size="13" fill="#334155">클립 전체를 한 번에 생성 — 시간을 앞뒤로 오가며 계산</text>
+  <text x="310" y="90" text-anchor="middle" font-size="13" fill="#334155">클립 전체를 한 번에 생성 (시간을 앞뒤로 오가며 계산)</text>
   <text x="310" y="112" text-anchor="middle" font-size="12" fill="#64748b">다 만들 때까지 아무것도 볼 수 없다</text>
   <rect x="590" y="72" width="150" height="46" rx="8" fill="#fee2e2" stroke="#ef4444"/>
   <text x="665" y="92" text-anchor="middle" font-size="13" font-weight="700" fill="#b91c1c">클립당 수 초</text>

@@ -1,5 +1,5 @@
 ---
-title: "Context Compaction: Don't Give the Agent Everything, Give It What's Left Over"
+title: "Context Compaction: Don't Give the Agent Everything, Keep Only What It Needs"
 description: "You cannot hand an agent the whole conversation, every log and every tool result on each turn. Working through the compaction techniques that keep the task state a model needs for its next decision and drop the rest."
 pubDatetime: 2026-05-22T09:00:00Z
 koSlug: context-compaction
@@ -21,7 +21,7 @@ Hence context compaction. The idea in one line:
 
 > Keep what the next decision needs. Drop the rest.
 
-Worth separating this from **prompt compression**, which is a different thing — techniques like LLMLingua that shrink text at the token level. What follows is about managing an agent's conversation and task state.
+Worth separating this from **prompt compression**, which is a different thing: techniques like LLMLingua that shrink text at the token level. What follows is about managing an agent's conversation and task state.
 
 The crudest version keeps the system prompt and the user's request, throws away the middle, and holds on to the last few messages.
 
@@ -62,7 +62,7 @@ Drop:
 - irrelevant failed attempts
 ```
 
-Fast and simple. The downside is that important old information leaves with the noise — a constraint agreed on at step three simply gets forgotten.
+Fast and simple. The downside is that important old information leaves with the noise. A constraint agreed on at step three simply gets forgotten.
 
 ## 2. Summarisation
 
@@ -147,7 +147,7 @@ Current task state:
 - User preference: Keep report simple and business-readable
 ```
 
-The conversation keeps moving; you only keep this board current. It matters most for the agents that run long — coding agents, research agents.
+The conversation keeps moving; you only keep this board current. It matters most for agents that run long, such as coding agents and research agents.
 
 ## 6. What you must never drop
 
@@ -212,7 +212,7 @@ compressed_context = {
 }
 ```
 
-Decide when to fire it too. A common trigger is token use crossing a threshold — say 70% of the context window.
+Decide when to fire it too. A common trigger is token use crossing a threshold, say 70% of the context window.
 
 ## The point
 
@@ -245,7 +245,7 @@ Verification:
 - Callback latency within ±5% of before
 ```
 
-Passing that one board instead of fifty raw turns — that is context compaction.
+That is context compaction: passing that one board instead of fifty raw turns.
 
 ---
 

@@ -11,7 +11,7 @@ tags:
 
 A thought that turned up recently: an awful lot of what I write is now read by an AI before it is read by a person.
 
-It used to go like this. You write a report, you file it, your manager reads it. Their experience and taste were the standard, and you could roughly predict where the red pen would land. After a few rounds you developed a feel for it — this person looks at the numbers first.
+It used to go like this. You write a report, you file it, your manager reads it. Their experience and taste were the standard, and you could roughly predict where the red pen would land. After a few rounds you developed a feel for it: this person looks at the numbers first.
 
 What about now? A manager who uses AI well will drop that report straight into GPT or Claude and start with "summarise this and critique it." That is not a bad thing. I would do the same. There are ten documents stacked up and no time to read each one closely, and having a summary plus a list of concerns in hand makes a much faster first pass. Layer your own judgement on top of that and it is a decent way to work. Though if you are busy or indifferent, you might pass along what came back more or less as-is.
 
@@ -21,7 +21,7 @@ _More and more often, a model reads what I write before a person does._
 
 ## Everything passes through it, large and small
 
-This is not only about reports. Job applications, code reviews, proposals, even paper reviews — each passes through this route somewhere. Even where a person makes the final call, a structure with a model layered in front of them is becoming ordinary.
+This is not only about reports. Job applications, code reviews, proposals and even paper reviews each pass through this route somewhere. Even where a person makes the final call, a structure with a model layered in front of them is becoming ordinary.
 
 Which produces a slightly odd situation. The first reader assessing my work is not a person, and yet I submit without ever having checked what that first reader makes of it.
 
@@ -37,7 +37,7 @@ _What you ask for decides what comes back._
 
 Four that I use often.
 
-**Make it summarise.** Cheapest and most reliable. Ask for a three-line summary, and if what comes back is not what you meant, the model did not fail to understand — the writing is wrong. A conclusion summarised oddly is a signal that the structure is off.
+**Make it summarise.** Cheapest and most reliable. Ask for a three-line summary, and if what comes back is not what you meant, the problem is not the model's understanding but the writing. A conclusion summarised oddly is a signal that the structure is off.
 
 **Make it argue back.** "Take this argument apart." "Write the strongest objection from the opposing side." Ask for an assessment and you get praise; ask for an attack and you get the weak points. The most effective question shape I have found.
 
@@ -61,21 +61,21 @@ What is fun in practice is how often the two models raise quite different points
 
 Opening several windows and copy-pasting every time got tedious, so I went looking. A few open-source options are worth knowing.
 
-**[promptfoo](https://www.promptfoo.dev/docs/guides/compare-open-source-models/)** — runs the same input against several models at once and lays the results side by side. It was built for prompt testing, but you write a model list and pass criteria into YAML, run it, and get a matrix back. If you regularly need the same document reviewed by several models, this is the most convenient.
+**[promptfoo](https://www.promptfoo.dev/docs/guides/compare-open-source-models/)**: runs the same input against several models at once and lays the results side by side. It was built for prompt testing, but you write a model list and pass criteria into YAML, run it, and get a matrix back. If you regularly need the same document reviewed by several models, this is the most convenient.
 
-**[LibreChat](https://github.com/danny-avila/LibreChat)** — an MIT-licensed self-hosted chat UI. You can use several providers in one screen and switch models mid-conversation, which makes putting the same question alternately to GPT and Claude easy. Open WebUI is a similar option.
+**[LibreChat](https://github.com/danny-avila/LibreChat)**: an MIT-licensed self-hosted chat UI. You can use several providers in one screen and switch models mid-conversation, which makes putting the same question alternately to GPT and Claude easy. Open WebUI is a similar option.
 
-**[karpathy/llm-council](https://github.com/karpathy/llm-council)** — this one is fun. A small web app by Karpathy: your question goes to several models at once, the models critique and rank each other's answers **anonymously**, and a chairman model synthesises a final answer at the end. Consider it an automation of the cross-checking above. The anonymity is the good part, since it suppresses to some degree a model's tendency to favour output from its own family.
+**[karpathy/llm-council](https://github.com/karpathy/llm-council)**: this one is fun. A small web app by Karpathy: your question goes to several models at once, the models critique and rank each other's answers **anonymously**, and a chairman model synthesises a final answer at the end. Consider it an automation of the cross-checking above. The anonymity is the good part, since it suppresses to some degree a model's tendency to favour output from its own family.
 
 ## A personal view
 
 The approach is not a cure-all, so a few caveats.
 
-First, **you can only ask as much as you already know.** Asking a good question requires already knowing what matters, and judging whether the feedback that comes back is right requires the same. Without domain knowledge you get pulled along by whatever sounds plausible. Which amounts to saying the tool is only useful if you have understanding — a dull conclusion, but I think a true one.
+First, **you can only ask as much as you already know.** Asking a good question requires already knowing what matters, and judging whether the feedback that comes back is right requires the same. Without domain knowledge you get pulled along by whatever sounds plausible. Which amounts to saying the tool is only useful if you have understanding: a dull conclusion, but I think a true one.
 
 Second, **the grading model has biases too.** It prefers what it saw first, scores long pieces generously, and favours writing from its own family. I went through this in [an earlier post](/en/llm-evaluation-methods/); it is not the kind of thing that vanishes when you average over runs, because it is a lean rather than noise. That is also why cross-checking is worth the trouble.
 
-Third, and this is what bothers me most: **passing the AI must not become the goal.** There is a definite profile of writing that models like — clear structure, well-placed subheadings, a reasonable density of numbers. Start optimising for that and you produce something flat for human readers. The old story about a measure ceasing to be a good measure once it becomes a target repeats itself here. AI review is for filtering out mistakes, not for deciding whether something is well written.
+Third, and this is what bothers me most: **passing the AI must not become the goal.** There is a definite profile of writing that models like: clear structure, well-placed subheadings, a reasonable density of numbers. Start optimising for that and you produce something flat for human readers. The old story about a measure ceasing to be a good measure once it becomes a target repeats itself here. AI review is for filtering out mistakes, not for deciding whether something is well written.
 
 And all of this is probably a transitional scene. In a few years this kind of checking will be built into document tools by default and there will be nothing to discuss. For now, though, the gap between people who have made it a habit and people who have not is visibly widening, so it seems worth doing deliberately for a while.
 
@@ -84,7 +84,7 @@ And all of this is probably a transitional scene. In a few years this kind of ch
 **Related posts:**
 
 - [How Do You Grade an LLM? Eleven Evaluation Methods, Sorted into Four Families](/en/llm-evaluation-methods/)
-- [AI Agents Come from a Better Harness, Not a Better Prompt](/en/ai-harness-engineering/)
+- [Better Agents Come From a Better Harness, Not a Better Prompt](/en/ai-harness-engineering/)
 - [The Model Is Smart, So Why Is the System Stupid?](/en/ai-system-fails-outside-model/)
 
 _Written as of 29 July 2026. The features of the tools mentioned may change._

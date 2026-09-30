@@ -45,34 +45,34 @@ def d1_map():
 # ── 2. FDE가 필요한 사분면
 def d2_quadrant():
     r = R(222); b = []
-    W, H = 840, 470
+    W, H = 840, 500
     b.append(T(420, 46, "FDE가 필요한 칸은 딱 하나다", 28, INK, weight="bold"))
     b.append(ul(r, 240, 600, 63))
 
     b.append(T(430, 100, "사는 사람", 18, INK, weight="bold"))
     b.append(T(300, 128, "기술을 아는 구매자", 16, INK_LIGHT))
     b.append(T(600, 128, "기술을 모르는 구매자", 16, INK_LIGHT))
-    b.append(T(96, 280, "파는 것", 18, INK, weight="bold", rot=-90))
+    b.append(T(96, 300, "파는 것", 18, INK, weight="bold", rot=-90))
 
     cells = [
         (170, 148, "gray", INK_LIGHT, "복잡한 제품", "필요 없음",
          ["GitHub · Datadog", "구매자가 엔지니어라", "복잡도를 알아서 흡수한다"], False),
         (470, 148, "amber", AMBER, "복잡한 제품", "여기만 필요하다",
          ["팔란티어 · 그리고 요즘의", "에이전틱 제품 대부분", "고객이 뭘 할 수 있는지 모른다"], True),
-        (170, 304, "gray", INK_LIGHT, "단순한 제품", "필요 없음",
+        (170, 320, "gray", INK_LIGHT, "단순한 제품", "필요 없음",
          ["설정만 하면 되고", "개발할 물건이 아니다"], False),
-        (470, 304, "gray", INK_LIGHT, "단순한 제품", "필요 없음",
+        (470, 320, "gray", INK_LIGHT, "단순한 제품", "필요 없음",
          ["슬랙 · 지라", "구매자가 몰라도 쓸 수 있다"], False),
     ]
     for x, y, wash, col, kind, verdict, lines, hot in cells:
-        h = 148 if hot else 132
+        h = 152 if len(lines) == 3 else 134
         b.append(box(r, x, y, 300, h, wash, col, sw=1.9 if hot else 1.4))
         b.append(T(x + 150, y + 30, kind, 17, INK_LIGHT))
         b.append(T(x + 150, y + 58, verdict, 21, col, weight="bold"))
         for i, ln in enumerate(lines):
             b.append(T(x + 150, y + 88 + i * 22, ln, 14.5, INK))
 
-    b.append(T(420, 456, "\"하고 싶은가\"가 아니라 \"이 칸에 있는가\"를 먼저 물어야 한다", 19, INK_LIGHT))
+    b.append(T(420, 486, "\"하고 싶은가\"가 아니라 \"이 칸에 있는가\"를 먼저 물어야 한다", 19, INK_LIGHT))
     return W, H, "".join(b)
 
 

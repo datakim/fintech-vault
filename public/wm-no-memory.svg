@@ -33,6 +33,6 @@
   <text x="660" y="192" text-anchor="middle" font-size="11" fill="#b45309">병이 그대로 있을 보장이 없다</text>
 
   <text x="400" y="245" text-anchor="middle" font-size="14" fill="#334155">모델은 장면을 <tspan font-weight="700">기억</tspan>하는 게 아니라 매번 <tspan font-weight="700">다시 생성</tspan>한다</text>
-  <text x="400" y="268" text-anchor="middle" font-size="12" fill="#64748b">"캐릭터가 다시 돌아봤을 때, 세계는 그대로일까? 대부분의 비디오 모델에서는 아니다" — Anupam Singh</text>
+  <text x="400" y="268" text-anchor="middle" font-size="12" fill="#64748b">"캐릭터가 다시 돌아봤을 때, 세계는 그대로일까? 대부분의 비디오 모델에서는 아니다" (Anupam Singh)</text>
   <text x="400" y="300" text-anchor="middle" font-size="12" fill="#94a3b8">비디오 월드모델의 지속성 문제: 화면 밖으로 나간 것은 조용히 바뀐다</text>
 </svg>

@@ -54,7 +54,7 @@ def d_map():
          [("BLEU", "of what it said, how much is in the reference"),
           ("ROUGE", "of the reference, how much is in the answer"),
           ("BERTScore", "compare by meaning, not by characters")]),
-        ("②", "Let a model do the grading", "no reference — hand another LLM the criteria",
+        ("②", "Let a model do the grading", "no reference: hand another LLM the criteria",
          "amber", AMBER,
          [("G-Eval", "unfold criteria into steps, then score"),
           ("LLM-as-Judge", "put two side by side, pick a winner"),
@@ -94,19 +94,19 @@ def d_map():
 def d_reference():
     r = R(703); b = []
     W, H = 900, 560
-    b.append(T(450, 46, "The three reference-based metrics — the arrows point different ways", 25, INK, weight="bold"))
+    b.append(T(450, 46, "The three reference-based metrics: the arrows point different ways", 25, INK, weight="bold"))
     b.append(ul(r, 195, 705, 63))
 
     blocks = [
-        ("BLEU", 78, "— is what it said grounded?  (precision)", "green", GREEN, "forward",
+        ("BLEU", 78, "is what it said grounded?  (precision)", "green", GREEN, "forward",
          "is this phrasing in the reference?",
          ["Fits translation, where wording is near-fixed.",
           "A length penalty stops it gaming brevity."]),
-        ("ROUGE", 90, "— did it leave anything out?  (recall)", "blue", BLUE, "back",
+        ("ROUGE", 90, "did it leave anything out?  (recall)", "blue", BLUE, "back",
          "is this content in the answer?",
          ["Fits summarisation, where omission hurts most.",
-          "Longer answers win — pair it with precision."]),
-        ("BERTScore", 138, "— match meaning, not characters", "amber", AMBER, "both",
+          "Longer answers win. Pair it with precision."]),
+        ("BERTScore", 138, "match meaning, not characters", "amber", AMBER, "both",
          "close in meaning counts",
          ["Catches a right answer worded differently.",
           "Scores bunch in a narrow band; not absolute."]),
@@ -147,13 +147,13 @@ def d_judge_pipeline():
     b.append(ul(r, 200, 700, 63))
 
     rows = [
-        ("G-Eval — unfold the criteria into steps, then score", "green", GREEN,
+        ("G-Eval: unfold the criteria into steps, then score", "green", GREEN,
          [("the answer +", "the criteria"), ("judge model", "generates steps"),
           ("walks the steps", "and scores"), ("probability-weighted", "final score")]),
-        ("LLM-as-Judge — set two answers side by side, pick the better", "blue", BLUE,
+        ("LLM-as-Judge: set two answers side by side, pick the better", "blue", BLUE,
          [("answer A and", "answer B"), ("hold the rubric,", "compare the two"),
           ("pick a winner", "(repeat over pairs)"), ("who won most often", "win-rate ranking")]),
-        ("LLM jury — scatter one judge's habits across several", "purple", PURPLE,
+        ("LLM jury: scatter one judge's habits across several", "purple", PURPLE,
          [("the answer", "to be graded"), ("judge models", "A · B · C"),
           ("average each", "of their scores"), ("a steadier", "consensus score")]),
     ]
@@ -171,7 +171,7 @@ def d_judge_pipeline():
             x += 204
         hy += 136
 
-    b.append(T(450, 478, "Three models from one family only cut noise — the habit stays. Mix different families.", 18, INK))
+    b.append(T(450, 478, "Three models from one family only cut noise; the habit stays. Mix different families.", 18, INK))
     return W, H, "".join(b)
 
 
@@ -179,7 +179,7 @@ def d_judge_pipeline():
 def d_judge_bias():
     r = R(705); b = []
     W, H = 900, 384
-    b.append(T(450, 46, "The grader is a model too — three known habits", 27, INK, weight="bold"))
+    b.append(T(450, 46, "The grader is a model too: three known habits", 27, INK, weight="bold"))
     b.append(ul(r, 235, 665, 63))
 
     cols = [
@@ -206,7 +206,7 @@ def d_judge_bias():
         b.append(T(cx, 234, "how to block it", 16, col, weight="bold"))
         b.append(T(cx, 260, fix, 15.5, INK))
 
-    b.append(T(450, 326, "None of these wash out by averaging over many runs — they are a lean, not noise", 18, INK))
+    b.append(T(450, 326, "None of these wash out by averaging over many runs: they are a lean, not noise", 18, INK))
     b.append(T(450, 356, "So before trusting a judge, calibrate it against a small human-graded set", 17, INK_LIGHT))
     return W, H, "".join(b)
 
@@ -253,7 +253,7 @@ def d_agent_path():
 
     b.append(box(r, 40, 324, 396, 96, "red", RED, sw=1.8))
     b.append(T(238, 356, "Score the answer only", 20, RED, weight="bold"))
-    b.append(T(238, 386, "both get full marks — the incident", 16, INK))
+    b.append(T(238, 386, "both get full marks, and the incident", 16, INK))
     b.append(T(238, 408, "surfaces after launch", 16, INK))
 
     b.append(box(r, 464, 324, 396, 96, "green", GREEN, sw=1.8))

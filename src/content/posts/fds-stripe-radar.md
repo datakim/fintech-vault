@@ -237,6 +237,6 @@ Stripe Radar 사례가 흥미로운 이유도 여기에 있다. 100ms 안에 사
 
 ---
 
-출처: [A primer on machine learning for fraud protection — Stripe](https://stripe.com/in/guides/primer-on-machine-learning-for-fraud-protection)
+출처: [A primer on machine learning for fraud protection (Stripe)](https://stripe.com/in/guides/primer-on-machine-learning-for-fraud-protection)
 
 함께 보면 좋은 글: [금융 AI에서의 에이전틱 엔지니어링](/posts/agentic-engineering-in-finance/)

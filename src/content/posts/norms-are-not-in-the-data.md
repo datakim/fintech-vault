@@ -126,11 +126,11 @@ _뉴럴은 접지를, 심볼릭은 집행을 맡는다._
 
 ## 참고 자료
 
-- 조쉬(이주환), 『AI 에이전트 실행 세계 ① 원리편』 — 심볼릭 월드모델과 네 축 프레임워크
+- 조쉬(이주환), 『AI 에이전트 실행 세계 ① 원리편』: 심볼릭 월드모델과 네 축 프레임워크
 - [Text2World: Benchmarking Large Language Models for Symbolic World Model Generation (Hu et al., 2025)](https://arxiv.org/abs/2502.13092)
 - [DR. WELL: Dynamic Reasoning and Learning with Symbolic World Model for Embodied LLM-Based Multi-Agent Collaboration (Nourzad et al., 2025)](https://arxiv.org/abs/2511.04646)
-- [The Ontology — Palantir Foundry Docs](https://www.palantir.com/docs/foundry/ontology/overview)
-- J. McCarthy & P. Hayes, "Some Philosophical Problems from the Standpoint of Artificial Intelligence" (1969) — 프레임 문제
+- [The Ontology (Palantir Foundry Docs)](https://www.palantir.com/docs/foundry/ontology/overview)
+- J. McCarthy & P. Hayes, "Some Philosophical Problems from the Standpoint of Artificial Intelligence" (1969): 프레임 문제
 - S. Harnad, "The Symbol Grounding Problem" (1990)
 - G. H. von Wright, "Deontic Logic", *Mind* (1951)
 

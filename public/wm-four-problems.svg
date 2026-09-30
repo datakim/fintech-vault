@@ -35,6 +35,6 @@
   <text x="582" y="302" text-anchor="middle" font-size="12.5" fill="#334155">재미는 그래픽이 아니라 규칙에서 나온다</text>
   <text x="582" y="324" text-anchor="middle" font-size="12.5" fill="#334155">생성되는 세계도 창작자의 규칙을 따라야 한다</text>
   <rect x="435" y="343" width="295" height="42" rx="6" fill="#ffffff" stroke="#fbcfe8"/>
-  <text x="582" y="361" text-anchor="middle" font-size="11.5" fill="#db2777">해법: 게임 카트리지 하네스 —</text>
-  <text x="582" y="377" text-anchor="middle" font-size="11.5" fill="#db2777">결정론적 게임 로직으로 모델을 감싼다</text>
+  <text x="582" y="361" text-anchor="middle" font-size="11.5" fill="#db2777">해법: 게임 카트리지 하네스</text>
+  <text x="582" y="377" text-anchor="middle" font-size="11.5" fill="#db2777">(결정론적 게임 로직으로 모델을 감싼다)</text>
 </svg>

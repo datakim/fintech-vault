@@ -117,12 +117,12 @@ _학술 기준으로는 온톨로지가 아니지만, 에이전트가 필요로 
 
 ## 참고 자료
 
-- [Ontology overview — Palantir Foundry Docs](https://www.palantir.com/docs/foundry/ontology/overview)
-- [The Ontology system — Palantir Architecture Center](https://www.palantir.com/docs/foundry/architecture-center/ontology-system)
-- [Why create an Ontology? — Palantir Foundry Docs](https://www.palantir.com/docs/foundry/ontology/why-ontology)
-- [Connecting AI to Decisions with the Palantir Ontology — Palantir Blog](https://blog.palantir.com/connecting-ai-to-decisions-with-the-palantir-ontology-c73f7b0a1a72)
+- [Ontology overview (Palantir Foundry Docs)](https://www.palantir.com/docs/foundry/ontology/overview)
+- [The Ontology system (Palantir Architecture Center)](https://www.palantir.com/docs/foundry/architecture-center/ontology-system)
+- [Why create an Ontology? (Palantir Foundry Docs)](https://www.palantir.com/docs/foundry/ontology/why-ontology)
+- [Connecting AI to Decisions with the Palantir Ontology (Palantir Blog)](https://blog.palantir.com/connecting-ai-to-decisions-with-the-palantir-ontology-c73f7b0a1a72)
 - [Palantir Foundry Ontology: How It Works, What Problems It Solves, and Where It Falls Short](https://badalaiworld.substack.com/p/palantir-foundry-ontology-how-it)
-- [Palantir's Ontology Narrative — Vonng](https://vonng.com/en/db/ontology-bullshit/)
-- [What Is Palantir Ontology? — 5 Key Differences from Classic Ontology — Pebblous](https://blog.pebblous.ai/project/CURK/ontology/palantir-vs-classic-ontology/en/)
+- [Palantir's Ontology Narrative (Vonng)](https://vonng.com/en/db/ontology-bullshit/)
+- [What Is Palantir Ontology? 5 Key Differences from Classic Ontology (Pebblous)](https://blog.pebblous.ai/project/CURK/ontology/palantir-vs-classic-ontology/en/)
 
 _본 글은 2026년 8월 1일 기준 공개 문서와 자료를 바탕으로 작성했다. 나는 Foundry를 직접 운영해본 적이 없고, 공개 문서와 외부 분석을 읽고 정리한 것이다. 실제 도입 경험이 있는 분의 반론은 언제든 환영한다. 시중에 도는 도입 성과 수치는 대체로 벤더 자료 기준이라 그대로 받아들이기는 어렵다._

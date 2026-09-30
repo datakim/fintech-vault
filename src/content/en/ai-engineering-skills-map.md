@@ -27,9 +27,9 @@ The four are presented as though they sit at the same level. Read them and they 
 
 ![What you miss reading it as a flat list](/skills-layers-en.svg)
 
-_② is not an item alongside the rest — it is the condition under which the rest hold._
+_② is not an item alongside the rest but the condition under which the rest hold._
 
-Ng's own explanation gives it away. Discussing software fundamentals, he notes that without them you receive output from a coding agent with no idea what trade-offs it made — **because you do not know what context to give it.** And he adds that fundamentals are what let you steer an agent in the precise language of software engineering.
+Ng's own explanation gives it away. Discussing software fundamentals, he notes that without them you receive output from a coding agent with no idea what trade-offs it made, **because you do not know what context to give it.** And he adds that fundamentals are what let you steer an agent in the precise language of software engineering.
 
 Which makes ② not an item alongside ③, but a **precondition** for ③. It is putting "drives well" and "knows the way" on the same line. Not knowing the way, driving well takes you somewhere wrong.
 
@@ -47,7 +47,7 @@ Under **building AI apps**, the core competency he names is not picking a good m
 
 **Software fundamentals** are described as the ability to recognise trade-offs. Knowing the trade-offs means, in the end, **knowing what can go wrong and where.**
 
-Under **coding agents** it is stated outright. To let an agent close its own loop, "provide a verifier or an evaluation." Not giving the agent the answer — **giving it the rubric.**
+Under **coding agents** it is stated outright. To let an agent close its own loop, "provide a verifier or an evaluation." Not giving the agent the answer, but **giving it the rubric.**
 
 **Shaping the build** is about setting specifications, and setting a specification is defining what the finished state is. Which is also a verification criterion.
 
@@ -61,7 +61,7 @@ I wrote earlier, [while sorting through LLM evaluation methods](/en/llm-evaluati
 
 This is where I stopped for a moment.
 
-Nowhere in the four is "the ability to train a model." Machine learning and deep learning are mentioned — but in the building-AI-apps item, in a list of **components to understand**, alongside LLMs, context engineering, RAG and agentic workflows. Something to understand, not to build.
+Nowhere in the four is "the ability to train a model." Machine learning and deep learning are mentioned, but only in the building-AI-apps item, in a list of **components to understand**, alongside LLMs, context engineering, RAG and agentic workflows. Something to understand, not to build.
 
 Coming from data science, that is a slightly chilling passage. A few years ago the way you demonstrated skill in this field was by building good models. On this map, model training has dropped to being one **optional component**.
 
@@ -73,9 +73,9 @@ A map has to be read for what is not drawn as much as for what is. Three places 
 
 ![The faint areas on the map](/skills-missing-en.svg)
 
-_Not that things are missing — read it knowing where it is drawn faintly._
+_Nothing is missing as such. Read it knowing where it is drawn faintly._
 
-**After deployment.** The first item is "building and deploying," and deployment appears as one word with almost nothing after it. In practice, the moment you deploy, inference cost starts accruing, quality quietly degrades, and without observability you do not even notice. As I [wrote earlier](/en/ai-system-fails-outside-model/), failures usually start outside the model — and that outside is drawn thinly here.
+**After deployment.** The first item is "building and deploying," and deployment appears as one word with almost nothing after it. In practice, the moment you deploy, inference cost starts accruing, quality quietly degrades, and without observability you do not even notice. As I [wrote earlier](/en/ai-system-fails-outside-model/), failures usually start outside the model, and that outside is drawn thinly here.
 
 **Domain knowledge.** Absent from all four. It brushes against the fourth item's "understanding business context and customer goals," but in practice what gets built is usually decided by the domain. Whether this transaction can be auto-approved in a financial system is not the kind of question software knowledge answers.
 

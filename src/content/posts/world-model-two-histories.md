@@ -29,7 +29,7 @@ _같은 질문에 두 가지 답이 나왔고, 그 갈림길에서 70년이 흘�
 
 먼저 적어 넣는 쪽부터 보자.
 
-## 심볼릭 — 적으려다 계속 범위를 좁혀온 역사
+## 심볼릭: 적으려다 계속 범위를 좁혀온 역사
 
 ![심볼릭 계보의 연표](/lineage-symbolic.svg)
 
@@ -41,7 +41,7 @@ _벽에 부딪힐 때마다 적을 범위를 좁혀왔다._
 
 ### 2단계. 행동을 적기 시작하다 (1971)
 
-큰 전환이 여기서 일어난다. 스탠퍼드에서 Shakey라는 로봇을 움직이려고 만든 STRIPS라는 시스템이 **행동**을 적는 방법을 정리했다. 방식은 이렇다.
+큰 전환이 여기서 일어난다. 스탠퍼드 연구소(SRI)에서 Shakey라는 로봇을 움직이려고 만든 STRIPS라는 시스템이 **행동**을 적는 방법을 정리했다. 방식은 이렇다.
 
 > **문 열기**
 > 전제조건: 문 앞에 있어야 하고, 문이 잠겨 있지 않아야 한다
@@ -69,7 +69,7 @@ _벽에 부딪힐 때마다 적을 범위를 좁혀왔다._
 
 그리고 학계 논쟁과 상관없이, 좁고 실패 비용이 큰 곳에서는 이 방식이 계속 돌아가고 있었다. 의료 용어 체계, 금융 데이터 표준, 공장의 디지털 트윈, 결제 시스템의 주문 상태 관리 같은 것들. 아무도 이걸 월드모델이라고 부르지 않았을 뿐이다.
 
-## 뉴럴 — 그리려다 계속 그릴 것을 줄여온 역사
+## 뉴럴: 그리려다 계속 그릴 것을 줄여온 역사
 
 이제 반대쪽 길이다.
 
@@ -157,11 +157,11 @@ AI 분야가 워낙 빠르게 움직이다 보니 모든 게 처음 겪는 일�
 
 ## 참고 자료
 
-- D. Ha & J. Schmidhuber, ["World Models"](https://arxiv.org/abs/1803.10122) (2018) — 이 분야에 이름을 준 논문
-- D. Hafner et al., Dreamer 계열 — 상상 속 학습을 실용 기술로
+- D. Ha & J. Schmidhuber, ["World Models"](https://arxiv.org/abs/1803.10122) (2018): 이 분야에 이름을 준 논문
+- D. Hafner et al., Dreamer 계열: 상상 속 학습을 실용 기술로
 - J. Schrittwieser et al., ["Mastering Atari, Go, Chess and Shogi by Planning with a Learned Model"](https://arxiv.org/abs/1911.08265) (MuZero, 2019)
-- Y. LeCun, ["A Path Towards Autonomous Machine Intelligence"](https://openreview.net/forum?id=BZ5a1r-kVsf) (2022) — JEPA 구상
+- Y. LeCun, ["A Path Towards Autonomous Machine Intelligence"](https://openreview.net/forum?id=BZ5a1r-kVsf) (2022): JEPA 구상
 - R. Fikes & N. Nilsson, "STRIPS: A New Approach to the Application of Theorem Proving to Problem Solving" (1971)
-- J. McCarthy & P. Hayes, "Some Philosophical Problems from the Standpoint of Artificial Intelligence" (1969) — 프레임 문제
+- J. McCarthy & P. Hayes, "Some Philosophical Problems from the Standpoint of Artificial Intelligence" (1969): 프레임 문제
 
 _본 글은 2026년 8월 1일 기준으로 작성했다. 70년치 흐름을 짧게 줄이다 보니 중요한 연구들이 많이 빠졌고, 연도도 대표적인 시점을 골라 적었다. 큰 흐름을 잡는 용도로 읽어주면 좋겠다._

@@ -20,12 +20,12 @@ def d1_fork():
     b.append(arr(r, 500, 150, 620, 196, INK_LIGHT, 1.6))
 
     b.append(box(r, 50, 202, 380, 130, "purple", PURPLE, sw=1.8))
-    b.append(T(240, 236, "Symbolic — write it down", 21, PURPLE, weight="bold"))
+    b.append(T(240, 236, "Symbolic: write it down", 21, PURPLE, weight="bold"))
     b.append(T(240, 272, "\"people write the rules\"", 18, INK))
     b.append(T(240, 304, "logic · rules · state machines", 16.5, INK_LIGHT))
 
     b.append(box(r, 450, 202, 380, 130, "green", GREEN, sw=1.8))
-    b.append(T(640, 236, "Neural — learn by looking", 21, GREEN, weight="bold"))
+    b.append(T(640, 236, "Neural: learn by looking", 21, GREEN, weight="bold"))
     b.append(T(640, 272, "\"let the machine learn it\"", 18, INK))
     b.append(T(640, 304, "control theory · nets · prediction", 16, INK_LIGHT))
 
@@ -36,22 +36,22 @@ def d1_fork():
 def d2_symbolic():
     r = R(122); b = []
     W, H = 920, 570
-    b.append(T(460, 46, "Symbolic — a history of narrowing what to write down", 26, PURPLE, weight="bold"))
+    b.append(T(460, 46, "Symbolic: a history of narrowing what to write down", 26, PURPLE, weight="bold"))
     b.append(ul(r, 200, 720, 63))
 
     steps = [
         ("1950s–60s", "Maybe we can just write it in logic",
          "write facts about the world as logical statements and the machine infers", None),
-        ("1971", "Writing actions down — STRIPS",
+        ("1971", "Writing actions down (STRIPS)",
          "\"to open a door you must be at it; opening it makes it open\"",
          "you must also write what does not change (the frame problem)"),
         ("1970s–80s", "Give up the world, take one narrow field",
-         "medical diagnosis, system configuration — expert systems sold commercially",
+         "medical diagnosis, system configuration: expert systems sold commercially",
          "past a few thousand rules nobody could touch it"),
         ("1990s–2000s", "Make a standard and share it",
-         "RDF · OWL — the Semantic Web, making the whole web machine-readable",
+         "RDF · OWL: the Semantic Web, making the whole web machine-readable",
          "nobody tagged anything"),
-        ("2012–", "A practical retreat — knowledge graphs",
+        ("2012–", "A practical retreat (knowledge graphs)",
          "drop perfect inference, aim at usefulness. This one survived", None),
     ]
     y = 86
@@ -63,7 +63,7 @@ def d2_symbolic():
         b.append(T(232, y + 50, desc, 15, INK_LIGHT, anchor="start"))
         if wall:
             b.append(box(r, 232, y + 60, 620, 22, "red", RED, sw=1.1, amp=1.0))
-            b.append(T(542, y + 76, "the wall — " + wall, 14.5, RED))
+            b.append(T(542, y + 76, "the wall: " + wall, 14.5, RED))
         y += h + 12
 
     b.append(T(460, 552, "Where the field is narrow and failure is expensive, it is still quietly running", 18, INK))
@@ -73,21 +73,21 @@ def d2_symbolic():
 def d3_neural():
     r = R(133); b = []
     W, H = 920, 592
-    b.append(T(460, 46, "Neural — a history of drawing less and less", 27, GREEN, weight="bold"))
+    b.append(T(460, 46, "Neural: a history of drawing less and less", 27, GREEN, weight="bold"))
     b.append(ul(r, 230, 690, 63))
 
     steps = [
-        ("1960", "The Kalman filter — the root was engineering",
+        ("1960", "The Kalman filter: the root was engineering",
          "write the world model as equations and predict the next state. It flew on Apollo",
          "a person has to write those equations"),
         ("1990", "So let the equations be learned",
          "the idea of learning environment dynamics with a neural network",
          "neither the compute nor the data existed yet"),
-        ("2018", "The moment it got a name — World Models",
+        ("2018", "The moment it got a name (World Models)",
          "eyes (compress) + memory (predict) + hands (act). Trained inside an imagined world", None),
-        ("2019–23", "Industrialised — the Dreamer line",
+        ("2019–23", "Industrialised (the Dreamer line)",
          "imagination-based training refined until one config solves 150+ tasks", None),
-        ("2020–", "No need to draw it all — MuZero, JEPA",
+        ("2020–", "No need to draw it all (MuZero, JEPA)",
          "abandon frame reconstruction and predict only what the decision needs", None),
         ("2024–", "And then video generation joined",
          "the side that draws every pixel started producing striking results", None),
@@ -101,7 +101,7 @@ def d3_neural():
         b.append(T(206, y + 48, desc, 14.5, INK_LIGHT, anchor="start"))
         if wall:
             b.append(box(r, 206, y + 56, 646, 20, "red", RED, sw=1.1, amp=1.0))
-            b.append(T(529, y + 71, "the wall — " + wall, 14.5, RED))
+            b.append(T(529, y + 71, "the wall: " + wall, 14.5, RED))
         y += h + 12
 
     b.append(T(460, 572, "Today the family is split internally: draw the pixels, or throw them away", 18, INK))

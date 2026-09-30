@@ -76,7 +76,7 @@ ORDER BY total_order_amount DESC;
 
 이 한 번의 주고받음 안에서 사용량은 크게 네 항목으로 나뉜다. 위에서 본 Input, Output, Reasoning, Cache Read다.
 
-## 3. Input, Output, Reasoning — 들어가고 나오고 속으로 굴린 것
+## 3. Input, Output, Reasoning: 들어가고 나오고 속으로 굴린 것
 
 **Input**은 이번 답을 만들기 위해 AI가 읽은 모든 정보다. 위 예시로 보면 시스템 지시사항, 프로젝트 정보, DB 스키마, 이전 대화 맥락, 사용자 질문이 전부 input에 들어간다. 실제 작업할 때는 거기에 관련 코드 파일, 도구 실행 결과, 에러 로그까지 함께 붙는다. 그래서 사용자는 "SQL 좀 짜줘" 한 줄만 쳤는데도 input 토큰이 수천, 수만씩 찍히는 경우가 많다.
 
@@ -172,7 +172,7 @@ Claude Code나 Codex 같은 도구는 작업할 때마다 로컬에 사용 기�
 
 ## 참고 자료
 
-- [ccusage — Claude Code / Codex 사용량 리포터 (GitHub)](https://github.com/ryoppippi/ccusage)
-- [Prompt caching — OpenAI Platform Docs](https://platform.openai.com/docs/guides/prompt-caching)
-- [Messages usage report — Anthropic Admin API](https://docs.anthropic.com/en/api/admin-api/usage-cost/get-messages-usage-report)
-- [Memory FAQ — OpenAI Help](https://help.openai.com/en/articles/8590148-memory-faq)
+- [ccusage: Claude Code / Codex 사용량 리포터 (GitHub)](https://github.com/ryoppippi/ccusage)
+- [Prompt caching (OpenAI Platform Docs)](https://platform.openai.com/docs/guides/prompt-caching)
+- [Messages usage report (Anthropic Admin API)](https://docs.anthropic.com/en/api/admin-api/usage-cost/get-messages-usage-report)
+- [Memory FAQ (OpenAI Help)](https://help.openai.com/en/articles/8590148-memory-faq)

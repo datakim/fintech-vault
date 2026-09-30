@@ -37,7 +37,7 @@ def d1_layers():
         b.append(T(672, y0 + 24, name, 17, col, weight="bold"))
         b.append(T(672, y0 + 44, desc, 14, INK_LIGHT))
 
-    b.append(T(450, 410, "② is not an item alongside the rest — it is the condition under which the rest hold", 18, INK))
+    b.append(T(450, 410, "② is not an item alongside the rest but the condition under which the rest hold", 18, INK))
     b.append(T(450, 444, "Use an agent without fundamentals and you get output without knowing what you delegated", 16.5, INK_LIGHT))
     return W, H, "".join(b)
 
@@ -88,7 +88,7 @@ def d3_missing():
 
     b.append(T(450, 342, "Clustering finds the centre of the data, not its edges", 20, INK))
     b.append(T(450, 376, "Which makes this map a photograph of what is agreed right now", 17.5, INK_LIGHT))
-    b.append(T(450, 420, "Not that things are missing — read it knowing where it is drawn faintly", 16.5, INK_LIGHT))
+    b.append(T(450, 420, "Nothing is missing as such. Read it knowing where it is drawn faintly.", 16.5, INK_LIGHT))
     return W, H, "".join(b)
 
 

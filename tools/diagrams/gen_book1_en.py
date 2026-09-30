@@ -70,7 +70,7 @@ def d2_cace():
 
     b.append(T(440, 366, "One number, and the result splits three ways depending on the question", 19, INK))
     b.append(T(440, 398, "\"Why did the part I never touched break?\" usually starts here", 17.5, INK_LIGHT))
-    b.append(T(440, 428, "Google researchers called it CACE — changing anything changes everything", 16.5, INK_LIGHT))
+    b.append(T(440, 428, "Google researchers called it CACE: changing anything changes everything", 16.5, INK_LIGHT))
     return W, H, "".join(b)
 
 
@@ -115,7 +115,7 @@ def d3_where():
 def d4_order():
     r = R(404); b = []
     W, H = 880, 470
-    b.append(T(440, 46, "Outside in — the order to suspect things", 28, INK, weight="bold"))
+    b.append(T(440, 46, "Outside in: the order to suspect things", 28, INK, weight="bold"))
     b.append(ul(r, 195, 685, 63))
 
     order = [
@@ -140,16 +140,16 @@ def d4_order():
 
     b.append(box(r, 40, 240, 396, 176, "red", RED, sw=1.8))
     b.append(T(238, 270, "Suspect the model first", 21, RED, weight="bold"))
-    for i, ln in enumerate(["Day 1  start retraining", "Day 2  deploy — no change",
-                            "Day 3-4  tune hyperparameters — no change",
+    for i, ln in enumerate(["Day 1  start retraining", "Day 2  deploy: no change",
+                            "Day 3-4  tune hyperparameters: no change",
                             "Day 5  check data, find a cache setting"]):
         b.append(T(238, 300 + i * 24, ln, 15.5, INK))
     b.append(T(238, 402, "Four and a half days gone", 20, RED, weight="bold"))
 
     b.append(box(r, 476, 240, 368, 176, "green", GREEN, sw=1.8))
     b.append(T(660, 270, "Start outside", 21, GREEN, weight="bold"))
-    for i, ln in enumerate(["Input data — fine", "Preprocessing — unchanged",
-                            "Dependencies — cache TTL changed!", "Roll back, metric recovers"]):
+    for i, ln in enumerate(["Input data: fine", "Preprocessing: unchanged",
+                            "Dependencies: cache TTL changed!", "Roll back, metric recovers"]):
         b.append(T(660, 300 + i * 24, ln, 15.5, INK))
     b.append(T(660, 402, "Done before lunch", 20, GREEN, weight="bold"))
 

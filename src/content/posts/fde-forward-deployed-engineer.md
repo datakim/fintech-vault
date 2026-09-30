@@ -18,19 +18,19 @@ tags:
 
 일단 실제로 쓰이는 이름들을 모아봤다.
 
-**Forward Deployed Engineer (FDE) / Forward Deployed Software Engineer (FDSE)** — 팔란티어가 쓰는 이름이다. 고객사에 들어가 앉아서 프로덕션 코드를 쓴다.
+**Forward Deployed Engineer (FDE) / Forward Deployed Software Engineer (FDSE)**: 팔란티어가 쓰는 이름이다. 고객사에 들어가 앉아서 프로덕션 코드를 쓴다.
 
-**Deployment Strategist** — 팔란티어의 또 다른 직군이고, FDSE의 짝이다. 코드를 쓰기 전에 문제를 스코핑하고 이해관계자를 관리한다. 흔히 **전략가가 "왜"와 "무엇을" 맡고 FDSE가 "어떻게"를 맡는다**고 설명하는데, 실제로는 경계가 자주 흐려진다고 한다.
+**Deployment Strategist**: 팔란티어의 또 다른 직군이고, FDSE의 짝이다. 코드를 쓰기 전에 문제를 스코핑하고 이해관계자를 관리한다. 흔히 **전략가가 "왜"와 "무엇을" 맡고 FDSE가 "어떻게"를 맡는다**고 설명하는데, 실제로는 경계가 자주 흐려진다고 한다.
 
-**Applied AI Engineer** — Anthropic이 쓰는 이름이다. FDE 기능을 응용 AI 팀 아래에 두고 있다.
+**Applied AI Engineer**: Anthropic이 쓰는 이름이다. FDE 기능을 응용 AI 팀 아래에 두고 있다.
 
-**Solutions Architect / Solutions Engineer** — AWS, 데이터브릭스 등에서 널리 쓰인다. 설계를 맡고, 대개 구축은 넘긴다.
+**Solutions Architect / Solutions Engineer**: AWS, 데이터브릭스 등에서 널리 쓰인다. 설계를 맡고, 대개 구축은 넘긴다.
 
-**Resident Solutions Architect** — 데이터브릭스의 프로페셔널 서비스 조직에 있다. 이름 그대로 고객사에 상주한다.
+**Resident Solutions Architect**: 데이터브릭스의 프로페셔널 서비스 조직에 있다. 이름 그대로 고객사에 상주한다.
 
-**Customer Success Engineer** — 역시 데이터브릭스에 있고, 운영 중인 고객의 기술 문의를 받는다.
+**Customer Success Engineer**: 역시 데이터브릭스에 있고, 운영 중인 고객의 기술 문의를 받는다.
 
-**Sales Engineer** — 가장 오래된 이름이다. 첫 데모부터 계약까지를 맡는다.
+**Sales Engineer**: 가장 오래된 이름이다. 첫 데모부터 계약까지를 맡는다.
 
 ## 2. 놓고 보면 축은 둘뿐이다
 
@@ -134,12 +134,12 @@ _"하고 싶은가"가 아니라 "이 칸에 있는가"를 먼저 물어야 한�
 
 ## 참고 자료
 
-- [Why OpenAI and Anthropic are hiring forward deployed engineer teams — The New Stack](https://thenewstack.io/forward-deployed-engineers-ai/)
-- [Forward Deployed Engineer vs. Solutions Architect — Exponent](https://www.tryexponent.com/blog/forward-deployed-engineer-vs-solutions-architect)
-- [Forward-Deployed Engineer vs. Deployment Strategist — Paraform](https://www.paraform.com/blog/forward-deployed-engineer-vs-deployment-strategist)
-- [A Day in the Life of a Palantir Forward Deployed Software Engineer — Palantir Blog](https://blog.palantir.com/a-day-in-the-life-of-a-palantir-forward-deployed-software-engineer-45ef2de257b1)
-- [A Day in the Life of a Palantir Deployment Strategist — Palantir Blog](https://blog.palantir.com/a-day-in-the-life-of-a-palantir-deployment-strategist-951cb59a5a96)
-- [Day in the Life of a Databricks Customer Success Engineer — Databricks Blog](https://www.databricks.com/blog/2022/05/19/day-in-the-life-of-a-customer-success-engineer.html)
-- [Databricks Careers](https://www.databricks.com/company/careers) — 필드 엔지니어링 조직의 직군 구성 참고
+- [Why OpenAI and Anthropic are hiring forward deployed engineer teams (The New Stack)](https://thenewstack.io/forward-deployed-engineers-ai/)
+- [Forward Deployed Engineer vs. Solutions Architect (Exponent)](https://www.tryexponent.com/blog/forward-deployed-engineer-vs-solutions-architect)
+- [Forward-Deployed Engineer vs. Deployment Strategist (Paraform)](https://www.paraform.com/blog/forward-deployed-engineer-vs-deployment-strategist)
+- [A Day in the Life of a Palantir Forward Deployed Software Engineer (Palantir Blog)](https://blog.palantir.com/a-day-in-the-life-of-a-palantir-forward-deployed-software-engineer-45ef2de257b1)
+- [A Day in the Life of a Palantir Deployment Strategist (Palantir Blog)](https://blog.palantir.com/a-day-in-the-life-of-a-palantir-deployment-strategist-951cb59a5a96)
+- [Day in the Life of a Databricks Customer Success Engineer (Databricks Blog)](https://www.databricks.com/blog/2022/05/19/day-in-the-life-of-a-customer-success-engineer.html)
+- [Databricks Careers](https://www.databricks.com/company/careers) (필드 엔지니어링 조직의 직군 구성 참고)
 
 _본 글은 2026년 8월 2일 기준 공개된 강연과 자료를 바탕으로 정리했다. 나는 이 직군으로 일해본 적이 없고, 바깥에서 자료를 읽고 정리한 것이다. 직군 정의와 업무 범위는 회사마다 크게 다르므로 일반화에는 한계가 있다. 언급한 코드 비중이나 보상 수준 같은 수치는 채용 시장 자료 기준이라 참고용으로만 읽어주면 좋겠다._

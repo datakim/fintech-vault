@@ -129,8 +129,6 @@ _정답지 유무로 크게 갈리고, 아래 두 층은 어느 길로 왔든 �
 
 여기까지 읽고 "그래서 뭘로 돌리지"가 궁금해질 텐데, 다행히 대부분은 직접 구현할 필요가 없다. 오픈소스 평가·관측 도구인 [Opik](https://github.com/comet-ml/opik)에 이 글에서 다룬 지표들이 상당수 내장돼 있다. BLEU, ROUGE, BERTScore 같은 참조 기반 지표부터 G-Eval, LLM 배심원단, 경로 정확도, 대화 단위 평가, 모더레이션까지 들어 있다. 무엇보다 실행 추적 위에서 돌아가서, 아까 말한 "경로를 채점하려면 트레이싱이 먼저 필요하다"는 조건도 같이 해결된다.
 
-다음 글에서는 이 Opik을 직접 깔아서 돌려보려고 한다. 방법을 알았으니 이제 굴려볼 차례다.
-
 ---
 
 **함께 보면 좋은 글:**
@@ -146,6 +144,6 @@ _정답지 유무로 크게 갈리고, 아래 두 층은 어느 길로 왔든 �
 - [BERTScore: Evaluating Text Generation with BERT (Zhang et al., 2020)](https://arxiv.org/abs/1904.09675)
 - [G-Eval: NLG Evaluation using GPT-4 with Better Human Alignment (Liu et al., 2023)](https://arxiv.org/abs/2303.16634)
 - [Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena (Zheng et al., 2023)](https://arxiv.org/abs/2306.05685)
-- [Opik — 오픈소스 LLM 평가·관측 도구](https://github.com/comet-ml/opik)
+- [Opik (오픈소스 LLM 평가·관측 도구)](https://github.com/comet-ml/opik)
 
 _본 글은 2026년 7월 25일 기준 공개 자료를 바탕으로 정리했다. 판정 모델의 편향처럼 연구가 진행 중인 부분은 모델 세대에 따라 양상이 달라질 수 있다._

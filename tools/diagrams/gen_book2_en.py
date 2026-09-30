@@ -55,7 +55,7 @@ def d2_price():
     b.append(box(r, 478, 84, 320, 88, "red", RED, sw=1.7))
     b.append(T(638, 112, "From today", 18, RED, weight="bold"))
     b.append(T(638, 140, "price: 11.50", 19, INK))
-    b.append(T(638, 162, "currency is USD — nobody told us", 14.5, INK_LIGHT))
+    b.append(T(638, 162, "currency is USD (nobody told us)", 14.5, INK_LIGHT))
 
     checks = [
         (36, "green", GREEN, "Type check", "Float, correct", "pass"),
@@ -72,7 +72,7 @@ def d2_price():
     b.append(T(440, 344, "What the model sees: \"people suddenly buy only cheap things\"", 20, INK, weight="bold"))
     b.append(T(440, 372, "High-value recommendations disappear. Nothing lands in the error log.", 16.5, INK))
 
-    b.append(T(440, 428, "Mix the two currencies and shift the ratio slowly — even the distribution check stays under threshold", 15.5, INK_LIGHT))
+    b.append(T(440, 428, "Mix the two currencies and shift the ratio slowly: even the distribution check stays under threshold", 15.5, INK_LIGHT))
     return W, H, "".join(b)
 
 
@@ -102,7 +102,7 @@ def d3_poison():
     b.append(T(440, 344, "Which is how the older one sometimes scores higher", 17.5, INK))
 
     b.append(box(r, 36, 366, 808, 62, "amber", AMBER, sw=1.8))
-    b.append(T(440, 394, "Harder to catch than a hallucination — the cited document really exists", 19, INK, weight="bold"))
+    b.append(T(440, 394, "Harder to catch than a hallucination: the cited document really exists", 19, INK, weight="bold"))
     b.append(T(440, 418, "Show the source and it is a genuine research report. Just a two-year-old one.", 16, INK_LIGHT))
     return W, H, "".join(b)
 

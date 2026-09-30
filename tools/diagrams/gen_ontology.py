@@ -15,9 +15,9 @@ def d1_axes():
 
     rows = [
         (86, ["① 무엇이 존재하는가", "② 지금 어떤 상태인가"], "존재론",
-         "온톨로지 — 개념·분류(TBox), 개체·사실(ABox)", "blue", BLUE, 96),
+         "온톨로지: 개념·분류(TBox), 개체·사실(ABox)", "blue", BLUE, 96),
         (198, ["③ 어떤 변화가 허용되는가"], "동역학",
-         "행동 형식론 — PDDL의 전제조건·효과, 상황 계산법", "green", GREEN, 68),
+         "행동 형식론: PDDL의 전제조건·효과, 상황 계산법", "green", GREEN, 68),
         (282, ["④ 무엇이 금지·제한되는가"], "규범",
          "무결성 제약, 접근통제, 의무논리(deontic logic)", "red", RED, 68),
     ]
@@ -47,7 +47,7 @@ def d2_gap():
     b.append(ul(r, 175, 665, 63))
 
     b.append(box(r, 36, 84, 356, 236, "blue", BLUE, sw=1.8))
-    b.append(T(214, 116, "알레틱 — 무엇이 가능한가", 21, BLUE, weight="bold"))
+    b.append(T(214, 116, "알레틱: 무엇이 가능한가", 21, BLUE, weight="bold"))
     b.append(T(214, 152, "공이 떨어진다", 18, INK))
     b.append(T(214, 180, "이 잔고로는 결제가 안 된다", 18, INK))
     b.append(T(214, 208, "이 API는 3초 안에 응답한다", 18, INK))
@@ -56,7 +56,7 @@ def d2_gap():
     b.append(T(214, 280, "관측에서 배울 수 있다", 17, INK))
 
     b.append(box(r, 448, 84, 356, 236, "red", RED, sw=1.8))
-    b.append(T(626, 116, "데온틱 — 무엇을 해도 되는가", 21, RED, weight="bold"))
+    b.append(T(626, 116, "데온틱: 무엇을 해도 되는가", 21, RED, weight="bold"))
     b.append(T(626, 152, "이 거래를 승인해도 되는가", 18, INK))
     b.append(T(626, 180, "이 고객정보를 조회해도 되는가", 18, INK))
     b.append(T(626, 208, "이 환불을 자동 처리해도 되는가", 18, INK))
@@ -70,7 +70,7 @@ def d2_gap():
     b.append(T(420, 234, "없다", 16, INK_LIGHT))
 
     b.append(box(r, 36, 344, 768, 82, "amber", AMBER, sw=1.8))
-    b.append(T(420, 374, "사실(is)에서 당위(ought)는 도출되지 않는다 — 흄이 1739년에 지적한 그 간극", 20, INK, weight="bold"))
+    b.append(T(420, 374, "흄이 1739년에 지적했듯, 사실(is)에서 당위(ought)는 도출되지 않는다", 20, INK, weight="bold"))
     b.append(T(420, 404, "그래서 뉴럴 월드모델이 규범을 못 배우는 건 데이터가 모자라서가 아니다", 18, INK))
 
     b.append(T(420, 456, "범주가 다른 문제라서, 모델을 키운다고 넘어가지지 않는다", 18, INK_LIGHT))
@@ -109,8 +109,8 @@ def d3_split():
 
     b.append(box(r, 36, 334, 768, 106, "amber", AMBER, sw=1.8))
     b.append(T(420, 364, "그래서 역할 분담이 임의로 정해진 게 아니다", 21, AMBER, weight="bold"))
-    b.append(T(420, 398, "뉴럴은 접지를 맡는다 — 열린 세계를 읽어 기호로 바꾼다", 18, INK))
-    b.append(T(420, 424, "심볼릭은 집행을 맡는다 — 닫힌 세계에서 허용된 것만 통과시킨다", 18, INK))
+    b.append(T(420, 398, "뉴럴은 접지를 맡는다. 열린 세계를 읽어 기호로 바꾼다", 18, INK))
+    b.append(T(420, 424, "심볼릭은 집행을 맡는다. 닫힌 세계에서 허용된 것만 통과시킨다", 18, INK))
 
     b.append(T(420, 466, "가능성은 넓게 열어두고, 실행은 좁고 안전하게 묶는다", 18, INK_LIGHT))
     return W, H, "".join(b)

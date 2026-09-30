@@ -41,7 +41,7 @@ until yesterday  {"price": 15000.0, "currency": "KRW"}
 from today       {"price": 11.50,   "currency": "USD"}
 ```
 
-The type check passes — it is a Float. The value check passes — it is greater than zero. A recommender trained entirely on won sees 11.5 arrive and reads it as **"people have suddenly started buying only very cheap things."** High-value recommendations vanish and only cheap items get pushed.
+The type check passes: it is a Float. The value check passes: it is greater than zero. A recommender trained entirely on won sees 11.5 arrive and reads it as **"people have suddenly started buying only very cheap things."** High-value recommendations vanish and only cheap items get pushed.
 
 The one hope here is a distribution check. If the mean drops from 15,000 to 11.5, an alarm may well fire. But even that is conditional. **If won and dollars are mixed and the ratio shifts gradually**, the mean slides 15,000 → 14,000 → 12,000 → 8,000 and never crosses the threshold. Slow contamination is far harder to catch than sudden contamination.
 
@@ -84,9 +84,9 @@ That covers structured data. Now the unstructured side, which is scarier if you 
 
 _Both are outlook documents about Company A, so the semantic distance is similar._
 
-A 2024 research report on Company A sits in the vector DB. Target price 50,000, recommendation Buy. In 2026 results deteriorate, a new report comes out, target price 20,000, recommendation Sell. The new report gets indexed too — but **the old one was never deleted.**
+A 2024 research report on Company A sits in the vector DB. Target price 50,000, recommendation Buy. In 2026 results deteriorate, a new report comes out, target price 20,000, recommendation Sell. The new report gets indexed too, but **the old one was never deleted.**
 
-An investor asks how Company A looks. Vector search returns both. Similarity 0.93 and 0.91 — nearly identical, which makes sense, since both are documents about Company A's outlook. If anything, the older one scores higher.
+An investor asks how Company A looks. Vector search returns both. Similarity comes out at 0.93 and 0.91, nearly identical, which makes sense, since both are documents about Company A's outlook. If anything, the older one scores higher.
 
 This is **context poisoning**: stale information entering the model's context and planting false confidence.
 
@@ -104,7 +104,7 @@ Everything so far has been data rotting from the outside in. The last one is the
 
 _In ordinary software the output of code does not rewrite the code._
 
-Continue the earlier example. An LLM misread a piece of ad-laced news as a buying opportunity. Users who got that alert actually bought the stock. Purchase data accumulates. In the next training cycle the system discovers a pattern: **when this kind of news appears, people buy.**
+Take an example. An LLM misread a piece of ad-laced news as a buying opportunity. Users who got that alert actually bought the stock. Purchase data accumulates. In the next training cycle the system discovers a pattern: **when this kind of news appears, people buy.**
 
 The model's initial misreading changed user behaviour, the changed behaviour was recorded as data, and that data turned the misreading into ground truth. Each turn around the loop amplifies it a little.
 
@@ -114,7 +114,7 @@ Recommender systems show the structure even more starkly. If the model recommend
 
 First, B and C get recorded as "not clicked," which does not distinguish **disliked it** from **never really saw it.** The stripped-context log problem again.
 
-Second and more fundamental: for D, E and F, which were never recommended in the first place, **no data is collected at all.** They were never shown, so there is no way to know whether the user would have liked them; with no data there is no basis for recommending them; and not recommending them means data never accumulates. This is not a shortfall in optimisation — it is a state in which information about a whole region is **structurally uncollectable.**
+Second and more fundamental: for D, E and F, which were never recommended in the first place, **no data is collected at all.** They were never shown, so there is no way to know whether the user would have liked them; with no data there is no basis for recommending them; and not recommending them means data never accumulates. This is not a shortfall in optimisation. It is a state in which information about a whole region is **structurally uncollectable.**
 
 ### How to break it
 
@@ -124,13 +124,13 @@ The most widely used tool is an **exploration slot**. Nine of ten recommendation
 
 ## 4. And the same structure is also a weapon
 
-Here is the interesting reversal. That circular structure — the one described as dangerous throughout — becomes the most powerful asset you have if you point it the other way.
+Here is the interesting reversal. That circular structure, the one described as dangerous throughout, becomes the most powerful asset you have if you point it the other way.
 
 Accumulating user feedback flows three ways. Failure cases become material for the evaluation set, signal patterns become a basis for personalisation, and clusters of failure tell you what to fix first. Then the improved product draws more use, which produces more feedback. This is the **data flywheel**.
 
 You will have noticed: **structurally this is exactly the self-reinforcing loop from before.** Output changes data, and that data changes the system again. Only the direction is reversed.
 
-Which means the warning comes attached. Same structure, same risk. In April 2025 OpenAI rolled back a GPT-4o update within days of shipping it. The model had become sycophantic — agreeing with users unconditionally and praising them excessively — and among the causes OpenAI described was **incorporating short-term feedback signals like thumbs up and thumbs down into the reward.**
+Which means the warning comes attached. Same structure, same risk. In April 2025 OpenAI rolled back a GPT-4o update within days of shipping it. The model had become sycophantic, agreeing with users unconditionally and praising them excessively, and among the causes OpenAI described was **incorporating short-term feedback signals like thumbs up and thumbs down into the reward.**
 
 People give a thumbs up to answers they enjoy hearing. A model tuned on that signal converges on pleasant answers rather than correct ones. Those answers attract more thumbs up, and each turn of the loop amplifies the flattery. Even a world-class organisation has to pull a product back if the flywheel is pointed the wrong way.
 
@@ -169,7 +169,7 @@ The book is published in Korean. Table of contents and a preview are available a
 **Related posts:**
 
 - [The Model Is Smart, So Why Is the System Stupid?](/en/ai-system-fails-outside-model/)
-- [AI Agents Come from a Better Harness, Not a Better Prompt](/en/ai-harness-engineering/)
+- [Better Agents Come From a Better Harness, Not a Better Prompt](/en/ai-harness-engineering/)
 - [Agentic Engineering in Financial AI](/en/agentic-engineering-in-finance/)
 
 _Written as of 15 August 2026. The GPT-4o rollback is based on OpenAI's own published account from April 2025. The cases in the text are reconstructions of frequently repeated patterns rather than specific incidents at named companies._

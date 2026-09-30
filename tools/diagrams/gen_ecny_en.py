@@ -18,7 +18,7 @@ def d_onepager():
     b.append(T(62, 142, "1", 24, RED, anchor="start", weight="bold"))
     b.append(T(86, 142, "What it is", 20, INK, anchor="start", weight="bold"))
     for i, ln in enumerate(["a digital yuan issued by the People's Bank of China",
-                            "not a cryptocurrency — state-managed legal tender",
+                            "not a cryptocurrency but state-managed legal tender",
                             "spendable through apps, bank wallets and institutions"]):
         b.append(T(86, 170 + i * 22, "· " + ln, 14.5, INK_LIGHT, anchor="start"))
 
@@ -37,16 +37,16 @@ def d_onepager():
     b.append(T(62, 284, "2", 24, BLUE, anchor="start", weight="bold"))
     b.append(T(86, 284, "How it works", 20, INK, anchor="start", weight="bold"))
     feats = [
-        (300, "Two-tier structure", "central bank → banks → users"),
-        (540, "QR · NFC · offline", "works without a network"),
-        (760, "Conditional payment", "smart-contract disbursement"),
+        (316, "Two-tier structure", "central bank → banks → users"),
+        (552, "QR · NFC · offline", "works without a network"),
+        (788, "Conditional payment", "smart-contract disbursement"),
     ]
     for cx, name, desc in feats:
         b.append(box(r, cx - 108, 296, 216, 62, None, BLUE, sw=1.2, amp=1.1))
         b.append(T(cx, 320, name, 15.5, BLUE, weight="bold"))
         b.append(T(cx, 342, desc, 13, INK))
-    b.append(T(150, 340, "the money itself is", 14, INK_LIGHT))
-    b.append(T(150, 360, "central bank money", 14, INK_LIGHT))
+    b.append(T(86, 326, "the money itself is", 14, INK_LIGHT, anchor="start"))
+    b.append(T(86, 346, "central bank money", 14, INK_LIGHT, anchor="start"))
 
     # 3. 2026년에 바뀐 점
     b.append(box(r, 36, 390, 868, 172, "red", RED, sw=1.9))
@@ -54,16 +54,16 @@ def d_onepager():
     b.append(T(86, 420, "What changed in 2026", 20, RED, anchor="start", weight="bold"))
     b.append(T(86, 444, "from digital cash to digital deposit money", 14.5, INK_LIGHT, anchor="start"))
     changes = [
-        (52, "①", "Cash → deposit-like", "past the payment pilot,", "into the institutional stage"),
-        (270, "②", "Interest on balances", "tiers 1·2·3 named wallets,", "currently about 0.05% a year"),
-        (488, "③", "Deposit insurance", "bank wallet balances protected", "like ordinary deposits"),
-        (706, "④", "Reserve requirements", "balances at banks count", "toward reserve calculations"),
+        (53, "①", "Cash → deposit-like", "past the payment pilot,", "into the institutional stage"),
+        (265, "②", "Interest on balances", "tiers 1·2·3 named wallets,", "currently about 0.05% a year"),
+        (477, "③", "Deposit insurance", "bank wallet balances protected", "like ordinary deposits"),
+        (689, "④", "Reserve requirements", "balances at banks count", "toward reserve calculations"),
     ]
     for x, num, title, l1, l2 in changes:
-        b.append(box(r, x, 458, 202, 78, None, RED, sw=1.3, amp=1.2))
-        b.append(T(x + 101, 480, num + "  " + title, 14.5, RED, weight="bold"))
-        b.append(T(x + 101, 502, l1, 12, INK))
-        b.append(T(x + 101, 522, l2, 12, INK))
+        b.append(box(r, x, 458, 198, 78, None, RED, sw=1.3, amp=1.2))
+        b.append(T(x + 99, 480, num + "  " + title, 14.5, RED, weight="bold"))
+        b.append(T(x + 99, 502, l1, 12, INK))
+        b.append(T(x + 99, 522, l2, 12, INK))
     b.append(T(470, 552, "!  tier-4 anonymous wallets earn no interest", 15, RED, weight="bold"))
 
     # 4. 어디에 쓰나
@@ -71,16 +71,16 @@ def d_onepager():
     b.append(T(62, 606, "4", 24, GREEN, anchor="start", weight="bold"))
     b.append(T(86, 606, "Where people use it", 20, INK, anchor="start", weight="bold"))
     uses = [
-        (300, "Everyday payments", "shops, buses, metro, retail"),
-        (540, "Subsidies & coupons", "red packets, consumption vouchers"),
-        (760, "Prepaid protection", "gyms, salons, tuition"),
+        (316, "Everyday payments", "shops, buses, metro, retail"),
+        (552, "Subsidies & coupons", "red packets, consumption vouchers"),
+        (788, "Prepaid protection", "gyms, salons, tuition"),
     ]
     for cx, name, desc in uses:
         b.append(box(r, cx - 108, 618, 216, 62, None, GREEN, sw=1.2, amp=1.1))
         b.append(T(cx, 642, name, 15.5, GREEN, weight="bold"))
         b.append(T(cx, 664, desc, 12.5, INK))
-    b.append(T(150, 662, "policy uses lead;", 14, INK_LIGHT))
-    b.append(T(150, 682, "daily use is uneven", 14, INK_LIGHT))
+    b.append(T(86, 648, "policy uses lead;", 14, INK_LIGHT, anchor="start"))
+    b.append(T(86, 668, "daily use is uneven", 14, INK_LIGHT, anchor="start"))
 
     # 5. 숫자
     b.append(box(r, 36, 712, 868, 74, "amber", AMBER, sw=1.8))

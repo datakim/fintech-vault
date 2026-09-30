@@ -55,9 +55,9 @@ _e-CNY의 전체 구조를 한 장으로 요약한 설명용 인포그래픽. �
 
 이 숫자만 보면 e-CNY가 이미 중국 결제 시장의 중심에 들어온 것처럼 보일 수 있다. 하지만 여기서 조심해야 할 점이 있다. 이 수치는 **누적 거래대금**이다. 시범사업 기간 동안의 정부 보조금, 공공서비스 결제, 기업·기관 거래, 각종 테스트성 거래가 모두 포함된 총액이다. ([新华社](https://www.news.cn/20251229/442a77288543426294939796802ac43e/c.html))
 
-로이터는 2025년 11월 말 e-CNY 누적 거래대금이 16.7조 위안인 반면, 중국 전체 지급결제 규모는 2025년 한 해에만 128조 위안 수준이었다고 보도했다. 따라서 e-CNY가 의미 있는 규모로 성장한 것은 맞지만, 이를 곧바로 "알리페이와 위챗페이를 대체했다"고 해석하기는 어렵다. ([Reuters](https://www.reuters.com/world/asia-pacific/chinas-bank-ningbo-readies-digital-yuan-business-beijing-expands-e-cny-2026-03-20/))
+로이터는 2025년 11월 말 e-CNY 누적 거래대금이 16.7조 위안인 반면, 중국 전체 지급결제 규모는 2025년 한 해에만 128조 위안 수준이었다고 보도했다. ([Reuters](https://www.reuters.com/world/asia-pacific/chinas-bank-ningbo-readies-digital-yuan-business-beijing-expands-e-cny-2026-03-20/)) 인민은행이 발표한 2025년 지급결제 시스템 처리 금액은 이보다 훨씬 큰 1경 2,807조 위안(12807.07万亿元)이다. ([人民网](https://finance.people.com.cn/n1/2026/0226/c1004-40670572.html)) 어느 기준으로 봐도 e-CNY의 비중은 작다. 따라서 e-CNY가 의미 있는 규모로 성장한 것은 맞지만, 이를 곧바로 "알리페이와 위챗페이를 대체했다"고 해석하기는 어렵다.
 
-지역별로 보면 차이는 더 뚜렷하다. 예를 들어 푸저우는 2025년 3월 기준 e-CNY 거래액이 3,841.89억 위안에 달했고, 개인 지갑 779.16만 개, 가맹점 53.67만 개가 e-CNY를 지원한다고 현지 보도가 전했다. 장쑤성은 더 큰 규모를 보이는데, 2025년 말 기준 누적 거래액 15조 위안, 소비 금액 1,769억 위안, 지갑 7,805만 개, 수용 가맹점 404만 곳이 보고되었다. ([福州日报](https://mag.fznews.com.cn/fzrb/2025/20250501/20250501_004/news-fzrb-9707-20250501-m-004-004-300.pdf))
+지역별로 보면 차이는 더 뚜렷하다. 예를 들어 푸저우는 2025년 3월 기준 e-CNY 거래액이 3,841.89억 위안에 달했고, 개인 지갑 779.16만 개, 가맹점 53.67만 개가 e-CNY를 지원한다고 현지 보도가 전했다. ([福州日报](https://mag.fznews.com.cn/fzrb/2025/20250501/20250501_004/news-fzrb-9707-20250501-m-004-004-300.pdf)) 장쑤성은 더 큰 규모를 보이는데, 2025년 말 기준 누적 거래액 15조 위안, 소비 금액 1,769억 위안, 지갑 7,805만 개, 수용 가맹점 404만 곳이 보고되었다. ([新浪财经](https://finance.sina.com.cn/jjxw/2026-01-27/doc-inhisvwi8465411.shtml))
 
 다만 이 역시 "자발적 일상 사용"과 "정책 주도 사용"을 구분해서 봐야 한다. 거래대금이 크다는 사실과 사용자가 일상적으로 선호한다는 사실은 같은 말이 아니다.
 
@@ -193,19 +193,21 @@ e-CNY, digital yuan, CBDC interest-bearing wallet, digital deposit money, PBOC r
 
 ## 참고 자료
 
-- [数字人民币迎来重大调整 — 新华社](https://www.news.cn/20251229/442a77288543426294939796802ac43e/c.html)
-- [2026년부터 디지털 위안화 지갑 잔액에 이자가 붙는다 — 人民日报](https://paper.people.com.cn/rmrb/pc/content/202512/31/content_30128236.html)
-- [多家国有行公告：余额按0.05%生息 — 21世纪经济报道](https://www.21jingji.com/article/20260101/4b8d65e5c2692ffd5dfb1b8329a59c31.html)
-- [China to allow more banks to handle digital yuan — Reuters](https://www.reuters.com/world/asia-pacific/chinas-bank-ningbo-readies-digital-yuan-business-beijing-expands-e-cny-2026-03-20/)
-- [数字人民币点亮榕城新生活 — 福州日报](https://mag.fznews.com.cn/fzrb/2025/20250501/20250501_004/news-fzrb-9707-20250501-m-004-004-300.pdf)
-- [数字人民币普及仍需闯关 — 证券时报](https://stcn.com/article/detail/1500242.html)
-- [数字人民币智能合约保障原路退还 — 21世纪经济报道](https://www.21jingji.com/article/20250314/herald/1c07bcd85bbd47ef5d8d7dcd2c1813c1.html)
-- [数字人民币开始生息，年利率0.05% — 新浪财经](https://finance.sina.cn/2026-01-04/detail-inhfcasr1928591.d.html)
-- [China gives up on state-backed digital cash — PIIE](https://www.piie.com/blogs/realtime-economics/2026/china-gives-state-backed-digital-cash-us-and-europe-should-take-note)
-- [Digital yuan solutions enjoy major upgrade — State Council of China](https://english.www.gov.cn/statecouncil/ministries/202209/09/content_WS631a9350c6d0a757729dfc9e.html)
-- [FAQs on the digital euro — European Central Bank](https://www.ecb.europa.eu/euro/digital_euro/faqs/html/ecb.faq_digital_euro.en.html)
-- [Money and Payments: The U.S. Dollar in the Age of Digital Transformation — Federal Reserve](https://www.federalreserve.gov/publications/files/money-and-payments-20220120.pdf)
-- [China vows privacy, information protection in using digital yuan — Reuters](https://www.reuters.com/world/china/china-vows-privacy-information-protection-using-digital-yuan-2022-07-25/)
+- [数字人民币迎来重大调整 (新华社)](https://www.news.cn/20251229/442a77288543426294939796802ac43e/c.html)
+- [2026년부터 디지털 위안화 지갑 잔액에 이자가 붙는다 (人民日报)](https://paper.people.com.cn/rmrb/pc/content/202512/31/content_30128236.html)
+- [多家国有行公告：余额按0.05%生息 (21世纪经济报道)](https://www.21jingji.com/article/20260101/4b8d65e5c2692ffd5dfb1b8329a59c31.html)
+- [China to allow more banks to handle digital yuan (Reuters)](https://www.reuters.com/world/asia-pacific/chinas-bank-ningbo-readies-digital-yuan-business-beijing-expands-e-cny-2026-03-20/)
+- [2025年我国支付系统共处理支付业务12807.07万亿元 (人民网)](https://finance.people.com.cn/n1/2026/0226/c1004-40670572.html)
+- [试点成效突出 数字人民币应用迈入2.0时代 (新浪财经, 2026-01-27)](https://finance.sina.com.cn/jjxw/2026-01-27/doc-inhisvwi8465411.shtml)
+- [数字人民币点亮榕城新生活 (福州日报)](https://mag.fznews.com.cn/fzrb/2025/20250501/20250501_004/news-fzrb-9707-20250501-m-004-004-300.pdf)
+- [数字人民币普及仍需闯关 (证券时报)](https://stcn.com/article/detail/1500242.html)
+- [数字人民币智能合约保障原路退还 (21世纪经济报道)](https://www.21jingji.com/article/20250314/herald/1c07bcd85bbd47ef5d8d7dcd2c1813c1.html)
+- [数字人民币开始生息，年利率0.05% (新浪财经)](https://finance.sina.cn/2026-01-04/detail-inhfcasr1928591.d.html)
+- [China gives up on state-backed digital cash (PIIE)](https://www.piie.com/blogs/realtime-economics/2026/china-gives-state-backed-digital-cash-us-and-europe-should-take-note)
+- [Digital yuan solutions enjoy major upgrade (State Council of China)](https://english.www.gov.cn/statecouncil/ministries/202209/09/content_WS631a9350c6d0a757729dfc9e.html)
+- [FAQs on the digital euro (European Central Bank)](https://www.ecb.europa.eu/euro/digital_euro/faqs/html/ecb.faq_digital_euro.en.html)
+- [Money and Payments: The U.S. Dollar in the Age of Digital Transformation (Federal Reserve)](https://www.federalreserve.gov/publications/files/money-and-payments-20220120.pdf)
+- [China vows privacy, information protection in using digital yuan (Reuters)](https://www.reuters.com/world/china/china-vows-privacy-information-protection-using-digital-yuan-2022-07-25/)
 
 ---
 

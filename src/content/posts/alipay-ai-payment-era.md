@@ -176,13 +176,13 @@ Alipay AI付, Alipay AI收, Agentic Commerce Trust Protocol, Token Pay, AI Walle
 
 ## 참고 자료
 
-- [支付宝宣布完成AI支付的全域布局 — STCN](https://www.stcn.com/article/detail/3927539.html)
-- [支付宝推出"AI付"服务，在智能体内说话完成下单支付 — 新华网](https://www.news.cn/tech/20250911/d2b40fe724684cdabcd0997bb742ad17/c.html)
-- [0费率免费使用！支付宝AI 收正式上线三步接入即时收款 — Sina](https://finance.sina.com.cn/tech/discovery/2026-04-28/doc-inhwaavw8466616.shtml)
-- [支付宝与千问App、淘宝闪购等发布中国首个AI商业协议ACT — 东方财富](https://finance.eastmoney.com/a/202601163621688078.html)
-- [Buy it in ChatGPT: Instant Checkout and the Agentic Commerce Protocol — OpenAI](https://openai.com/index/buy-it-in-chatgpt/)
-- [Visa Intelligent Commerce — Visa](https://corporate.visa.com/en/products/intelligent-commerce.html)
-- [Mastercard unveils Agent Pay — Mastercard](https://www.mastercard.com/global/en/news-and-trends/press/2025/april/mastercard-unveils-agent-pay-pioneering-agentic-payments-technology-to-power-commerce-in-the-age-of-ai.html)
+- [支付宝宣布完成AI支付的全域布局 (STCN)](https://www.stcn.com/article/detail/3927539.html)
+- [支付宝推出"AI付"服务，在智能体内说话完成下单支付 (新华网)](https://www.news.cn/tech/20250911/d2b40fe724684cdabcd0997bb742ad17/c.html)
+- [0费率免费使用！支付宝AI 收正式上线三步接入即时收款 (Sina)](https://finance.sina.com.cn/tech/discovery/2026-04-28/doc-inhwaavw8466616.shtml)
+- [支付宝与千问App、淘宝闪购等发布中国首个AI商业协议ACT (东方财富)](https://finance.eastmoney.com/a/202601163621688078.html)
+- [Buy it in ChatGPT: Instant Checkout and the Agentic Commerce Protocol (OpenAI)](https://openai.com/index/buy-it-in-chatgpt/)
+- [Visa Intelligent Commerce (Visa)](https://corporate.visa.com/en/products/intelligent-commerce.html)
+- [Mastercard unveils Agent Pay (Mastercard)](https://www.mastercard.com/global/en/news-and-trends/press/2025/april/mastercard-unveils-agent-pay-pioneering-agentic-payments-technology-to-power-commerce-in-the-age-of-ai.html)
 
 ---
 

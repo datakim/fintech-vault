@@ -15,12 +15,12 @@ tags:
 
 모델 자체는 블랙박스이고, 비결정적이고, 언제든 이상한 판단을 할 수 있음. 그래서 Harness는 모델 주변에 다음 요소들을 붙인다.
 
-- **Tool registry** — 모델이 쓸 수 있는 도구 목록
-- **Context management** — 컨텍스트 압축, 최근 메시지 유지
-- **Guardrails** — 최대 반복 횟수, 최대 tool call 수, 실패 조건
-- **Agent loop** — 모델이 생각하고 도구를 호출하는 반복 구조
-- **Verification step** — 실제로 성공했는지 검증
-- **Deterministic handler** — 로그인, 인증, 파일 접근처럼 모델에게 맡기면 위험한 부분을 코드로 처리
+- **Tool registry**: 모델이 쓸 수 있는 도구 목록
+- **Context management**: 컨텍스트 압축, 최근 메시지 유지
+- **Guardrails**: 최대 반복 횟수, 최대 tool call 수, 실패 조건
+- **Agent loop**: 모델이 생각하고 도구를 호출하는 반복 구조
+- **Verification step**: 실제로 성공했는지 검증
+- **Deterministic handler**: 로그인, 인증, 파일 접근처럼 모델에게 맡기면 위험한 부분을 코드로 처리
 
 즉 Harness는 모델을 더 똑똑하게 만드는 게 아니다. 모델이 실수해도 안전하게 일하게 만드는 구조다.
 
@@ -32,10 +32,10 @@ tags:
 
 여기서 프롬프트는 고치지 않음. 대신 Harness를 추가함.
 
-1. **Guardrail** — 너무 오래 반복하지 못하게 제한
-2. **Context 압축** — 메시지가 길어지면 핵심만 유지
-3. **Verify step** — 실제 upvote가 됐는지 검사
-4. **Login handler** — 로그인 페이지에 도달하면 Harness가 직접 로그인
+1. **Guardrail**: 너무 오래 반복하지 못하게 제한
+2. **Context 압축**: 메시지가 길어지면 핵심만 유지
+3. **Verify step**: 실제 upvote가 됐는지 검사
+4. **Login handler**: 로그인 페이지에 도달하면 Harness가 직접 로그인
 
 결과적으로 프롬프트는 그대로인데, 실패하던 에이전트가 실제로 로그인하고 upvote까지 성공함.
 
@@ -123,4 +123,4 @@ Agent의 다음 경쟁력은 "더 좋은 프롬프트"가 아니다. 검증, 도
 
 ---
 
-출처: [발표 영상 — YouTube](https://youtu.be/C_GG5g38vLU)
+출처: [발표 영상 (YouTube)](https://youtu.be/C_GG5g38vLU)

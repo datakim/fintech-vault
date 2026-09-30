@@ -185,6 +185,7 @@ grep -oE 'href="/posts/[a-z0-9-]+/"' dist/posts/<slug>/index.html | sort -u | se
 ## 11. 지금 상태와 미결 (2026-09-30)
 
 - `src/content/posts/sales-forecasting-1.md`, `sales-forecasting-2.md` + `public/sf-*.svg`, `public/tst-*.svg` + `tools/diagrams/gen_salesfc.py`: 판매량 예측 시리즈 1·2편. 한국어·영문 모두 2026-09-30 배포됨(영문 그림은 `gen_salesfc_en.py`). 3편은 저자가 나중에 정하기로 함.
+- 2026-09-30: 발행된 모든 글(한·영), About, Books, 그림(SVG)에서 em dash를 걷어냈다. 참고자료는 `[제목 (매체)](URL)` 형식으로 통일. 같은 작업에서 그림 레이아웃 오류 5개(e-CNY 영문 요약, 뉴럴 계보·드리프트 표·FDE 사분면 한국어, 팔란티어 액션 영문)와 글 속 오류(오역, 출처 오기, 끊긴 링크 제목 등)를 고쳤고 `public/favicon.ico`를 추가했다. 스크립트가 없는 한국어 그림(`book1-*`, `eval-*`, 월드모델 계열 일부)은 SVG를 직접 고쳤으니, 다시 만들 일이 있으면 영문 스크립트를 참고해 새로 작성할 것.
 
 로컬에만 있고 커밋 안 된 것:
 - `src/content/posts/kyc-to-kya.md` + `public/kya-*.svg` + `tools/diagrams/gen_kya.py`: 초안 완성, 저자 검토 끝남. **날짜가 8월 18일**로 돼 있어서 지금 올리면 목록 아래로 묻힌다. 올릴 때 pubDatetime과 본문 끝의 "8월 18일 기준" 노트를 배포일로 바꿀지 저자에게 물어야 한다.

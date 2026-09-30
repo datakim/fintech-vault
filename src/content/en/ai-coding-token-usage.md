@@ -1,6 +1,6 @@
 ---
 title: "Where Does AI Coding Tool Usage Get Recorded? The Four Tokens ccusage Shows You"
-description: "Coding agents like Claude Code and Codex leave a usage log on your machine every time they work. ccusage reads those logs and reports four numbers — Input, Output, Reasoning, Cache Read. What each one means, why cache reads are counted separately from input, and whether that cache lives on your laptop or on a server."
+description: "Coding agents like Claude Code and Codex leave a usage log on your machine every time they work. ccusage reads those logs and reports four numbers: Input, Output, Reasoning and Cache Read. What each one means, why cache reads are counted separately from input, and whether that cache lives on your laptop or on a server."
 pubDatetime: 2026-06-06T03:00:00Z
 koSlug: ai-coding-token-usage
 tags:
@@ -16,9 +16,9 @@ tags:
 
 Use Claude Code or Codex for a while and the thought arrives on its own: how much have I actually used?
 
-From the outside it looks like you asked a question in a chat box and got an answer back. Underneath, quite a lot moves. Your request, the file contents the model read, the token counts used to produce the answer, the model name, the execution time — all of it gets written to a log on your own machine.
+From the outside it looks like you asked a question in a chat box and got an answer back. Underneath, quite a lot moves. Your request, the file contents the model read, the token counts used to produce the answer, the model name and the execution time all get written to a log on your own machine.
 
-One of the tools that reads those logs and reports usage is [ccusage](https://github.com/ryoppippi/ccusage). It is not a new monitor watching over your shoulder; it reads records that are already sitting on your disk and lays them out legibly — token usage and estimated cost by day, by month, by session.
+One of the tools that reads those logs and reports usage is [ccusage](https://github.com/ryoppippi/ccusage). It is not a new monitor watching over your shoulder; it reads records that are already sitting on your disk and lays them out legibly: token usage and estimated cost by day, by month and by session.
 
 Run it against Codex usage and you get something like this.
 
@@ -75,9 +75,9 @@ ORDER BY total_order_amount DESC;
 
 Usage from that single exchange breaks into the four buckets above.
 
-## 3. Input, Output, Reasoning — what went in, what came out, what it chewed on
+## 3. Input, Output, Reasoning: what went in, what came out, what it chewed on
 
-**Input** is everything the model read in order to produce this answer. In the example: system instructions, project info, DB schema, prior conversation, the user's question. In real work you can add relevant source files, tool execution results, and error logs. Which is why you type one line — "write me some SQL" — and see thousands or tens of thousands of input tokens.
+**Input** is everything the model read in order to produce this answer. In the example: system instructions, project info, DB schema, prior conversation, the user's question. In real work you can add relevant source files, tool execution results, and error logs. Which is why you type one line ("write me some SQL") and see thousands or tens of thousands of input tokens.
 
 **Output** is what the model newly wrote. Here, the SELECT statement plus whatever explanation comes with it. The more it explains and the more code it generates, the larger this gets. Answer with "this one line will do" and output stays small.
 
@@ -91,7 +91,7 @@ The sum is SUM(total_amount).
 Descending by total is the natural ordering.
 ```
 
-That train of thought is not shown to you directly. The computation still happens, though, and some models and tools record its volume as a separate Reasoning count. Depending on the model this value may not appear at all, or may read as zero. It grows with tasks that involve many steps of thought — complex code analysis, comparing several files, debugging.
+That train of thought is not shown to you directly. The computation still happens, though, and some models and tools record its volume as a separate Reasoning count. Depending on the model this value may not appear at all, or may read as zero. It grows with tasks that involve many steps of thought, such as complex code analysis, comparing several files or debugging.
 
 Summed up in one line: Input is what the model read, Output is what it wrote, Reasoning is the calculation it turned over in between.
 
@@ -99,7 +99,7 @@ Summed up in one line: Input is what the model read, Output is what it wrote, Re
 
 The natural objection: if the model saw those cached tokens too, aren't they input?
 
-Logically, yes. In the broad sense they are part of input — context the model consulted while producing an answer. They are counted separately because they are processed differently and priced differently.
+Logically, yes. In the broad sense they are part of input, since they are context the model consulted while producing an answer. They are counted separately because they are processed differently and priced differently.
 
 Unpack it a little. Say the first request carried this.
 
@@ -133,15 +133,15 @@ Put differently, Cache Read is part of the input the model saw, but it is input 
 
 Here is a spot where it is easy to get confused. Does Cache Read mean something was read out of my MacBook's RAM or disk cache?
 
-Mostly, no. The cache in question is the prompt cache on the provider's servers. Not something stored on your machine — closer to "the prompt prefix Anthropic or OpenAI processed recently and is briefly holding onto."
+Mostly, no. The cache in question is the prompt cache on the provider's servers. Not something stored on your machine, but closer to "the prompt prefix Anthropic or OpenAI processed recently and is briefly holding onto."
 
-It is cleaner to keep two layers apart. What lands on your machine is the **local log** — the `.jsonl` files Claude Code and Codex write as they work, which is what ccusage reads. Where the cache read actually happens is the **prompt cache** on the model server. A local log line reading "Cache Read 1,234,567 tokens" does not mean your computer read from a cache. It means the server-side cache did its job and reported the result as usage, which then got written into your log.
+It is cleaner to keep two layers apart. What lands on your machine is the **local log**: the `.jsonl` files Claude Code and Codex write as they work, which is what ccusage reads. Where the cache read actually happens is the **prompt cache** on the model server. A local log line reading "Cache Read 1,234,567 tokens" does not mean your computer read from a cache. It means the server-side cache did its job and reported the result as usage, which then got written into your log.
 
 ## 6. So where do Claude Code and Codex actually run?
 
 One more source of confusion. Do Claude Code and Codex use my computer's resources at all?
 
-They do — but both sides are in play. The tool itself is a program running on your machine; the model normally runs in the cloud.
+They do, but both sides are in play. The tool itself is a program running on your machine; the model normally runs in the cloud.
 
 What happens locally is roughly: a terminal or app starts, project files are found and read, code gets edited, commands get executed, results get written to logs, tool use gets controlled. What happens on the model server is: the prompt is understood, code is analysed, an answer is produced, reasoning is spent, tokens are counted, the prompt cache is worked. A model the size of Claude Opus or a GPT-class model is not running inside your laptop.
 
@@ -153,7 +153,7 @@ So the token usage ccusage shows is model processing that happened server-side, 
 
 A related question comes up on the ChatGPT side. ChatGPT has a feature called "memory," and by name alone it can sound like Cache Read. They are different concepts.
 
-ChatGPT memory is a personalisation feature — it carries preferences, your name, how you work, useful details from past conversations into later ones ([OpenAI Memory FAQ](https://help.openai.com/en/articles/8590148-memory-faq)). It remembers things like "this user prefers answers in Korean," "this user likes SQL examples," "this user writes blog posts in a plain declarative style." A product feature.
+ChatGPT memory is a personalisation feature. It carries preferences, your name, how you work and useful details from past conversations into later ones ([OpenAI Memory FAQ](https://help.openai.com/en/articles/8590148-memory-faq)). It remembers things like "this user prefers answers in Korean," "this user likes SQL examples," "this user writes blog posts in a plain declarative style." A product feature.
 
 Cache Read, by contrast, is a prompt cache that lets the model server handle the repeated portion of a long prompt faster and cheaper. It is not storing facts about you; it is an optimisation so the model does not reprocess the same system instructions or the same schema from scratch every time. Similar name, different job.
 
@@ -163,7 +163,7 @@ Something like caching is very likely running inside the ChatGPT web UI as well.
 
 With that laid out once, the big numbers are far less dizzying the next time.
 
-Tools like Claude Code and Codex log usage locally as they work, and ccusage reads it back as four figures. Input is how much material the model read to produce this answer, Output is how much text and code it wrote, Reasoning is how much calculation it turned over internally, and Cache Read is how much input was reused from the server-side prompt cache. The tool runs on your machine, but the model's brain mostly runs in the cloud — which is why Cache Read is a story about a server cache, not your RAM.
+Tools like Claude Code and Codex log usage locally as they work, and ccusage reads it back as four figures. Input is how much material the model read to produce this answer, Output is how much text and code it wrote, Reasoning is how much calculation it turned over internally, and Cache Read is how much input was reused from the server-side prompt cache. The tool runs on your machine, but the model's brain mostly runs in the cloud, which is why Cache Read is a story about a server cache, not your RAM.
 
 Raising cache hit rates, and the open-source tooling for cutting token spend, are topics of their own. Just knowing what each number means makes the next ccusage screen a lot easier to read.
 
@@ -171,7 +171,7 @@ Raising cache hit rates, and the open-source tooling for cutting token spend, ar
 
 ## References
 
-- [ccusage — Claude Code / Codex usage reporter (GitHub)](https://github.com/ryoppippi/ccusage)
-- [Prompt caching — OpenAI Platform Docs](https://platform.openai.com/docs/guides/prompt-caching)
-- [Messages usage report — Anthropic Admin API](https://docs.anthropic.com/en/api/admin-api/usage-cost/get-messages-usage-report)
-- [Memory FAQ — OpenAI Help](https://help.openai.com/en/articles/8590148-memory-faq)
+- [ccusage: Claude Code / Codex usage reporter (GitHub)](https://github.com/ryoppippi/ccusage)
+- [Prompt caching (OpenAI Platform Docs)](https://platform.openai.com/docs/guides/prompt-caching)
+- [Messages usage report (Anthropic Admin API)](https://docs.anthropic.com/en/api/admin-api/usage-cost/get-messages-usage-report)
+- [Memory FAQ (OpenAI Help)](https://help.openai.com/en/articles/8590148-memory-faq)

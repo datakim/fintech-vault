@@ -85,7 +85,7 @@ AI 에이전트 관점에서는 이 변화가 중요하다. AI 에이전트가 �
 
 AI 에이전트 시대에는 사용자가 무엇을 샀는지만큼, **왜 그 서비스를 찾았는지, 누구와 논의했는지, 어떤 맥락에서 요청했는지**가 중요해질 수 있다. 이 점에서 위챗은 결제 앱이라기보다 AI 상거래의 상단 퍼널, 즉 의도가 발생하는 공간에 더 가깝다.
 
-![Alipay vs WeChat — 결제 인프라와 대화 인프라](/wechat3.jpg)
+![Alipay vs WeChat: 결제 인프라와 대화 인프라](/wechat3.jpg)
 
 _"결제 인프라의 알리페이"와 "대화·소셜 인프라의 위챗"이라는 전략 차이를 표현한 보조 이미지._
 
@@ -139,13 +139,13 @@ WeixinClawBot, OpenClaw, Hunyuan, Tencent AI Agent, WeChat Mini-Program AI Growt
 
 ## 참고 자료
 
-- [Tencent Announces 2026 First Quarter Results — PR Newswire](https://www.prnewswire.com/apac/news-releases/tencent-announces-2026-first-quarter-results-302770779.html)
-- [Tencent integrates WeChat with OpenClaw AI agent amid China tech battle — Reuters](https://www.reuters.com/technology/tencent-integrates-wechat-with-openclaw-ai-agent-amid-china-tech-battle-2026-03-22/)
-- [WeChat Launches AI Mini Program Growth Program — AIBase](https://www.aibase.com/news/24250)
-- [Introducing the App Store Mini Apps Partner Program — Apple Developer](https://developer.apple.com/news/?id=xcz1s7cz)
-- [Apple will take a mini commission from mini app developers — The Verge](https://www.theverge.com/news/820486/apple-mini-app-developers-commission)
-- [Tencent 2026 Q1 Earnings Release — Tencent (PDF)](https://static.www.tencent.com/uploads/2026/05/13/47382ae415a209fd161bc19a1f9b3704.pdf)
-- [Tencent is said to be developing a top-secret AI agent project for WeChat — TechNode](https://technode.com/2026/03/11/tencent-is-said-to-be-developing-a-top-secret-ai-agent-project-for-wechat/)
+- [Tencent Announces 2026 First Quarter Results (PR Newswire)](https://www.prnewswire.com/apac/news-releases/tencent-announces-2026-first-quarter-results-302770779.html)
+- [Tencent integrates WeChat with OpenClaw AI agent amid China tech battle (Reuters)](https://www.reuters.com/technology/tencent-integrates-wechat-with-openclaw-ai-agent-amid-china-tech-battle-2026-03-22/)
+- [WeChat Launches AI Mini Program Growth Program (AIBase)](https://www.aibase.com/news/24250)
+- [Introducing the App Store Mini Apps Partner Program (Apple Developer)](https://developer.apple.com/news/?id=xcz1s7cz)
+- [Apple will take a mini commission from mini app developers (The Verge)](https://www.theverge.com/news/820486/apple-mini-app-developers-commission)
+- [Tencent 2026 Q1 Earnings Release (Tencent, PDF)](https://static.www.tencent.com/uploads/2026/05/13/47382ae415a209fd161bc19a1f9b3704.pdf)
+- [Tencent is said to be developing a top-secret AI agent project for WeChat (TechNode)](https://technode.com/2026/03/11/tencent-is-said-to-be-developing-a-top-secret-ai-agent-project-for-wechat/)
 
 ---
 

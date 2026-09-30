@@ -11,13 +11,13 @@ tags:
   - stripe
 ---
 
-After a lecture on financial AI agents recently, one of the topics that drew the most questions afterwards was FDS — fraud detection systems.
+After a lecture on financial AI agents recently, one of the topics that drew the most questions afterwards was FDS, or fraud detection systems.
 
 More students than I expected asked things like: where is machine learning actually used in financial AI? Is fraud detection just rules? Does deep learning really get used in production?
 
 There is not much material explaining FDS from a practitioner's angle. Credit scoring, investing and LLM agents get plenty of writing; payment fraud detection, which touches a financial service's P&L and its customer experience at the same time, is comparatively less covered.
 
-So this piece works through how Stripe uses machine learning for fraud detection, centred on Stripe Radar — older material, but still a good reference. Stripe's guide was updated in December 2021 and describes how Radar uses Stripe network data to detect online card payment fraud. ([Stripe](https://stripe.com/in/guides/primer-on-machine-learning-for-fraud-protection))
+So this piece works through how Stripe uses machine learning for fraud detection, centred on Stripe Radar: older material, but still a good reference. Stripe's guide was updated in December 2021 and describes how Radar uses Stripe network data to detect online card payment fraud. ([Stripe](https://stripe.com/in/guides/primer-on-machine-learning-for-fraud-protection))
 
 Rather than covering all of payment fraud, this focuses on how an FDS judges risk at the moment of an online payment. Fraud types by payment method, account takeover, refund abuse, promotion abuse and mule accounts can be separate pieces later.
 
@@ -25,7 +25,7 @@ Rather than covering all of payment fraud, this focuses on how an FDS judges ris
 
 The usual first impression of FDS goes like this.
 
-> Feed in transaction data, classify 1 for fraud and 0 for legitimate — isn't that it?
+> Feed in transaction data, classify 1 for fraud and 0 for legitimate. Isn't that it?
 
 Technically, yes. In practice, that is far too simple.
 
@@ -35,7 +35,7 @@ First, fraud is extremely rare. Most transactions are legitimate and fraudulent 
 
 Second, the judgement has to be real time. Saying "this looks like fraud" a few minutes after the payment came in is already too late. Immediately after the user presses pay, one of approve, decline, step-up authentication or manual review has to be chosen.
 
-Third, blocking fraud too well is also a problem. Wrongly blocking a good customer destroys revenue and worsens the experience. Stripe likewise describes the trade-off between false negatives — missing fraud — and false positives — wrongly blocking legitimate customers — as the core issue. ([Stripe](https://stripe.com/in/guides/primer-on-machine-learning-for-fraud-protection))
+Third, blocking fraud too well is also a problem. Wrongly blocking a good customer destroys revenue and worsens the experience. Stripe likewise describes the trade-off between false negatives (missing fraud) and false positives (wrongly blocking legitimate customers) as the core issue. ([Stripe](https://stripe.com/in/guides/primer-on-machine-learning-for-fraud-protection))
 
 ![The trade-off between missing fraud (false negatives) and blocking good customers (false positives)](https://images.stripeassets.com/3sz5ney9ml0h/6EGHWdjWNXhUSwCX4EMxoA/451763adf6ece21f54068e9c6d935b5e/false_positives.png?w=1600&q=80)
 
@@ -51,7 +51,7 @@ Stripe is connected to enormous numbers of businesses, banks and payment network
 
 Why does that matter?
 
-Looking at one merchant, a card can appear to be showing up for the first time. Across the whole Stripe network, that card may already have been used many times at other merchants. Which IP tried multiple cards, which card is suddenly being used in several countries, which email/device/card combination looks strange — these patterns are far more visible at network scale.
+Looking at one merchant, a card can appear to be showing up for the first time. Across the whole Stripe network, that card may already have been used many times at other merchants. Patterns such as which IP tried multiple cards, which card is suddenly being used in several countries, or which email/device/card combination looks strange are far more visible at network scale.
 
 Stripe's advantage, then, is not simply a good AI model. It is the ability to turn payment behaviour across many merchants into a single body of network knowledge.
 
@@ -72,7 +72,7 @@ Traditional fraud detection often starts rule-based. Something like:
 
 Rules are easy to understand and directly controllable by an operator. The problem is that they can be too coarse.
 
-Not every foreign IP is fraud — it may be a legitimate customer travelling. Not every large payment is risky; it may be a very good customer.
+Not every foreign IP is fraud. It may be a legitimate customer travelling. Not every large payment is risky; it may be a very good customer.
 
 Stripe likewise notes that hardcoded rules can block legitimate transactions, and that machine learning can consider many signals together and catch subtler patterns. ([Stripe](https://stripe.com/in/guides/primer-on-machine-learning-for-fraud-protection))
 
@@ -95,7 +95,7 @@ A common follow-up: is deep learning used in FDS?
 
 It is. But not in the sense that switching to deep learning suddenly catches all the fraud.
 
-Deep learning's advantage in FDS is learning complex non-linear relationships and representing categorical information — cards, merchants, banks, countries, devices — more richly. Stripe likewise says that having large-scale network data lets it use more complex approaches such as neural networks and deep learning. ([Stripe](https://stripe.com/in/guides/primer-on-machine-learning-for-fraud-protection))
+Deep learning's advantage in FDS is learning complex non-linear relationships and representing categorical information (cards, merchants, banks, countries, devices) more richly. Stripe likewise says that having large-scale network data lets it use more complex approaches such as neural networks and deep learning. ([Stripe](https://stripe.com/in/guides/primer-on-machine-learning-for-fraud-protection))
 
 One concept that comes up frequently here is embeddings.
 
@@ -155,7 +155,7 @@ This part matters a great deal in practice. Building a good FDS model is not onl
 
 This is exactly where data science meets risk operations.
 
-## Rules are not obsolete — they are the operator's control surface
+## Rules are not obsolete: they are the operator's control surface
 
 One misconception to avoid: that rule-based systems are old and machine learning is modern. Rules remain important in real FDS, typically doing this work:
 
@@ -226,19 +226,19 @@ Fourth, real FDS is MLOps combined with risk operations. You retrain often, moni
 
 FDS is an excellent topic for anyone learning financial AI, because nearly every real problem in machine learning is present in it.
 
-Sparse labels, real-time inference, imbalanced data, precision-recall trade-offs, customer friction, explainability, model drift, retraining, rule engines, manual review, and business P&L — all connected.
+Sparse labels, real-time inference, imbalanced data, precision-recall trade-offs, customer friction, explainability, model drift, retraining, rule engines, manual review and business P&L are all connected.
 
 Understanding FDS makes clear that financial AI is not simply about building good models. A good financial AI system requires the prediction model, the data infrastructure, the decision policy and the operational feedback loop to be designed together.
 
-That is what makes the Radar case interesting. Judging fraud in 100ms does not mean using a fast model. Compressed into that 100ms are a great deal of network data, real-time features, ML and DL models, rules, thresholds, step-up authentication, review strategy and deployment stability.
+That is what makes the Radar case interesting. Judging fraud in 100ms does not simply mean using a fast model. Compressed into that 100ms are a great deal of network data, real-time features, ML and DL models, rules, thresholds, step-up authentication, review strategy and deployment stability.
 
 FDS is one of the most practical faces of financial AI.
 
 ---
 
-Source: [A primer on machine learning for fraud protection — Stripe](https://stripe.com/in/guides/primer-on-machine-learning-for-fraud-protection)
+Source: [A primer on machine learning for fraud protection (Stripe)](https://stripe.com/in/guides/primer-on-machine-learning-for-fraud-protection)
 
 **Related posts:**
 
 - [Agentic Engineering in Financial AI](/en/agentic-engineering-in-finance/)
-- [The Age of AI Paying: Alipay's AI付 and AI收](/en/alipay-ai-payment-era/)
+- [The Age of AI Paying: Alipay's AI付, AI收 and the Start of the Agent Economy](/en/alipay-ai-payment-era/)

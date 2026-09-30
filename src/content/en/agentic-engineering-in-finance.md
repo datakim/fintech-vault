@@ -25,7 +25,7 @@ So an agent here is not a productivity tool. It is an actor wired to money, risk
 
 Which is where **agentic engineering** comes in.
 
-Agentic engineering is not about handing the agent more freedom. If anything it is the opposite. The more an agent does, the more structure has to be built around it — restricting tool access, recording execution, verifying intermediate results, designing so that invalid states cannot be created, and leaving output in a form a person can actually read.
+Agentic engineering is not about handing the agent more freedom. If anything it is the opposite. The more an agent does, the more structure has to be built around it: restricting tool access, recording execution, verifying intermediate results, designing so that invalid states cannot be created, and leaving output in a form a person can actually read.
 
 Say a financial agent writes SQL. Whether it produced SQL is not the interesting part. These are:
 
@@ -49,7 +49,7 @@ Good engineering does not detect these after the fact. It makes them **unreprese
 
 ## Fast feedback loops
 
-Agents work better when something answers them. Type errors, failing tests, simulation output, historical replay, dry-run results — all of it is signal.
+Agents work better when something answers them. Type errors, failing tests, simulation output, historical replay and dry-run results are all signal.
 
 Historical replay matters especially here. A new fraud rule, a new credit scoring strategy, a new trading signal, a new portfolio constraint should not go straight to production. Run it over the past first.
 
@@ -79,7 +79,7 @@ So code review here is not primarily bug-hunting. It is keeping the system in a 
 
 ## Where the difference will actually come from
 
-I do not think model performance will decide competitiveness in financial AI. The gap is more likely to open around the model.
+I do not think model performance alone will decide competitiveness in financial AI. The gap is more likely to open around the model.
 
 Who has the better agent harness? Who designed the safer tool registry? Who built the faster verification loop? Who leaves the clearer audit trail? Who makes the agent's output legible to a human?
 
@@ -89,9 +89,9 @@ Which reduces to a single stance:
 
 > Not automating because you trust the AI, but automating on the assumption that it can be wrong.
 
-A good financial AI system does not assume the model is right. It assumes the model can be wrong, can miss context, can answer with far too much confidence, and can use a tool in a way nobody anticipated — and it is built to hold anyway.
+A good financial AI system does not assume the model is right. It assumes the model can be wrong, can miss context, can answer with far too much confidence, and can use a tool in a way nobody anticipated. It is built to hold anyway.
 
-Agents can make financial work faster. But speed alone was never the point here. Putting speed inside a controllable structure, putting automation inside a verifiable system, keeping the model's capability within human understanding and accountability — that is why agentic engineering matters in this domain.
+Agents can make financial work faster. But speed alone was never the point here. That is why agentic engineering matters in this domain: it puts speed inside a controllable structure, automation inside a verifiable system, and the model's capability within human understanding and accountability.
 
 ---
 

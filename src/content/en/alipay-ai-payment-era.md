@@ -1,6 +1,6 @@
 ---
 title: "The Age of AI Paying: Alipay's AI付, AI收 and the Start of the Agent Economy"
-description: "Alipay announced 300 million AI agent payments alongside Token Pay and AI Wallet. Not a payment feature but an early large-scale commercialisation of agentic commerce infrastructure — an AI acting within delegated authority to pay, collect and settle."
+description: "Alipay announced 300 million AI agent payments alongside Token Pay and AI Wallet. Not a payment feature but an early large-scale commercialisation of agentic commerce infrastructure, with an AI acting within delegated authority to pay, collect and settle."
 pubDatetime: 2026-05-26T12:00:00Z
 koSlug: alipay-ai-payment-era
 tags:
@@ -18,13 +18,13 @@ _Alipay's next-generation AI payment infrastructure. (Source: Alipay announcemen
 
 ## 1. Why "AI payments" now?
 
-Anyone who has used ChatGPT, Claude or Gemini has felt it already. AI no longer stops at finding information. It understands intent, compares, recommends, builds an itinerary, calls the service you need — closer to an **executor of actions.**
+Anyone who has used ChatGPT, Claude or Gemini has felt it already. AI no longer stops at finding information. It understands intent, compares, recommends, builds an itinerary and calls the service you need. It is closer to an **executor of actions.**
 
 But there is one point where an AI carrying a real-life task to completion always gets blocked: **payment.**
 
 Ask an AI to plan a weekend trip. It can compare flights, recommend hotels, find restaurants, assemble an itinerary. To actually book the flight or pay for the hotel, though, you still have to move to a payment page. At that moment the AI's flow breaks.
 
-That is the background to AI付 and AI收. If AI handles recommendation and execution, payment infrastructure has to change to fit a conversational, agent-shaped flow too. Alipay launched AI付 in September 2025 and AI收 in April 2026, connecting both directions — agent payment and agent collection.
+That is the background to AI付 and AI收. If AI handles recommendation and execution, payment infrastructure has to change to fit a conversational, agent-shaped flow too. Alipay launched AI付 in September 2025 and AI收 in April 2026, connecting both directions: agent payment and agent collection.
 
 More precisely, this is less "an era where AI spends money entirely on its own" and closer to **an era where AI executes payment inside a scope the user has delegated.** Understanding that distinction matters. The essence of agent payments is not automation but **delegated authority and controllable execution.**
 
@@ -80,7 +80,7 @@ On that reading AI付 and AI收 are less convenience features than **the transac
 
 ## 5. The ACT protocol: a common language for AI commerce
 
-Looking only at AI付 and AI收 is not enough to understand Alipay's strategy. Underneath sits ACT — the Agentic Commerce Trust Protocol.
+Looking only at AI付 and AI收 is not enough to understand Alipay's strategy. Underneath sits ACT, the Agentic Commerce Trust Protocol.
 
 In January 2026 Alipay announced ACT together with the Qwen App, Taobao Instant Commerce, Rokid, Damai and Alibaba Cloud Bailian. It was presented as an open technical framework for AI to work with e-commerce, food delivery, ticketing and local service platforms. Its core purpose is a common language between agents and service platforms.
 
@@ -99,19 +99,19 @@ AI付, AI收, Token Pay and AI Wallet each take a role on top of that.
 
 _In May 2026 Alipay announced that AI支付 had processed 300 million AI agent payments. (Source: Alipay event)_
 
-Alipay stated in May 2026 that AI支付 had processed 300 million agent payments and supported 95% of major general-purpose agent frameworks, while unveiling Token Pay and AI Wallet. Those figures are Alipay's own rather than independently verified industry statistics, but the direction is clear. Alipay treats AI-era payment infrastructure as a full stack — **payment, collection, settlement, wallet, protocol** — rather than a single feature.
+Alipay stated in May 2026 that AI支付 had processed 300 million agent payments and supported 95% of major general-purpose agent frameworks, while unveiling Token Pay and AI Wallet. Those figures are Alipay's own rather than independently verified industry statistics, but the direction is clear. Alipay treats AI-era payment infrastructure as a full stack (**payment, collection, settlement, wallet, protocol**) rather than a single feature.
 
 ## 6. A personal view
 
 The reason this announcement drew relatively little attention outside China is that on the surface it looks like another Chinese convenience payment feature. From a data and platform strategy perspective, I think a far larger change is hiding in it.
 
-What lands hardest is the change in who transacts. E-commerce has been understood through C2C, B2C, B2B. AI付 and AI收 wedge a new party in: the agent. It is hard to say AI has become a fully independent economic actor at this stage — the user's approval, authentication and delegation scope still matter. But the fact that "user → AI → service → payment → collection" is now connected inside one commercial infrastructure makes it worth reading as an early form of an agent-to-agent economy. Before long, a user's scheduling AI calling a travel booking AI, or a company's procurement AI calling a supplier's quoting AI, could feel ordinary. The genuinely hard problem then is not the technology of AIs talking to each other but the structure through which money moves safely behind that conversation.
+What lands hardest is the change in who transacts. E-commerce has been understood through C2C, B2C, B2B. AI付 and AI收 wedge a new party in: the agent. It is hard to say AI has become a fully independent economic actor at this stage, since the user's approval, authentication and delegation scope still matter. But the fact that "user → AI → service → payment → collection" is now connected inside one commercial infrastructure makes it worth reading as an early form of an agent-to-agent economy. Before long, a user's scheduling AI calling a travel booking AI, or a company's procurement AI calling a supplier's quoting AI, could feel ordinary. The genuinely hard problem then is not the technology of AIs talking to each other but the structure through which money moves safely behind that conversation.
 
-The other interesting point is that micro-transactions finally become real. AI收's ¥0.02 per-call charge was uneconomic under existing card and transfer structures — fees, settlement cost and user friction were too large. When an agent calls a service, the unit of charging changes. There is no need for a monthly subscription. Call once when needed, pay for that. This will not replace SaaS subscriptions outright, but it makes pay-per-use much more natural for call-friendly services: data lookup, report generation, expert summarisation, image processing, code execution, financial analysis, legal and tax drafting.
+The other interesting point is that micro-transactions finally become real. AI收's ¥0.02 per-call charge was uneconomic under existing card and transfer structures, because fees, settlement cost and user friction were too large. When an agent calls a service, the unit of charging changes. There is no need for a monthly subscription. Call once when needed, pay for that. This will not replace SaaS subscriptions outright, but it makes pay-per-use much more natural for call-friendly services: data lookup, report generation, expert summarisation, image processing, code execution, financial analysis, legal and tax drafting.
 
 Alipay's 0% fee for individual developers through the end of 2026 also reads as prioritising ecosystem capture over near-term revenue. Payment infrastructure has strong network effects. More developers bring more users; more users bring more merchants. Early on, owning the standard matters more than the fee. Visa and Mastercard took that position in the card era, Alipay and WeChat Pay in the mobile era. In the agent era, who becomes the default rail for agent payment and collection is the new contested point.
 
-And perhaps most important is the change in the data. Payment data used to be close to "who spent how much, when and where." In AI payments, the context in front of it comes attached. What the user asked for, what the AI recommended, which alternatives were compared, which conditions the user weighted, what they finally bought, whether they were satisfied afterwards. That is not transaction data but intent data — a powerful asset for a fintech or commerce platform. Existing recommenders inferred taste from clicks, carts and purchase history; in agentic commerce the user says outright what conditions they want. A payment platform that captures that flow has a far richer basis for recommendation, risk management, credit scoring, marketing and personalisation.
+And perhaps most important is the change in the data. Payment data used to be close to "who spent how much, when and where." In AI payments, the context in front of it comes attached. What the user asked for, what the AI recommended, which alternatives were compared, which conditions the user weighted, what they finally bought, whether they were satisfied afterwards. That is not transaction data but intent data, a powerful asset for a fintech or commerce platform. Existing recommenders inferred taste from clicks, carts and purchase history; in agentic commerce the user says outright what conditions they want. A payment platform that captures that flow has a far richer basis for recommendation, risk management, credit scoring, marketing and personalisation.
 
 ## 7. But the core is control, not convenience
 
@@ -175,13 +175,13 @@ Alipay AI付, Alipay AI收, Agentic Commerce Trust Protocol, Token Pay, AI Walle
 
 ## References
 
-- [支付宝宣布完成AI支付的全域布局 — STCN](https://www.stcn.com/article/detail/3927539.html)
-- [支付宝推出"AI付"服务，在智能体内说话完成下单支付 — 新华网](https://www.news.cn/tech/20250911/d2b40fe724684cdabcd0997bb742ad17/c.html)
-- [0费率免费使用！支付宝AI 收正式上线三步接入即时收款 — Sina](https://finance.sina.com.cn/tech/discovery/2026-04-28/doc-inhwaavw8466616.shtml)
-- [支付宝与千问App、淘宝闪购等发布中国首个AI商业协议ACT — 东方财富](https://finance.eastmoney.com/a/202601163621688078.html)
-- [Buy it in ChatGPT: Instant Checkout and the Agentic Commerce Protocol — OpenAI](https://openai.com/index/buy-it-in-chatgpt/)
-- [Visa Intelligent Commerce — Visa](https://corporate.visa.com/en/products/intelligent-commerce.html)
-- [Mastercard unveils Agent Pay — Mastercard](https://www.mastercard.com/global/en/news-and-trends/press/2025/april/mastercard-unveils-agent-pay-pioneering-agentic-payments-technology-to-power-commerce-in-the-age-of-ai.html)
+- [支付宝宣布完成AI支付的全域布局 (STCN)](https://www.stcn.com/article/detail/3927539.html)
+- [支付宝推出"AI付"服务，在智能体内说话完成下单支付 (新华网)](https://www.news.cn/tech/20250911/d2b40fe724684cdabcd0997bb742ad17/c.html)
+- [0费率免费使用！支付宝AI 收正式上线三步接入即时收款 (Sina)](https://finance.sina.com.cn/tech/discovery/2026-04-28/doc-inhwaavw8466616.shtml)
+- [支付宝与千问App、淘宝闪购等发布中国首个AI商业协议ACT (东方财富)](https://finance.eastmoney.com/a/202601163621688078.html)
+- [Buy it in ChatGPT: Instant Checkout and the Agentic Commerce Protocol (OpenAI)](https://openai.com/index/buy-it-in-chatgpt/)
+- [Visa Intelligent Commerce (Visa)](https://corporate.visa.com/en/products/intelligent-commerce.html)
+- [Mastercard unveils Agent Pay (Mastercard)](https://www.mastercard.com/global/en/news-and-trends/press/2025/april/mastercard-unveils-agent-pay-pioneering-agentic-payments-technology-to-power-commerce-in-the-age-of-ai.html)
 
 ---
 

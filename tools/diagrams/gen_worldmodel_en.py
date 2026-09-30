@@ -52,7 +52,7 @@ def d_wm_no_memory():
     panels = [
         (40, "blue", BLUE, "① a bottle on the table", "the model renders it fine", None),
         (325, "gray", INK_LIGHT, "② the camera turns away", "the bottle leaves the frame", None),
-        (610, "red", RED, "③ turn back — and?", "nothing guarantees it is still there", "?"),
+        (610, "red", RED, "③ turn back again?", "nothing guarantees it is still there", "?"),
     ]
     for x, wash, col, title, sub, mark in panels:
         b.append(box(r, x, 84, 250, 140, wash, col, sw=1.8))
@@ -64,8 +64,8 @@ def d_wm_no_memory():
             b.append(arr(r, x + 256, 154, x + 278, 154, INK_LIGHT, 1.5, 8))
 
     b.append(box(r, 40, 248, 820, 76, "amber", AMBER, sw=1.8))
-    b.append(T(450, 278, "The model does not remember a scene — it regenerates it every time", 19, INK, weight="bold"))
-    b.append(T(450, 306, "\"When the character turns back, is the world the same? In most video models, no.\" — Anupam Singh", 14, INK_LIGHT))
+    b.append(T(450, 278, "The model does not remember a scene. It regenerates it every time.", 19, INK, weight="bold"))
+    b.append(T(450, 306, "\"When the character turns back, is the world the same? In most video models, no.\" (Anupam Singh)", 14, INK_LIGHT))
 
     b.append(T(450, 362, "The persistence problem: whatever leaves the frame can quietly change", 17, INK_LIGHT))
     return W, H, "".join(b)
@@ -80,11 +80,11 @@ def d_game_two_jobs():
 
     b.append(box(r, 36, 84, 400, 236, "blue", BLUE, sw=1.9))
     b.append(T(236, 116, "① Keeping the world consistent", 18, BLUE, weight="bold"))
-    for i, ln in enumerate(["persistent state — come back and it is still there",
-                            "rules — applied the same way for everyone",
-                            "physics — things move, collide and fall as expected",
-                            "real-time sync — thousands share one world",
-                            "immediacy — the world reacts the moment you act"]):
+    for i, ln in enumerate(["persistent state: come back and it is still there",
+                            "rules: applied the same way for everyone",
+                            "physics: things move, collide and fall as expected",
+                            "real-time sync: thousands share one world",
+                            "immediacy: the world reacts the moment you act"]):
         b.append(T(236, 152 + i * 34, ln, 13.5, INK))
 
     b.append(box(r, 464, 84, 400, 236, "amber", AMBER, sw=1.9))
@@ -96,7 +96,7 @@ def d_game_two_jobs():
     b.append(T(664, 268, "the level of realism players now", 13.5, INK))
     b.append(T(664, 292, "simply take for granted", 13.5, INK))
 
-    b.append(T(450, 358, "Game engines are strong at ①, world models at ② — and nobody has done both cheaply", 17.5, INK))
+    b.append(T(450, 358, "Game engines are strong at ①, world models at ②, and nobody has done both cheaply", 17.5, INK))
     b.append(T(450, 398, "Graphics are the visible part; what makes a game a game is the system you cannot see", 16, INK_LIGHT))
     return W, H, "".join(b)
 
@@ -109,7 +109,7 @@ def d_roblox_reality():
     b.append(ul(r, 250, 650, 63))
 
     b.append(box(r, 36, 84, 350, 150, "blue", BLUE, sw=1.9))
-    b.append(T(211, 114, "Game engine — \"what exists\"", 16, BLUE, weight="bold"))
+    b.append(T(211, 114, "Game engine: \"what exists\"", 16, BLUE, weight="bold"))
     for i, ln in enumerate(["the data model: a ledger of every object",
                             "(a car's position, speed, heading, material)",
                             "physics and rules recomputed identically",
@@ -117,7 +117,7 @@ def d_roblox_reality():
         b.append(T(211, 144 + i * 22, ln, 12.5, INK if i < 3 else INK_LIGHT))
 
     b.append(box(r, 514, 84, 350, 150, "amber", AMBER, sw=1.9))
-    b.append(T(689, 114, "Super Upsampler — \"how it looks\"", 15, AMBER, weight="bold"))
+    b.append(T(689, 114, "Super Upsampler: \"how it looks\"", 15, AMBER, weight="bold"))
     for i, ln in enumerate(["takes the engine's flat draft frame",
                             "and adds texture, lighting and detail",
                             "until it is photoreal",
@@ -129,7 +129,7 @@ def d_roblox_reality():
     b.append(T(450, 176, "+ conditioning", 12.5, INK_LIGHT))
 
     b.append(box(r, 36, 254, 828, 112, "green", GREEN, sw=1.9))
-    b.append(T(450, 286, "Roblox cloud — the base that runs all of this at scale", 18, GREEN, weight="bold"))
+    b.append(T(450, 286, "Roblox cloud: the base that runs all of this at scale", 18, GREEN, weight="bold"))
     b.append(T(450, 316, "persists each world's state (come back days later and the game is intact) · runs millions of sessions near the player", 13, INK))
     b.append(T(450, 342, "authoritative state has to sit beside the player for fast, fair multiplayer", 13, INK))
 
@@ -145,15 +145,15 @@ def d_upsampler_signals():
     b.append(ul(r, 250, 670, 63))
 
     sigs = [
-        (86, "blue", BLUE, "① Dense — a value at every pixel",
+        (86, "blue", BLUE, "① Dense: a value at every pixel",
          ["a roughly rendered frame + a depth map (distance per pixel)",
           "same grid as the output → concatenated, or injected ControlNet-style",
           "→ every pixel is pinned to its position and colour"]),
-        (212, "green", GREEN, "② Global — one setting for the whole scene",
+        (212, "green", GREEN, "② Global: one setting for the whole scene",
          ["midday, light rain, sun low on the left",
           "scales and shifts the model's activations (modulation)",
           "→ changes the mood of the entire frame at once"]),
-        (338, "amber", AMBER, "③ Structured — description, close to text",
+        (338, "amber", AMBER, "③ Structured: description, close to text",
          ["\"metallic sports car, position (120, 0, 48), 40 m/s\" + a style prompt",
           "injected through cross-attention",
           "→ any part of the frame can consult it when needed"]),
@@ -172,7 +172,7 @@ def d_upsampler_signals():
     b.append(T(872, 218, "2K", 15, INK, weight="bold"))
     b.append(T(872, 240, "final frame", 12.5, INK_LIGHT))
 
-    b.append(T(460, 482, "The model never moves the car or changes a distance — it only paints realism onto a fixed scene", 16.5, INK))
+    b.append(T(460, 482, "The model never moves the car or changes a distance. It only paints realism onto a fixed scene.", 16.5, INK))
     return W, H, "".join(b)
 
 
@@ -184,7 +184,7 @@ def d_self_forcing():
     b.append(ul(r, 250, 650, 63))
 
     b.append(box(r, 36, 84, 828, 120, "red", RED, sw=1.8))
-    b.append(T(150, 114, "The old way — offline generation", 16.5, RED, weight="bold"))
+    b.append(T(150, 114, "The old way: offline generation", 16.5, RED, weight="bold"))
     b.append(box(r, 300, 100, 380, 76, None, RED, sw=1.3, amp=1.2))
     b.append(T(490, 130, "the whole clip computed at once, moving back", 13, INK))
     b.append(T(490, 152, "and forth along the time axis", 13, INK))
@@ -193,7 +193,7 @@ def d_self_forcing():
     b.append(T(780, 152, "unusable in a game", 12.5, INK_LIGHT))
 
     b.append(box(r, 36, 224, 828, 132, "green", GREEN, sw=1.8))
-    b.append(T(150, 254, "Self-forcing — autoregressive", 16.5, GREEN, weight="bold"))
+    b.append(T(150, 254, "Self-forcing: autoregressive", 16.5, GREEN, weight="bold"))
     for i, name in enumerate(["frame 1", "frame 2", "frame 3"]):
         x = 300 + i * 118
         b.append(box(r, x, 244, 104, 44, None, GREEN, sw=1.3, amp=1.2))
@@ -232,7 +232,7 @@ def d_four_problems():
         (464, 274, "green", GREEN, "④ Creator control",
          ["fun comes from rules, not from graphics",
           "a generated world still obeys the creator"],
-         ["fix: the game cartridge harness —", "wrap the model in deterministic game logic"]),
+         ["fix: the game cartridge harness", "(the model wrapped in deterministic game logic)"]),
     ]
     for x, y, wash, col, title, lines, fix in probs:
         b.append(box(r, x, y, 400, 172, wash, col, sw=1.9))

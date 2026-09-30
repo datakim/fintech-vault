@@ -16,27 +16,27 @@ The plain version: it is the runtime that keeps a model from spinning off into n
 
 The model itself is a black box. It is non-deterministic and it can make a strange call at any point. So a harness wraps a set of things around it.
 
-- **Tool registry** — the set of tools the model is allowed to reach for
-- **Context management** — compaction, keeping the recent messages that matter
-- **Guardrails** — max iterations, max tool calls, failure conditions
-- **Agent loop** — the think-then-call cycle the model runs in
-- **Verification step** — did the thing actually succeed?
-- **Deterministic handlers** — login, auth, file access, and anything else too risky to leave to the model
+- **Tool registry**: the set of tools the model is allowed to reach for
+- **Context management**: compaction, keeping the recent messages that matter
+- **Guardrails**: max iterations, max tool calls, failure conditions
+- **Agent loop**: the think-then-call cycle the model runs in
+- **Verification step**: did the thing actually succeed?
+- **Deterministic handlers**: login, auth, file access, and anything else too risky to leave to the model
 
 So a harness does not make a model smarter. It makes a model safe to work with **while it is still wrong sometimes**.
 
 ## The example that makes it click
 
-Take a deliberately weak model — GPT-3.5 Turbo — and build a browser agent whose job is to upvote the first post on Hacker News.
+Take a deliberately weak model (GPT-3.5 Turbo) and build a browser agent whose job is to upvote the first post on Hacker News.
 
 At first the agent tries to click upvote, gets bounced to the login page, and then reports back that it succeeded. It did not succeed. It just said it did.
 
 Now, without editing the prompt at all, add harness pieces.
 
-1. **Guardrail** — stop it from looping forever
-2. **Context compaction** — keep the essentials as the message history grows
-3. **Verify step** — check whether the upvote actually registered
-4. **Login handler** — when the agent lands on the login page, the harness logs in itself
+1. **Guardrail**: stop it from looping forever
+2. **Context compaction**: keep the essentials as the message history grows
+3. **Verify step**: check whether the upvote actually registered
+4. **Login handler**: when the agent lands on the login page, the harness logs in itself
 
 Same prompt. The agent now logs in and upvotes for real.
 
@@ -68,7 +68,7 @@ Without these, an agent looks great in a demo and is dangerous in production.
 
 ### A weak model plus a strong harness can be enough
 
-The choice of GPT-3.5 Turbo is not incidental — it is the whole point. **A small model with a strong harness** can beat paying for a frontier model, especially on cost.
+The choice of GPT-3.5 Turbo is not incidental. It is the whole point. **A small model with a strong harness** can beat paying for a frontier model, especially on cost.
 
 That trade matters even more inside a company:
 
@@ -81,7 +81,7 @@ Seen this way, harness design moves the needle more than model choice does.
 
 ### Whatever the agent must not do, the harness does
 
-Login, authentication, payments, permission checks, access to sensitive data — none of these should be left to the model's discretion.
+None of these should be left to the model's discretion: login, authentication, payments, permission checks, access to sensitive data.
 
 Not "figure out how to log in," but a deterministic handler that logs in.
 
@@ -112,7 +112,7 @@ Which reframes the question. "Can the LLM write good SQL?" is the smaller one. T
 
 An AI harness is not a structure built on trusting the model. It is an operating framework that lets you **doubt the model and still ship**.
 
-The next edge in agents is not a better prompt. It is the ability to design the harness — verification, tools, context, permissions, failure handling, all of it.
+The next edge in agents is not a better prompt. It is the ability to design the harness: verification, tools, context, permissions, failure handling, all of it.
 
 ---
 

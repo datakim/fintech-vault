@@ -15,11 +15,11 @@ tags:
 
 ![e-CNY on one page: China's central bank digital currency, and what changed](/ecny-onepager-en.svg)
 
-_The whole structure summarised on one page — what it is, how it works, what changed in 2026, where it gets used, and the headline numbers. (Sources: People's Bank of China, Xinhua, public reporting, Nov 2025 – May 2026)_
+_The whole structure summarised on one page: what it is, how it works, what changed in 2026, where it gets used, and the headline numbers. (Sources: People's Bank of China, Xinhua, public reporting, Nov 2025 to May 2026)_
 
 ## 1. Why e-CNY now?
 
-China's digital yuan is a flagship central bank digital currency project piloted since 2019. The original concept was relatively simple: **digital cash** replacing notes and coins in digital form. e-CNY was designed closer to central bank money — M0 — than to commercial bank deposits.
+China's digital yuan is a flagship central bank digital currency project piloted since 2019. The original concept was relatively simple: **digital cash** replacing notes and coins in digital form. e-CNY was designed closer to central bank money (M0) than to commercial bank deposits.
 
 Over time the structure showed its limits. China's everyday payment market was already held by Alipay and WeChat Pay. Users had little strong reason to install a new e-CNY app, create a wallet and top it up. They used it when there were government subsidies, consumption coupons or red packets, and drifted back to their existing payment apps otherwise.
 
@@ -52,11 +52,11 @@ According to PBOC material, cumulative e-CNY figures as of end-November 2025:
 | Personal wallets | 230 million | end-Nov 2025 |
 | Corporate/institutional wallets | 18.84 million | end-Nov 2025 |
 
-On those numbers alone, e-CNY can look like it has arrived at the centre of Chinese payments. A caution: these are **cumulative** figures — the total including government subsidies, public service payments, corporate and institutional transactions and various test transactions across the pilot period. ([新华社](https://www.news.cn/20251229/442a77288543426294939796802ac43e/c.html))
+On those numbers alone, e-CNY can look like it has arrived at the centre of Chinese payments. A caution: these are **cumulative** figures, the total including government subsidies, public service payments, corporate and institutional transactions and various test transactions across the pilot period. ([新华社](https://www.news.cn/20251229/442a77288543426294939796802ac43e/c.html))
 
-Reuters reported that while cumulative e-CNY transaction value stood at ¥16.7 trillion as of end-November 2025, total Chinese payment volume ran to about ¥128 trillion in 2025 alone. So e-CNY has grown to a meaningful scale, but reading that directly as having replaced Alipay and WeChat Pay is not supportable. ([Reuters](https://www.reuters.com/world/asia-pacific/chinas-bank-ningbo-readies-digital-yuan-business-beijing-expands-e-cny-2026-03-20/))
+Reuters reported that while cumulative e-CNY transaction value stood at ¥16.7 trillion as of end-November 2025, total Chinese payment volume ran to about ¥128 trillion in 2025 alone. ([Reuters](https://www.reuters.com/world/asia-pacific/chinas-bank-ningbo-readies-digital-yuan-business-beijing-expands-e-cny-2026-03-20/)) The PBOC's own figure for 2025 is far larger: its payment systems processed ¥12,807 trillion. ([人民网](https://finance.people.com.cn/n1/2026/0226/c1004-40670572.html)) On either measure e-CNY's share is small. So e-CNY has grown to a meaningful scale, but reading that directly as having replaced Alipay and WeChat Pay is not supportable.
 
-Regional differences are sharper. Fuzhou reported e-CNY transaction value of ¥384.189 billion as of March 2025, with 7.7916 million personal wallets and 536,700 merchants accepting e-CNY. Jiangsu is larger still: cumulative transaction value of ¥15 trillion at end-2025, consumption of ¥176.9 billion, 78.05 million wallets and 4.04 million accepting merchants. ([福州日报](https://mag.fznews.com.cn/fzrb/2025/20250501/20250501_004/news-fzrb-9707-20250501-m-004-004-300.pdf))
+Regional differences are sharper. Fuzhou reported e-CNY transaction value of ¥384.189 billion as of March 2025, with 7.7916 million personal wallets and 536,700 merchants accepting e-CNY. ([福州日报](https://mag.fznews.com.cn/fzrb/2025/20250501/20250501_004/news-fzrb-9707-20250501-m-004-004-300.pdf)) Jiangsu is larger still: cumulative transaction value of ¥15 trillion at end-2025, consumption of ¥176.9 billion, 78.05 million wallets and 4.04 million accepting merchants. ([新浪财经](https://finance.sina.com.cn/jjxw/2026-01-27/doc-inhisvwi8465411.shtml))
 
 Even here, voluntary daily use and policy-driven use have to be distinguished. Large transaction value and users genuinely preferring it are not the same claim.
 
@@ -84,11 +84,11 @@ The 2026 interest policy can be read as an attempt to patch exactly that weaknes
 
 ### 4.3 Small interest, large institutional signal
 
-After the January 2026 update, named wallet balances earn interest at bank demand deposit rates — currently around 0.05% a year at major banks, so the monetary incentive itself is small. ¥100,000 earns about ¥50 a year; ¥1 million about ¥500. ([21世纪经济报道](https://www.21jingji.com/article/20260101/4b8d65e5c2692ffd5dfb1b8329a59c31.html))
+After the January 2026 update, named wallet balances earn interest at bank demand deposit rates, currently around 0.05% a year at major banks, so the monetary incentive itself is small. ¥100,000 earns about ¥50 a year; ¥1 million about ¥500. ([21世纪经济报道](https://www.21jingji.com/article/20260101/4b8d65e5c2692ffd5dfb1b8329a59c31.html))
 
 Psychologically, though, the change may matter. Money left in an e-CNY wallet previously earned nothing, like holding cash. Now, held in a named wallet, it takes on a character close to a bank deposit. Users can come to see e-CNY as a wallet that costs less to hold rather than one to empty quickly.
 
-That interest is limited to named wallets also matters. Tier 4 anonymous wallets earn none — a design balancing user convenience against anti-money-laundering and identity-based financial management.
+That interest is limited to named wallets also matters. Tier 4 anonymous wallets earn none, a design balancing user convenience against anti-money-laundering and identity-based financial management.
 
 ### 4.4 The difference from existing payment methods is still vague
 
@@ -98,7 +98,7 @@ Which also means mass adoption is not easy. Ordinary users care less about reser
 
 ### 4.5 Dual offline payment is meaningful as a complement
 
-One of e-CNY's technical differentiators is dual offline payment — allowing payment under certain conditions when neither payer nor payee is connected to a network.
+One of e-CNY's technical differentiators is dual offline payment, which allows payment under certain conditions when neither payer nor payee is connected to a network.
 
 Local reporting and early pilot cases repeatedly note that e-CNY's offline payment can be useful in unstable network environments, on metros and buses, and at large events. Even here it is better understood as **a function complementing existing mobile payment in particular environments** than as replacing all payment.
 
@@ -106,7 +106,7 @@ So e-CNY's strength shows less in revolutionising buying coffee at a café than 
 
 ### 4.6 Smart contracts are producing real cases in prepaid funds
 
-Another important function is smart contracts, with strong potential in prepaid consumption — gyms, salons, education providers, shopping cards, where you pay first and receive service later.
+Another important function is smart contracts, with strong potential in prepaid consumption such as gyms, salons, education providers and shopping cards, where you pay first and receive service later.
 
 Merchants taking prepayments and then closing or absconding has been a recurring problem in China. e-CNY smart contracts can handle this through conditional disbursement. Even when a user pays up front, the money does not all pass to the merchant at once; it can be designed so that portions are released as service is actually provided.
 
@@ -114,7 +114,7 @@ Merchants taking prepayments and then closing or absconding has been a recurring
 
 This is one of e-CNY's most realistic use cases. In ordinary QR payment the difference from Alipay and WeChat Pay is small; in areas where **the conditions on how money is used must be managed**, e-CNY has a clear differentiator.
 
-## 5. Alipay and WeChat Pay are not disappearing — they are being redefined
+## 5. Alipay and WeChat Pay are being redefined, not disappearing
 
 e-CNY growing does not immediately remove Alipay and WeChat Pay. In the current structure they are being absorbed as major distribution channels for e-CNY.
 
@@ -128,9 +128,9 @@ So the spread of e-CNY is better read as **national monetary infrastructure goin
 
 The interesting part of e-CNY becoming digital deposit money is programmable money.
 
-e-CNY has already experimented with smart-contract conditional disbursement — making a government subsidy spendable only in certain sectors, or releasing prepaid funds to a merchant only when service is actually used. In 2022 Chinese authorities described e-CNY smart contracts as contributing to the digital economy, business environment and digital governance. ([State Council of China](https://english.www.gov.cn/statecouncil/ministries/202209/09/content_WS631a9350c6d0a757729dfc9e.html))
+e-CNY has already experimented with smart-contract conditional disbursement, such as making a government subsidy spendable only in certain sectors or releasing prepaid funds to a merchant only when service is actually used. In 2022 Chinese authorities described e-CNY smart contracts as contributing to the digital economy, business environment and digital governance. ([State Council of China](https://english.www.gov.cn/statecouncil/ministries/202209/09/content_WS631a9350c6d0a757729dfc9e.html))
 
-Connect it to AI payments and a more interesting picture appears. You can imagine a user delegating to an agent — pay only for services meeting these conditions — with an e-CNY smart contract releasing funds according to whether conditions were met.
+Connect it to AI payments and a more interesting picture appears. You can imagine a user telling an agent to pay only for services meeting certain conditions, with an e-CNY smart contract releasing funds according to whether those conditions were met.
 
 > The user delegates service conditions to an AI.
 > The AI finds a suitable provider.
@@ -150,7 +150,7 @@ The Federal Reserve likewise warned in its 2022 CBDC discussion paper that a CBD
 
 In that context China's choice is distinctive. Rather than building e-CNY as a structure where the central bank absorbs all deposits directly, China folded it into commercial bank liabilities, deposit insurance and reserve requirements. Instead of leaving the CBDC outside the banking system as a competitor, it institutionalised it inside.
 
-That does not mean China found the right answer. It is closer to an experiment in solving the concerns other countries have raised — deposit flight, privacy, monetary policy transmission, the relationship with private payment platforms — through Chinese-style institutional design.
+That does not mean China found the right answer. It is closer to an experiment in solving the concerns other countries have raised (deposit flight, privacy, monetary policy transmission, the relationship with private payment platforms) through Chinese-style institutional design.
 
 ## 8. Privacy and data: the strength and the most sensitive point
 
@@ -168,7 +168,7 @@ This will matter more as e-CNY grows, because the balance between the public int
 
 ## 9. e-CNY is moving from experiment to institution
 
-The change on 1 January 2026 is an important turning point. Interest on named wallets, treatment as bank liabilities, entry into deposit insurance and reserve requirements — all mean e-CNY no longer sits only as a payment app experiment.
+The change on 1 January 2026 is an important turning point. Interest on named wallets, treatment as bank liabilities, and entry into deposit insurance and reserve requirements all mean e-CNY no longer sits only as a payment app experiment.
 
 But it is hard to say e-CNY has taken over Chinese payments or begun to replace Alipay and WeChat Pay. Cumulative transaction volume has grown on public figures, while voluntary use in everyday consumption still varies a great deal by region, incentive and acceptance. Reporting that nobody uses it without a campaign still exists.
 
@@ -178,9 +178,9 @@ The most appropriate view at present:
 
 From a user's perspective it is hard to call it overwhelmingly more convenient than Alipay or WeChat Pay. From a policy perspective it is moving into a far more important position, entering bank balance sheets, reserve calculations, deposit insurance, public subsidies, prepaid fund protection and conditional disbursement.
 
-From a fintech data perspective, the point to watch is not transaction volume either. What matters more is the **structured data on money flows** e-CNY creates — infrastructure for understanding more precisely who uses funds in what way, under what conditions, for what policy, commercial or public purpose. Which comes attached to arguments about privacy and controllability.
+From a fintech data perspective, the point to watch is not transaction volume either. What matters more is the **structured data on money flows** e-CNY creates: infrastructure for understanding more precisely who uses funds in what way, under what conditions, for what policy, commercial or public purpose. Which comes attached to arguments about privacy and controllability.
 
-The 2026 change is best read not as a declaration of success but as **the next stage of a Chinese experiment folding a CBDC deeper into the financial system.** Whether the experiment leads into mainstream everyday payment, or settles more firmly in public, policy, corporate and conditional-disbursement territory, needs several more quarters — or years — of data.
+The 2026 change is best read not as a declaration of success but as **the next stage of a Chinese experiment folding a CBDC deeper into the financial system.** Whether the experiment leads into mainstream everyday payment, or settles more firmly in public, policy, corporate and conditional-disbursement territory, needs several more quarters, or years, of data.
 
 ---
 
@@ -190,19 +190,21 @@ e-CNY, digital yuan, CBDC interest-bearing wallet, digital deposit money, PBOC r
 
 ## References
 
-- [数字人民币迎来重大调整 — 新华社](https://www.news.cn/20251229/442a77288543426294939796802ac43e/c.html)
+- [数字人民币迎来重大调整 (新华社)](https://www.news.cn/20251229/442a77288543426294939796802ac43e/c.html)
 - [人民日报 on interest-bearing digital yuan wallets from 2026](https://paper.people.com.cn/rmrb/pc/content/202512/31/content_30128236.html)
-- [多家国有行公告：余额按0.05%生息 — 21世纪经济报道](https://www.21jingji.com/article/20260101/4b8d65e5c2692ffd5dfb1b8329a59c31.html)
-- [China to allow more banks to handle digital yuan — Reuters](https://www.reuters.com/world/asia-pacific/chinas-bank-ningbo-readies-digital-yuan-business-beijing-expands-e-cny-2026-03-20/)
-- [数字人民币点亮榕城新生活 — 福州日报](https://mag.fznews.com.cn/fzrb/2025/20250501/20250501_004/news-fzrb-9707-20250501-m-004-004-300.pdf)
-- [数字人民币普及仍需闯关 — 证券时报](https://stcn.com/article/detail/1500242.html)
-- [数字人民币智能合约保障原路退还 — 21世纪经济报道](https://www.21jingji.com/article/20250314/herald/1c07bcd85bbd47ef5d8d7dcd2c1813c1.html)
-- [数字人民币开始生息，年利率0.05% — 新浪财经](https://finance.sina.cn/2026-01-04/detail-inhfcasr1928591.d.html)
-- [China gives state-backed digital cash — PIIE](https://www.piie.com/blogs/realtime-economics/2026/china-gives-state-backed-digital-cash-us-and-europe-should-take-note)
-- [Digital yuan solutions enjoy major upgrade — State Council of China](https://english.www.gov.cn/statecouncil/ministries/202209/09/content_WS631a9350c6d0a757729dfc9e.html)
-- [FAQs on the digital euro — European Central Bank](https://www.ecb.europa.eu/euro/digital_euro/faqs/html/ecb.faq_digital_euro.en.html)
-- [Money and Payments: The U.S. Dollar in the Age of Digital Transformation — Federal Reserve](https://www.federalreserve.gov/publications/files/money-and-payments-20220120.pdf)
-- [China vows privacy, information protection in using digital yuan — Reuters](https://www.reuters.com/world/china/china-vows-privacy-information-protection-using-digital-yuan-2022-07-25/)
+- [多家国有行公告：余额按0.05%生息 (21世纪经济报道)](https://www.21jingji.com/article/20260101/4b8d65e5c2692ffd5dfb1b8329a59c31.html)
+- [China to allow more banks to handle digital yuan (Reuters)](https://www.reuters.com/world/asia-pacific/chinas-bank-ningbo-readies-digital-yuan-business-beijing-expands-e-cny-2026-03-20/)
+- [2025年我国支付系统共处理支付业务12807.07万亿元 (人民网)](https://finance.people.com.cn/n1/2026/0226/c1004-40670572.html)
+- [试点成效突出 数字人民币应用迈入2.0时代 (新浪财经, 2026-01-27)](https://finance.sina.com.cn/jjxw/2026-01-27/doc-inhisvwi8465411.shtml)
+- [数字人民币点亮榕城新生活 (福州日报)](https://mag.fznews.com.cn/fzrb/2025/20250501/20250501_004/news-fzrb-9707-20250501-m-004-004-300.pdf)
+- [数字人民币普及仍需闯关 (证券时报)](https://stcn.com/article/detail/1500242.html)
+- [数字人民币智能合约保障原路退还 (21世纪经济报道)](https://www.21jingji.com/article/20250314/herald/1c07bcd85bbd47ef5d8d7dcd2c1813c1.html)
+- [数字人民币开始生息，年利率0.05% (新浪财经)](https://finance.sina.cn/2026-01-04/detail-inhfcasr1928591.d.html)
+- [China gives up on state-backed digital cash (PIIE)](https://www.piie.com/blogs/realtime-economics/2026/china-gives-state-backed-digital-cash-us-and-europe-should-take-note)
+- [Digital yuan solutions enjoy major upgrade (State Council of China)](https://english.www.gov.cn/statecouncil/ministries/202209/09/content_WS631a9350c6d0a757729dfc9e.html)
+- [FAQs on the digital euro (European Central Bank)](https://www.ecb.europa.eu/euro/digital_euro/faqs/html/ecb.faq_digital_euro.en.html)
+- [Money and Payments: The U.S. Dollar in the Age of Digital Transformation (Federal Reserve)](https://www.federalreserve.gov/publications/files/money-and-payments-20220120.pdf)
+- [China vows privacy, information protection in using digital yuan (Reuters)](https://www.reuters.com/world/china/china-vows-privacy-information-protection-using-digital-yuan-2022-07-25/)
 
 ---
 
@@ -212,4 +214,4 @@ _Written as of 26 May 2026 from public reporting and government and central bank
 
 - [How Chinese Fintech Actually Works](/en/china-fintech-stack/)
 - [WeChat's Different Road: A 1.4 Billion MAU Super App Absorbs the Agent](/en/wechat-ai-strategy/)
-- [The Age of AI Paying: Alipay's AI付 and AI收](/en/alipay-ai-payment-era/)
+- [The Age of AI Paying: Alipay's AI付, AI收 and the Start of the Agent Economy](/en/alipay-ai-payment-era/)

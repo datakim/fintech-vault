@@ -21,7 +21,7 @@ def d1_axes():
         (86, ["1. What exists?", "2. What state is it in?"], "Ontology",
          "Concepts and taxonomy (TBox), individuals and facts (ABox)", "blue", BLUE, 96),
         (198, ["3. What changes are allowed?"], "Dynamics",
-         "Action formalisms — PDDL preconditions and effects", "green", GREEN, 68),
+         "Action formalisms: PDDL preconditions and effects", "green", GREEN, 68),
         (282, ["4. What is forbidden?"], "Norms",
          "Integrity constraints, access control, deontic logic", "red", RED, 68),
     ]
@@ -51,7 +51,7 @@ def d2_gap():
     b.append(ul(r, 185, 695, 63))
 
     b.append(box(r, 36, 84, 376, 236, "blue", BLUE, sw=1.8))
-    b.append(T(224, 116, "Alethic — what is possible", 20, BLUE, weight="bold"))
+    b.append(T(224, 116, "Alethic: what is possible", 20, BLUE, weight="bold"))
     b.append(T(224, 152, "A ball falls when dropped", 17, INK))
     b.append(T(224, 180, "This balance cannot cover the charge", 17, INK))
     b.append(T(224, 208, "This API answers within three seconds", 17, INK))
@@ -60,7 +60,7 @@ def d2_gap():
     b.append(T(224, 280, "so they can be learned from data", 16, INK))
 
     b.append(box(r, 468, 84, 376, 236, "red", RED, sw=1.8))
-    b.append(T(656, 116, "Deontic — what is permitted", 20, RED, weight="bold"))
+    b.append(T(656, 116, "Deontic: what is permitted", 20, RED, weight="bold"))
     b.append(T(656, 152, "May this transaction be approved?", 17, INK))
     b.append(T(656, 180, "May this customer record be read?", 17, INK))
     b.append(T(656, 208, "May this refund be auto-processed?", 17, INK))
@@ -72,7 +72,7 @@ def d2_gap():
     b.append(T(440, 214, "no bridge", 15, INK_LIGHT))
 
     b.append(box(r, 36, 344, 808, 82, "amber", AMBER, sw=1.8))
-    b.append(T(440, 374, "You cannot derive an ought from an is — Hume, 1739", 20, INK, weight="bold"))
+    b.append(T(440, 374, "You cannot derive an ought from an is (Hume, 1739)", 20, INK, weight="bold"))
     b.append(T(440, 404, "So a neural world model missing norms is not short on data", 18, INK))
 
     b.append(T(440, 456, "It is the wrong category of thing, and scale does not close it", 18, INK_LIGHT))
@@ -109,8 +109,8 @@ def d3_split():
 
     b.append(box(r, 36, 334, 808, 106, "amber", AMBER, sw=1.8))
     b.append(T(440, 364, "So the division of labour is not arbitrary", 21, AMBER, weight="bold"))
-    b.append(T(440, 398, "Neural handles grounding — reading an open world into symbols", 18, INK))
-    b.append(T(440, 424, "Symbolic handles enforcement — letting only the allowed through", 18, INK))
+    b.append(T(440, 398, "Neural handles grounding: reading an open world into symbols", 18, INK))
+    b.append(T(440, 424, "Symbolic handles enforcement: letting only the allowed through", 18, INK))
 
     b.append(T(440, 466, "Keep possibility wide, keep execution narrow and safe", 18, INK_LIGHT))
     return W, H, "".join(b)

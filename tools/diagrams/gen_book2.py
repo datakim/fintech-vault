@@ -9,7 +9,7 @@ from style import (R, T, box, arr, ul, wrap,
 # ── 1. 두 종류의 드리프트
 def d1_drift():
     r = R(411); b = []
-    W, H = 860, 470
+    W, H = 860, 496
     b.append(T(430, 46, "구조가 바뀌는 것과 의미가 바뀌는 것", 28, INK, weight="bold"))
     b.append(ul(r, 205, 655, 63))
 
@@ -25,16 +25,16 @@ def d1_drift():
         ("실패하는 방식", "파이프라인이 에러를 뱉는다", "아무 소리 없이 통과한다"),
         ("LLM에서는", "즉시 터져서 알게 된다", "문법은 완벽한데 뜻이 틀린 답"),
     ]
-    y = 142
+    y = 152
     for label, l, rr in rows:
-        b.append(T(430, y - 6, label, 15.5, INK_LIGHT))
-        b.append(box(r, 36, y, 396, 44, None, GREEN, sw=1.2, amp=1.2))
-        b.append(T(234, y + 29, l, 17, INK))
-        b.append(box(r, 448, y, 376, 44, None, RED, sw=1.2, amp=1.2))
-        b.append(T(636, y + 29, rr, 17, INK))
-        y += 62
+        b.append(T(430, y - 9, label, 15, INK_LIGHT))
+        b.append(box(r, 36, y, 396, 40, None, GREEN, sw=1.2, amp=1.2))
+        b.append(T(234, y + 27, l, 17, INK))
+        b.append(box(r, 448, y, 376, 40, None, RED, sw=1.2, amp=1.2))
+        b.append(T(636, y + 27, rr, 17, INK))
+        y += 64
 
-    b.append(T(430, 456, "앞의 것은 방어막에 걸리고, 뒤의 것은 방어막을 그냥 통과한다", 19, INK))
+    b.append(T(430, 480, "앞의 것은 방어막에 걸리고, 뒤의 것은 방어막을 그냥 통과한다", 19, INK))
     return W, H, "".join(b)
 
 
@@ -56,7 +56,7 @@ def d2_price():
     b.append(box(r, 468, 84, 300, 88, "red", RED, sw=1.7))
     b.append(T(618, 112, "오늘부터", 18, RED, weight="bold"))
     b.append(T(618, 140, "price: 11.50", 19, INK))
-    b.append(T(618, 162, "통화는 달러 — 공유 안 됨", 15.5, INK_LIGHT))
+    b.append(T(618, 162, "통화는 달러 (공유 안 됨)", 15.5, INK_LIGHT))
 
     checks = [
         (36, "green", GREEN, "타입 검사", "Float 맞음", "통과"),
@@ -104,7 +104,7 @@ def d3_poison():
     b.append(T(420, 344, "그래서 오래된 쪽이 더 높은 점수를 받기도 한다", 18, INK))
 
     b.append(box(r, 36, 366, 768, 62, "amber", AMBER, sw=1.8))
-    b.append(T(420, 394, "할루시네이션보다 잡기 어렵다 — 근거 문서가 실제로 존재하기 때문이다", 19, INK, weight="bold"))
+    b.append(T(420, 394, "할루시네이션보다 잡기 어렵다. 근거 문서가 실제로 존재하기 때문이다", 19, INK, weight="bold"))
     b.append(T(420, 418, "출처를 보여줘도 진짜 리서치 보고서다. 다만 2년 전 것일 뿐이다.", 16.5, INK_LIGHT))
     return W, H, "".join(b)
 

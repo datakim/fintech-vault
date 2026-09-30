@@ -41,7 +41,7 @@ def d1_loop():
     b.append(T(812, 306, "feedback", 16, INK))
     b.append(T(450, 366, "more and more often, a model reads what I write before a person does", 17.5, INK))
 
-    b.append(T(450, 422, "CVs, code reviews, proposals — each passes through this route somewhere", 17.5, INK_LIGHT))
+    b.append(T(450, 422, "CVs, code reviews and proposals all pass through this route somewhere", 17.5, INK_LIGHT))
     return W, H, "".join(b)
 
 

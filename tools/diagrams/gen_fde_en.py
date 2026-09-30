@@ -54,7 +54,7 @@ def d2_quadrant():
         (170, 148, "gray", INK_LIGHT, "a complex product", "not needed",
          ["GitHub · Datadog", "the buyer is an engineer and", "absorbs the complexity"], False),
         (490, 148, "amber", AMBER, "a complex product", "only this square",
-         ["Palantir — and most", "agentic products today", "the customer cannot see what it does"], True),
+         ["Palantir, and most", "agentic products today", "the customer cannot see what it does"], True),
         (170, 320, "gray", INK_LIGHT, "a simple product", "not needed",
          ["configuration, not", "something to be built"], False),
         (490, 320, "gray", INK_LIGHT, "a simple product", "not needed",

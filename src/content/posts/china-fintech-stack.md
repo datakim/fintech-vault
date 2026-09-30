@@ -128,7 +128,7 @@ tags:
 
 _상단의 슈퍼앱(WeChat / Alipay)에서 사용자가 머물고, 중간의 미니프로그램이 리테일·모빌리티·헬스케어·정부서비스 같은 실행 레이어를 채우며, 하단의 결제·청산 레이어(WeChat Pay·Alipay·넷츠유니온·은행 계좌·POS/IoT·e-CNY)가 그 흐름을 정리한다._
 
-참고로 2025년 기준 스냅샷을 같이 놓으면 — 핀테크 시장 약 513억 달러, 넷츠유니온 연간 처리 1조 건 이상(일평균 32억 건+), Weixin·WeChat 합산 MAU 약 14억 명 정도다.
+참고로 2025년 기준 스냅샷을 같이 놓으면 핀테크 시장 약 513억 달러, 넷츠유니온 연간 처리 1조 건 이상(일평균 32억 건+), Weixin·WeChat 합산 MAU 약 14억 명 정도다.
 
 ## 6. 넷츠유니온: 보이지 않는 결제 고속도로
 
@@ -278,9 +278,9 @@ Super App, Mini Program, WeChat Mini Program, Alipay Mini Program, NetsUnion, PO
 
 ## 참고 자료
 
-- [China Fintech Market Size, Industry Growth, Analysis & Forecast — Mordor Intelligence](https://www.mordorintelligence.com/industry-reports/china-fintech-market)
-- [China POS Terminals Market Size & Share Outlook to 2031 — Mordor Intelligence](https://www.mordorintelligence.com/industry-reports/china-pos-terminal-market)
-- [2025年我国支付系统共处理支付业务12807.07万亿元 — 人民日报 财经](https://finance.people.com.cn/n1/2026/0226/c1004-40670572.html)
+- [China Fintech Market Size, Industry Growth, Analysis & Forecast (Mordor Intelligence)](https://www.mordorintelligence.com/industry-reports/china-fintech-market)
+- [China POS Terminals Market Size & Share Outlook to 2031 (Mordor Intelligence)](https://www.mordorintelligence.com/industry-reports/china-pos-terminal-market)
+- [2025年我国支付系统共处理支付业务12807.07万亿元 (人民日报 财经)](https://finance.people.com.cn/n1/2026/0226/c1004-40670572.html)
 - [Tencent 2025 Annual Report (PDF)](https://static.www.tencent.com/uploads/2026/04/09/62d786fcf3d3c8cb7e54791ee95439ac.pdf)
 
 ---

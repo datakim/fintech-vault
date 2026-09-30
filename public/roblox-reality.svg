@@ -9,14 +9,14 @@
 
   <!-- engine -->
   <rect x="50" y="70" width="310" height="130" rx="12" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.5"/>
-  <text x="205" y="98" text-anchor="middle" font-size="15" font-weight="700" fill="#4338ca">게임엔진 — "무엇이 있는가"</text>
+  <text x="205" y="98" text-anchor="middle" font-size="15" font-weight="700" fill="#4338ca">게임엔진: "무엇이 있는가"</text>
   <text x="205" y="124" text-anchor="middle" font-size="12.5" fill="#334155">데이터 모델: 모든 객체와 속성의 장부</text>
   <text x="205" y="146" text-anchor="middle" font-size="12.5" fill="#334155">(차의 위치·속도·방향·재질)</text>
   <text x="205" y="172" text-anchor="middle" font-size="12.5" fill="#334155">물리와 규칙을 매번 똑같이 계산 → 진실의 원천</text>
 
   <!-- upsampler -->
   <rect x="440" y="70" width="310" height="130" rx="12" fill="#ecfdf5" stroke="#059669" stroke-width="1.5"/>
-  <text x="595" y="98" text-anchor="middle" font-size="15" font-weight="700" fill="#047857">Super Upsampler — "어떻게 보이는가"</text>
+  <text x="595" y="98" text-anchor="middle" font-size="15" font-weight="700" fill="#047857">Super Upsampler: "어떻게 보이는가"</text>
   <text x="595" y="124" text-anchor="middle" font-size="12.5" fill="#334155">엔진이 그린 밋밋한 프레임을 받아</text>
   <text x="595" y="146" text-anchor="middle" font-size="12.5" fill="#334155">질감·조명·디테일을 입혀 포토리얼로</text>
   <text x="595" y="172" text-anchor="middle" font-size="12.5" fill="#334155">장면을 정하지 않는다, 보이는 것만 맡는다</text>
@@ -28,7 +28,7 @@
 
   <!-- cloud -->
   <rect x="50" y="240" width="700" height="90" rx="12" fill="#fff7ed" stroke="#f59e0b" stroke-width="1.5"/>
-  <text x="400" y="270" text-anchor="middle" font-size="15" font-weight="700" fill="#b45309">Roblox 클라우드 — 이 모든 걸 스케일로 돌리는 기반</text>
+  <text x="400" y="270" text-anchor="middle" font-size="15" font-weight="700" fill="#b45309">Roblox 클라우드: 이 모든 걸 스케일로 돌리는 기반</text>
   <text x="400" y="296" text-anchor="middle" font-size="12.5" fill="#334155">세계의 상태를 영구 저장 (며칠 뒤 돌아와도 게임이 그대로) · 수백만 세션을 플레이어 가까운 데이터센터에서 실행</text>
   <text x="400" y="316" text-anchor="middle" font-size="12.5" fill="#334155">권위 있는 상태가 플레이어 옆에 있어야 빠르고 공정한 멀티플레이가 가능하다</text>
 

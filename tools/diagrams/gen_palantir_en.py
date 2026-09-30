@@ -50,7 +50,7 @@ def d2_axes():
         (134, "1. What exists?", "strong", "present", GREEN, AMBER,
          "class hierarchy, inference", "Object Type, no inference"),
         (208, "2. What state is it in?", "present", "strong", AMBER, GREEN,
-         "ABox — largely static", "live, and writable"),
+         "ABox: largely static", "live, and writable"),
         (282, "3. What may change?", "absent", "strong", RED, GREEN,
          "no notion of action at all", "Action Type is the centre"),
         (356, "4. What is forbidden?", "weak", "strong", RED, GREEN,
@@ -90,7 +90,7 @@ def d3_action():
     b.append(T(120, 246, "Governed", 19, GREEN, weight="bold"))
     b.append(T(120, 272, "operation", 16, INK_LIGHT))
     steps = ["input", "validate", "check perms", "run", "write back", "audit log"]
-    x = 200
+    x = 186
     bw = 100
     for i, s in enumerate(steps):
         hot = s in ("validate", "check perms", "audit log")
@@ -99,8 +99,8 @@ def d3_action():
         b.append(T(x + bw / 2, 254, s, 15, AMBER if hot else INK,
                    weight="bold" if hot else "normal"))
         if i < len(steps) - 1:
-            b.append(arr(r, x + bw + 2, 248, x + bw + 10, 248, INK_LIGHT, 1.3, 6))
-        x += bw + 12
+            b.append(arr(r, x + bw + 2, 248, x + bw + 8, 248, INK_LIGHT, 1.3, 6))
+        x += bw + 10
 
     b.append(T(440, 300, "The amber boxes are what separate a button a person may press from one they may not", 16.5, INK))
     b.append(T(440, 366, "Handing an agent execution rights needs exactly this difference", 20, INK))
