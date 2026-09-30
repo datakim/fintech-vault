@@ -78,6 +78,14 @@ tags:
 
 ## 6. 톤앤매너 (가장 중요, 여기서 제일 많이 반려된다)
 
+**문체는 `.claude/skills/blog-voice/SKILL.md`를 따른다** (2026-09-30부터). 블로그 원래의 평서체·선배 톤에, 저자가 고른 외부 참고 문체의 리듬을 섞은 것이다(출처와 분석은 스킬 파일에 있다). 스킬 폴더는 `.git/info/exclude`로 저장소에서 빠져 있어서 로컬에만 있다. 요점은 짧은 문장(중앙값 30~38자), 짧은 문단(2~3문장), 한 문장 문단 15~25%, 구체적인 첫 줄, 사실을 짧게 연달아 쌓기. 초안을 쓴 뒤 반드시 측정한다:
+
+```bash
+python3 .claude/skills/blog-voice/voice_stats.py src/content/posts/<slug>.md
+```
+
+아래 규칙은 그 스킬과 함께 계속 유효하다.
+
 ### 하드 룰
 - **평서체.** ~이다/~한다. 존댓말(~습니다/~요) 금지. 검사: `grep -nE '습니다|입니다|합니다' <file>`
 - **em dash(—) 금지.** 본문·캡션·참고자료·그림 텍스트 전부. 삽입구는 괄호나 쉼표, 아니면 문장을 끊는다. 참고자료 목록은 `[제목 (매체)](URL)`.
@@ -174,7 +182,9 @@ grep -oE 'href="/posts/[a-z0-9-]+/"' dist/posts/<slug>/index.html | sort -u | se
 - 팀 사례, 수치, 인용을 지어내지 않는다. 저자가 준 것과 원문에 있는 것만.
 - 블로그 제목·About 등 사이트 설정은 묻지 않고 바꾸지 않는다.
 
-## 11. 지금 상태와 미결 (2026-09-20)
+## 11. 지금 상태와 미결 (2026-09-30)
+
+- `src/content/posts/sales-forecasting-1.md`, `sales-forecasting-2.md` + `public/sf-*.svg`, `public/tst-*.svg` + `tools/diagrams/gen_salesfc.py`: 판매량 예측 시리즈 1·2편. 한국어·영문 모두 2026-09-30 배포됨(영문 그림은 `gen_salesfc_en.py`). 3편은 저자가 나중에 정하기로 함.
 
 로컬에만 있고 커밋 안 된 것:
 - `src/content/posts/kyc-to-kya.md` + `public/kya-*.svg` + `tools/diagrams/gen_kya.py`: 초안 완성, 저자 검토 끝남. **날짜가 8월 18일**로 돼 있어서 지금 올리면 목록 아래로 묻힌다. 올릴 때 pubDatetime과 본문 끝의 "8월 18일 기준" 노트를 배포일로 바꿀지 저자에게 물어야 한다.
