@@ -185,6 +185,7 @@ grep -oE 'href="/posts/[a-z0-9-]+/"' dist/posts/<slug>/index.html | sort -u | se
 ## 11. 지금 상태와 미결 (2026-09-30)
 
 - `src/content/posts/sales-forecasting-1.md`, `sales-forecasting-2.md` + `public/sf-*.svg`, `public/tst-*.svg` + `tools/diagrams/gen_salesfc.py`: 판매량 예측 시리즈 1·2편. 한국어·영문 모두 2026-09-30 배포됨(영문 그림은 `gen_salesfc_en.py`). 3편은 저자가 나중에 정하기로 함.
+- `src/content/posts/ai-companies-payments.md` + 영문판 + `public/agentpay-*.svg` + `tools/diagrams/gen_agentpay.py`(한·영 문구를 한 파일에 두고 `python3 gen_agentpay.py <출력폴더> ko|en`으로 생성): "AI 회사는 결제 회사가 될까" 2026-10-01 배포. Stablehunter 위챗 글을 출발점으로 삼되 번역하지 않고 새로 썼다(원문은 무단 전재 금지라 참고 자료에만 둠).
 - 2026-09-30: 발행된 모든 글(한·영), About, Books, 그림(SVG)에서 em dash를 걷어냈다. 참고자료는 `[제목 (매체)](URL)` 형식으로 통일. 같은 작업에서 그림 레이아웃 오류 5개(e-CNY 영문 요약, 뉴럴 계보·드리프트 표·FDE 사분면 한국어, 팔란티어 액션 영문)와 글 속 오류(오역, 출처 오기, 끊긴 링크 제목 등)를 고쳤고 `public/favicon.ico`를 추가했다. 스크립트가 없는 한국어 그림(`book1-*`, `eval-*`, 월드모델 계열 일부)은 SVG를 직접 고쳤으니, 다시 만들 일이 있으면 영문 스크립트를 참고해 새로 작성할 것.
 
 로컬에만 있고 커밋 안 된 것:
