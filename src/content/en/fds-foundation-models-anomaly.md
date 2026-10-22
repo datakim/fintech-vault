@@ -1,6 +1,6 @@
 ---
 title: "[FDS] Finding the 0.015%: Transaction Sequence Models, Anomaly Detection and Graphs"
-description: "In 2024, card fraud in Europe was 0.015% of transactions by count, and fraud labels can take a week or more to arrive. How WeChat Pay, Stripe and Visa have added transaction sequence models alongside their existing models, why XGBoost is still there, label-free anomaly detection and the foundation models from Leman Akoglu's group at CMU, and graph methods for finding fraud rings."
+description: "In 2024, card fraud in Europe was 0.015% of transactions by count, and fraud labels can take a week or more to arrive. How WeChat Pay, Stripe and Visa have added transaction sequence foundation models alongside their existing models, why XGBoost is still there, label-free anomaly detection and the foundation models from Leman Akoglu's group at CMU, and graph methods for finding fraud rings."
 pubDatetime: 2026-10-22T22:00:00Z
 koSlug: fds-foundation-models-anomaly
 tags:
@@ -22,9 +22,9 @@ The EBA and ECB report puts total payment fraud in the EEA in 2024 at €4.2 bil
 
 Label delay matters just as much. A Worldline team measured it on production data in a paper at AISTATS 2022. Only about 1% of fraudulent cards were blocked within an hour of the first fraudulent transaction, and fewer than 30% within a day. Most were blocked within a week to ten days, because a transaction is labelled as fraud only after the customer disputes it and the dispute is confirmed.
 
-A 2018 paper by Dal Pozzolo and colleagues in IEEE TNNLS summed up what makes fraud detection hard: the data distribution drifts as tactics change, the classes are extremely imbalanced, and labels are verified late. Investigators can review only a handful of alerts a day, so the paper recommended measuring precision on the top alerts rather than AUC.
+A 2018 paper by Dal Pozzolo and colleagues in IEEE TNNLS traced the difficulty of fraud detection to three conditions: the data distribution drifts as tactics change (concept drift), the classes are extremely imbalanced, and labels are verified late. Since investigators can review only a handful of alerts a day, its recommendation was to measure precision on the top alerts rather than AUC.
 
-Because of these conditions, the card industry measures fraud detection by how much fraud value is caught for a given number of good accounts wrongly flagged. Flagging five good accounts for every fraudulent one is called 5:1, and the share of fraud value caught at that point is the value detection rate (VDR).
+Because of these conditions, the card industry measures fraud detection by how much fraud value is caught for a given number of legitimate cases wrongly flagged. Flagging five legitimate cases for every fraudulent one is called 5:1. Whether a case is an account or a transaction depends on the company and the metric: FICO uses the account-level AFPR (account false positive ratio), while Visa's LTM brochure does not state the unit. The share of fraud value caught at a given operating point is the value detection rate (VDR).
 
 ## 2. Fraud models that read transaction sequences
 
@@ -34,21 +34,21 @@ The most detailed public example is WeChat Pay's PANTHER. In a paper at NeurIPS 
 
 _Payment behaviour sequences are turned into (merchant category, amount bucket) tokens to predict the next action, and a user profile embedding is learned alongside them through contrastive learning. (Source: [PANTHER, arXiv:2510.10102](https://arxiv.org/abs/2510.10102), CC BY 4.0)_
 
-The way it goes into production resembles Affirm's approach from the previous post. A user embedding and a deviation score, which measures how far current behaviour departs from the user's usual pattern, are extracted from the pretrained model and precomputed. These go into the existing DCN-based fraud model as features. The baseline was the previous DeepFM model, which used hand-crafted features with a TextCNN on top.
+The way it goes into production resembles Affirm's approach from the previous post. A user embedding and a deviation score, which measures how far the current transaction departs from the user's usual behaviour, are extracted from the pretrained model ahead of time. The real-time decision is made by a discriminative model, typically a DCN, that takes these two values together with recent transaction patterns and transaction context. The A/B baseline was the DeepFM model already in production, built on hand-crafted features and a TextCNN sequence encoder.
 
 ![Fraud recall improvement at each operating point](/fds-panther-recall.png)
 
 _Relative improvement in fraud recall over DeepFM, measured on the top 0.01%, 0.1% and 1% of risk scores. (Source: [PANTHER, arXiv:2510.10102](https://arxiv.org/abs/2510.10102), CC BY 4.0)_
 
-WeChat Pay ran a ten-day A/B test on full traffic in its production system. Fraud recall rose by 109.5% in the top 0.01% of risk scores, 38.6% in the top 0.1% and 12.1% in the top 1%. Adding the embedding and the deviation score together worked better than adding either one alone. Latency rose by 5ms over the baseline and stayed within the 100ms budget. The paper lists interpretability as a limitation, given how complex the representations are.
+WeChat Pay ran a ten-day A/B test on full traffic in its production system. Fraud recall rose by 109.5% in the top 0.01% of risk scores, 38.6% in the top 0.1% and 12.1% in the top 1%. Adding the embedding and the deviation score together worked better than adding either one alone. Latency rose by 5ms over the baseline and stayed within the 100ms budget. Interpretability remains a limitation, since the representations are complex, and the paper leaves it for future work.
 
-Stripe also announced a payments foundation model in 2025, trained on tens of billions of transactions. Each transaction is compressed into an embedding, and a classifier over sequences of these embeddings catches card testing, in which fraudsters make small payments to check whether stolen card details work. Stripe said its detection rate for attacks on large users rose from 59% to 97%, a figure that refers to a subset of sophisticated attacks.
+Stripe also announced a payments foundation model in 2025, trained on tens of billions of transactions. Each transaction is compressed into an embedding, and a classifier over sequences of these embeddings catches card testing, in which fraudsters make small payments to check whether stolen card details work. The detection rate for attacks on large users rose from 59% to 97%, measured on a subset of sophisticated attacks.
 
-Visa, after acquiring Featurespace, introduced large transaction models (LTMs). In a proof of concept on North American card-not-present transactions, it said an LTM caught more than five times as much fraud value as a production GBT model at the same 5:1 point. A footnote describes the results as illustrative. In Revolut's paper, PRAGMA's fraud detection showed 64.7% higher recall and 16.7% higher precision than the task-specific baseline.
+Visa, after acquiring Featurespace, introduced large transaction models (LTMs). In a proof of concept on North American card-not-present transactions, an LTM caught more than five times as much fraud value as a production GBT model at the same 5:1 point. A footnote describes the results as illustrative. Revolut's PRAGMA had 64.7% higher fraud recall and 16.7% higher precision than the task-specific baseline.
 
-Sardine, a fraud prevention company, described quite openly in September 2026 how it built a model for card issuers. The transformer was pretrained without fraud labels by predicting the next transaction. Its embeddings and a "surprise" score then became inputs to the existing XGBoost model, which has 77 features. At the same alert rate, the model caught 24 to 35% more fraud. The company also wrote that its first version actually performed worse, and that it had not replaced the existing model with a neural network.
+Sardine, a fraud prevention company, gave a fairly candid account in September 2026 of how it built a model for card issuers. A transformer was pretrained without fraud labels by predicting the next transaction, and its embeddings and a surprise score were added as inputs to the existing 77-feature XGBoost model. At the same alert rate, the model caught 24 to 35% more fraud. The first version actually performed worse, and the existing model was never swapped out for a neural network.
 
-Mastercard announced a large tabular model trained on billions of transactions in March 2026 and said it plans to build a hybrid system combining its existing AI models with the new one. It did not publish performance figures.
+Mastercard unveiled a large tabular model trained on billions of transactions in March 2026, along with plans for a hybrid system combining its existing AI models with the new one. No performance figures were given.
 
 PANTHER and Sardine, which disclosed how they deploy their models, kept their existing models, and Mastercard is planning a hybrid. In each case, embeddings or deviation scores from the foundation model are added as features to an existing tree or deep learning model.
 
@@ -58,15 +58,15 @@ The evidence on the other side is fairly solid too.
 
 Block, which runs Cash App and Square, published its BlockTabBench results in August 2026. It compared PR-AUC on more than 100 internal risk datasets, covering problems such as scams and account takeover, with time-based splits. XGBoost was best on 41% of the datasets, the tabular deep learning model TabM on 37% and tabular foundation models (TabFM) on 22%. The foundation models won mostly on datasets with few labels. Block concluded that XGBoost is a sensible default when it performs close to the ceiling. The comparison used engineered tabular features, not raw sequences.
 
-Adyen said in 2024 that its fraud detection runs on tree-based ensembles. Its reasoning was that the data is mostly structured and tabular, so boosting with hundreds of features gives a strong baseline. It added that it had not yet seen proof that deep learning improves ROI once operational load, reliability and latency are taken into account. Average latency is 20ms and p99 is 100ms.
+Adyen explained in 2024 that its fraud detection runs on tree-based ensembles. The data is mostly structured and tabular, so boosting with hundreds of features already gives a strong baseline, and once operational load, reliability and latency are counted, Adyen had not yet seen proof that deep learning improves ROI. Average latency is 20ms and p99 is 100ms.
 
-Visa's own LTM brochure notes that GBTs are quicker to deploy, easier to interpret and do well with little data. Sardine said explainability could be a show-stopper, and added that outside card issuing the benefits of foundation models may shrink or disappear. That is probably also why PANTHER was layered on top of the existing model in production. Adding only the signal from sequences while meeting latency and explainability requirements is easier to run.
+Visa's own LTM brochure credits GBTs with faster deployment, easier interpretation and good performance on little data. In Sardine's view, explainability could be a show-stopper, and outside card issuing the benefits of foundation models may shrink or disappear. That is probably also why PANTHER was layered on top of the existing model in production. Adding only the signal from sequences while meeting latency and explainability requirements is easier to run.
 
 ## 4. Anomaly detection without labels
 
 All the models so far learn from fraud labels confirmed in the past. When a new tactic appears, it takes time for labels to build up, and losses mount in the meantime. Anomaly detection, which looks for what is unusual without labels, fills that gap.
 
-A common choice in practice is Isolation Forest, published at ICDM in 2008. Instead of modelling normal data, it isolates outliers by splitting the data at random again and again. Outliers are few and far from the rest, so they are isolated quickly near the root of the trees, and the shorter the average path length, the higher the anomaly score. Another long-standing approach is to train an autoencoder to reconstruct the data and treat transactions with large reconstruction error as anomalies. The original 2002 paper already used fraud detection as an example.
+A common choice in practice is Isolation Forest, published at ICDM in 2008. Instead of modelling normal data, it isolates outliers by splitting the data at random again and again. Outliers are few and far from the rest, so they are isolated quickly near the root of the trees, and the shorter the average path length, the higher the anomaly score. On the neural network side, a long-standing approach is to train a model to reconstruct the data and treat transactions with large reconstruction error as anomalies. A 2002 paper by Hawkins and colleagues, which used replicator neural networks (structurally the same as autoencoders) for outlier detection, already named fraud detection as a key application.
 
 ADBench, published at NeurIPS 2022, compared 30 algorithms on 57 datasets. No unsupervised method was statistically better than the rest, and which method won depended on the type of anomaly. LOF was best on local anomalies, which stand out from their neighbours, and kNN on global anomalies, which lie far from the overall distribution.
 
@@ -74,7 +74,7 @@ Labels made a large difference. On real datasets, with labels for just 1% of ano
 
 ## 5. Choosing a model without labels
 
-KDD 2026 was held in Jeju in August. At its Machine Learning in Finance workshop (MLF 2026), I attended an invited talk by Leman Akoglu of CMU, "Advancing Outlier Detection with Foundation Models", on anomaly detection with foundation models for tabular data. The research starts from the model selection problem. Without labels, there is no basis for choosing which detector to use or with which hyperparameters, and the group's FoMo-0D paper calls this the key bottleneck in anomaly detection.
+KDD 2026 was held in Jeju in August. At its Machine Learning in Finance workshop (MLF 2026), I attended an invited talk by Leman Akoglu of CMU, "Advancing Outlier Detection with Foundation Models", on anomaly detection with foundation models for tabular data. The research starts from the model selection problem. Without labels, there is no basis for choosing which detector to use or with which hyperparameters, and the group's FoMo-0D paper names this as the key bottleneck in anomaly detection. The 0 in the name stands for zero-shot: the model is not trained again on each new dataset.
 
 Akoglu's group has worked on this problem for years. A review it published in SIGKDD Explorations in 2023 tested internal evaluation methods for selecting models without labels, on 39 tasks with 297 candidate models. None of them turned out to be practically useful. Standalone strategies were statistically indistinguishable from random selection, and strategies built on consensus across models did no better than Isolation Forest with default settings. Methods such as MetaOD (NeurIPS 2021) choose a model by meta-learning on past labelled benchmarks, but they still borrow labels from other data.
 
@@ -96,11 +96,11 @@ These numbers need some care. In the OutFormer paper, OutFormer had the best ave
 
 ## 6. Fraud rings do not act alone
 
-The methods so far look at one transaction or one customer at a time. Fraud rings that run many accounts, and money laundering, show up only when you look at the relationships between customers. Revolut's PRAGMA was 47.1% worse than the production model on F0.5 for anti-money laundering. The baseline used network information across customers, and the paper noted that representations of individual customers may be insufficient for such a relational task.
+The methods so far look at one transaction or one customer at a time. Fraud rings that run many accounts, and money laundering, show up only when you look at the relationships between customers. Revolut's PRAGMA was 47.1% worse than the production model on F0.5 for anti-money laundering. The baseline used network information across customers, and the authors themselves point out that representations of individual customers may not be enough for such a relational task.
 
 A representative graph method is FRAUDAR, published at KDD 2016 by Christos Faloutsos's group at CMU. It starts from the observation that fraudulent accounts form dense blocks in a bipartite graph that links users to targets such as products or accounts. To avoid detection, fraudulent accounts also link to normal or popular targets. The paper down-weights targets with many connections, so that adding such camouflage edges does not lower the score of a fraudulent block. On a 2009 Twitter graph, most of the account blocks the method found were advertising follower-buying services.
 
-In practice, graph signals are often turned into features rather than putting graph neural networks straight into production. Alipay's GraphFAS (CIKM 2026) builds interpretable graph features that reach neighbours several hops away, selects the useful ones and feeds them into a tree model. The paper says plainly that the interpretability and deployment cost of graph neural networks had been problems in financial risk management.
+In practice, graph signals are often turned into features rather than putting graph neural networks straight into production. Alipay's GraphFAS (CIKM 2026) builds interpretable graph features that reach neighbours several hops away, selects the useful ones and feeds them into a tree model. The work starts from the problem that graph neural networks had been hard to interpret and costly to deploy in financial risk management.
 
 ## 7. My view
 
