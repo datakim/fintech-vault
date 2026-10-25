@@ -1,4 +1,4 @@
-# CLAUDE.md — Fintech Vault 블로그 작업 가이드
+# CLAUDE.md — Fintech AI Lab 블로그 작업 가이드
 
 이 저장소는 **AstroPaper v6 기반 개인 테크 블로그**다. 배포는 Vercel(`main` 브랜치에 push하면 자동 빌드·배포). 라이브: https://www.financialailab.com
 

@@ -1,4 +1,4 @@
-# AGENTS.md: Fintech Vault 블로그 인수인계 (Codex용)
+# AGENTS.md: Fintech AI Lab 블로그 인수인계 (Codex용)
 
 이 문서는 Claude Code에서 하던 블로그 작업을 Codex로 넘기기 위한 인수인계다. 2026-09-20 기준.
 `CLAUDE.md`와 겹치는 내용이 있는데, 둘이 다르면 **이 문서가 우선**한다. 이 문서 하나만 읽으면 글 하나를 기획하고 쓰고 올리는 데 필요한 건 다 있어야 한다. 부족하면 이 문서를 고쳐라.
@@ -7,7 +7,7 @@
 
 ## 1. 이게 뭔가
 
-- **Fintech Vault**: 김태헌(Elliot)의 개인 테크 블로그. 라이브 https://www.financialailab.com
+- **Fintech AI Lab** (2026-10-26 Fintech Vault에서 이름 변경): 김태헌(Elliot)의 개인 테크 블로그. 라이브 https://www.financialailab.com
 - 저자: 이커머스 핀테크 조직의 데이터 사이언티스트, 아주대 AI대학원 겸임교수(금융 AI), 캐글 그랜드마스터. 저서 『주니어 AI 엔지니어가 반드시 알아야 할 실무 지식』(한빛미디어, 2026), Manning 『Financial AI in Practice』(MEAP).
 - 목적: 저자가 공부하고 생각한 걸 저장·공유하는 곳. 뉴스레터 요약 채널이 아니다. 글의 중심은 **저자의 인사이트**이고 사례·기사는 재료다. 책 홍보 연재(간접, 하단 링크만)도 일부 있다.
 - 스택: AstroPaper v6 / Astro, pnpm. `main`에 push하면 Vercel이 자동 배포.
