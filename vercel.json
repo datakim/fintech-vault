@@ -1,9 +1,9 @@
 {
   "redirects": [
     {
-      "source": "/:path*",
+      "source": "/(.*)",
       "has": [{ "type": "host", "value": "fintech-vault.vercel.app" }],
-      "destination": "https://www.financialailab.com/:path*",
+      "destination": "https://www.financialailab.com/$1",
       "permanent": true
     }
   ]
