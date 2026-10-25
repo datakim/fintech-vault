@@ -1,6 +1,6 @@
 # CLAUDE.md — Fintech Vault 블로그 작업 가이드
 
-이 저장소는 **AstroPaper v6 기반 개인 테크 블로그**다. 배포는 Vercel(`main` 브랜치에 push하면 자동 빌드·배포). 라이브: https://fintech-vault.vercel.app
+이 저장소는 **AstroPaper v6 기반 개인 테크 블로그**다. 배포는 Vercel(`main` 브랜치에 push하면 자동 빌드·배포). 라이브: https://www.financialailab.com
 
 - **로컬 경로:** `/Users/elliot/Claude/Projects/blog`
 - **원격:** https://github.com/datakim/fintech-vault (`main` 브랜치)
@@ -29,7 +29,7 @@
 3. **이미지 처리** (아래 5번) — 있으면 `public/`에 넣고 `![](/파일명)`으로 참조.
 4. **빌드 검증** — `pnpm build` (또는 `npm run build`)로 로컬 빌드가 깨지지 않는지 확인. 최소한 `pnpm astro check`.
 5. **커밋 & 푸시** — `git add` → `git commit` → `git push`. Vercel이 자동 배포.
-6. **라이브 확인** — 40~90초 대기 후 `https://fintech-vault.vercel.app/posts/<slug>/`가 뜨는지, 이미지·수식·목록 렌더링이 정상인지 확인.
+6. **라이브 확인** — 40~90초 대기 후 `https://www.financialailab.com/posts/<slug>/`가 뜨는지, 이미지·수식·목록 렌더링이 정상인지 확인.
 7. **보고** — 글 URL, 반영 내용, 확인이 필요한 부분(이미지/팩트)을 저자에게 요약.
 
 > Claude Code는 로컬 레포에서 직접 작업하므로 예전처럼 "격리된 클론에서 푸시"할 필요가 없다. 그냥 이 레포에서 커밋·푸시하면 된다.
@@ -161,7 +161,7 @@ git commit -m "Add post: <영문 요약>"
 git push
 
 # 라이브 확인 (약 40~90초 후)
-# https://fintech-vault.vercel.app/posts/<slug>/
+# https://www.financialailab.com/posts/<slug>/
 ```
 
 ### 의존성을 추가할 때만 주의
@@ -172,6 +172,7 @@ git push
 ## 8. 이미 되어 있는 것 (건드리지 말 것)
 
 - **SEO**: sitemap, robots.txt, canonical, OG(+`og:locale=ko_KR`), Twitter Card, `BlogPosting`/`WebSite` JSON-LD, Google/Naver 검증 메타 — 전부 설정됨. Naver 서치어드바이저·GSC 등록 완료.
+- **도메인**: 2026-10-26부터 대표 주소는 `https://www.financialailab.com`(`astro-paper.config.ts`의 `url`). 옛 주소 `fintech-vault.vercel.app`은 `vercel.json`의 host 조건 리다이렉트로 같은 경로의 새 도메인으로 308 이동한다. 이 리다이렉트를 지우면 검색엔진에 중복 사이트가 생긴다.
 - **OG 이미지 한글 폰트**(Noto Sans KR), **Pretendard 본문 폰트**, **KaTeX**, **Books 컬렉션** — 모두 구성됨.
 - 새 글을 쓸 때 이 인프라는 자동으로 적용된다. 별도 작업 불필요.
 

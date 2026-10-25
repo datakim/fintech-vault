@@ -7,7 +7,7 @@
 
 ## 1. 이게 뭔가
 
-- **Fintech Vault**: 김태헌(Elliot)의 개인 테크 블로그. 라이브 https://fintech-vault.vercel.app
+- **Fintech Vault**: 김태헌(Elliot)의 개인 테크 블로그. 라이브 https://www.financialailab.com
 - 저자: 이커머스 핀테크 조직의 데이터 사이언티스트, 아주대 AI대학원 겸임교수(금융 AI), 캐글 그랜드마스터. 저서 『주니어 AI 엔지니어가 반드시 알아야 할 실무 지식』(한빛미디어, 2026), Manning 『Financial AI in Practice』(MEAP).
 - 목적: 저자가 공부하고 생각한 걸 저장·공유하는 곳. 뉴스레터 요약 채널이 아니다. 글의 중심은 **저자의 인사이트**이고 사례·기사는 재료다. 책 홍보 연재(간접, 하단 링크만)도 일부 있다.
 - 스택: AstroPaper v6 / Astro, pnpm. `main`에 push하면 Vercel이 자동 배포.
@@ -29,7 +29,7 @@ CLAUDE.md                   이전 도구용 가이드. 내용은 이 문서에 
 
 ## 3. 뭐가 올라가 있는지 보는 법
 
-- 라이브 목록: https://fintech-vault.vercel.app/posts/ (한국어), https://fintech-vault.vercel.app/en/ (영문)
+- 라이브 목록: https://www.financialailab.com/posts/ (한국어), https://www.financialailab.com/en/ (영문)
 - 로컬: `ls src/content/posts/` / `ls src/content/en/`. 제목만 훑으려면
   `grep -h '^title:' src/content/posts/*.md`
 - 한·영 짝 확인: `grep -l 'koSlug: <slug>' src/content/en/*.md`
@@ -50,9 +50,9 @@ CLAUDE.md                   이전 도구용 가이드. 내용은 이 문서에 
 ```bash
 SLUG=<slug>
 for i in $(seq 1 40); do
-  code=$(curl -s -o /dev/null -w '%{http_code}' https://fintech-vault.vercel.app/posts/$SLUG/)
+  code=$(curl -s -o /dev/null -w '%{http_code}' https://www.financialailab.com/posts/$SLUG/)
   if [ "$code" = "200" ]; then echo "live after $i"; \
-    curl -s https://fintech-vault.vercel.app/posts/$SLUG/ | grep -o '\*\*' | wc -l; break; fi
+    curl -s https://www.financialailab.com/posts/$SLUG/ | grep -o '\*\*' | wc -l; break; fi
   sleep 10
 done
 ```

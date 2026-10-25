@@ -2,7 +2,7 @@ import { defineAstroPaperConfig } from "./src/types/config";
 
 export default defineAstroPaperConfig({
   site: {
-    url: "https://fintech-vault.vercel.app",
+    url: "https://www.financialailab.com",
     title: "Fintech Vault",
     description: "금융 AI, 데이터 사이언스, 그리고 LLM 응용에 대한 기록",
     author: "Elliot Kim (김태헌)",
