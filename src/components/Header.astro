@@ -1,8 +1,6 @@
 ---
 import { getRelativeLocaleUrl } from "astro:i18n";
-import IconUnderline from "@/assets/icons/IconUnderline.svg";
 import IconMenuDeep from "@/assets/icons/IconMenuDeep.svg";
-import IconArchive from "@/assets/icons/IconArchive.svg";
 import IconSunHigh from "@/assets/icons/IconSunHigh.svg";
 import IconSearch from "@/assets/icons/IconSearch.svg";
 import IconMoon from "@/assets/icons/IconMoon.svg";
@@ -27,11 +25,29 @@ const pathWithoutTrailingSlash =
 
 const currentPath = stripLocale(pathWithoutTrailingSlash, locale);
 
-const isActive = (path: string) => {
-  const currentPathArray = currentPath.split("/").filter(p => p.trim());
-  const pathArray = path.split("/").filter(p => p.trim());
-  return currentPath === path || currentPathArray[0] === pathArray[0];
-};
+// 2026-10-26부터 영어가 기본. Posts는 영문 글, 한국어는 따로 둔다.
+const seg = currentPath.split("/").filter(Boolean);
+const navItems = [
+  {
+    href: "/en/",
+    label: "Posts",
+    active: seg[0] === "en" && seg[1] !== "about",
+  },
+  {
+    href: "/posts/",
+    label: "한국어",
+    lang: "ko",
+    active: ["posts", "tags", "archives"].includes(seg[0] ?? ""),
+  },
+  { href: "/graph/", label: "Map", active: seg[0] === "graph" },
+  { href: "/books/", label: "Books", active: seg[0] === "books" },
+  {
+    href: "/en/about/",
+    label: t.nav.about,
+    active: seg[0] === "about" || (seg[0] === "en" && seg[1] === "about"),
+  },
+];
+
 ---
 
 <a
@@ -42,25 +58,44 @@ const isActive = (path: string) => {
   {t.a11y.skipToContent}
 </a>
 
-<header
-  class="app-layout flex flex-col items-center justify-between sm:flex-row"
->
+<header class="app-wide">
   <div
-    class="border-border bg-background relative flex w-full items-baseline justify-between border-b py-4 sm:items-center sm:py-6"
+    class="border-border/70 relative flex w-full items-center justify-between border-b py-5"
   >
     <a
-      href={getRelativeLocaleUrl(locale, "")}
-      class="absolute py-1 text-xl leading-8 font-semibold whitespace-nowrap sm:static sm:my-auto sm:text-2xl sm:leading-none"
+      href="/"
+      class="group flex items-center gap-3 whitespace-nowrap"
+      aria-label={site.title}
     >
-      {site.title}
+      <svg
+        class="text-accent size-6 shrink-0 transition-transform duration-500 group-hover:rotate-12"
+        viewBox="0 0 32 32"
+        fill="none"
+        aria-hidden="true"
+      >
+        <path
+          d="M7 22 15 9l10 6-10 7Z"
+          stroke="currentColor"
+          stroke-opacity=".45"
+          stroke-width="1.4"
+        ></path>
+        <circle cx="7" cy="22" r="3" fill="currentColor"></circle>
+        <circle cx="15" cy="9" r="3.6" fill="currentColor"></circle>
+        <circle cx="25" cy="15" r="2.6" fill="currentColor"></circle>
+        <circle cx="15" cy="22" r="1.8" fill="currentColor" fill-opacity=".6"
+        ></circle>
+      </svg>
+      <span class="text-[19px] leading-none font-semibold tracking-[-0.03em]">
+        {site.title}
+      </span>
+      <span class="bg-border hidden h-4 w-px md:block" aria-hidden="true"
+      ></span>
+      <span class="eyebrow hidden md:block">Research Notes</span>
     </a>
-    <nav
-      id="nav-menu"
-      class="flex w-full flex-col items-center sm:ms-2 sm:flex-row sm:justify-end sm:space-x-4 sm:py-0"
-    >
+    <nav id="nav-menu" class="flex items-center">
       <button
         id="menu-btn"
-        class="focus-outline self-end p-2 sm:hidden"
+        class="focus-outline p-2 lg:hidden"
         aria-label={t.a11y.openMenu}
         aria-expanded="false"
         aria-controls="menu-items"
@@ -72,109 +107,60 @@ const isActive = (path: string) => {
       </button>
       <ul
         id="menu-items"
-        class="[&>li>a]:hover:text-accent mt-4 hidden w-44 grid-cols-2 place-content-center gap-2 sm:mt-0 sm:flex sm:w-auto sm:gap-x-5 sm:gap-y-0 sm:[&>li]:h-8 [&>li>a]:block [&>li>a]:px-4 [&>li>a]:py-3 [&>li>a]:text-center [&>li>a]:font-medium sm:[&>li>a]:px-2 sm:[&>li>a]:py-1"
+        class="bg-background border-border absolute inset-x-0 top-full z-40 mt-px hidden grid-cols-2 gap-1 border-b px-2 py-4 lg:static lg:mt-0 lg:flex lg:items-center lg:gap-1 lg:border-0 lg:p-0 [&>li>a]:block [&>li>a]:rounded-md [&>li>a]:px-3 [&>li>a]:py-2 [&>li>a]:text-[13px] [&>li>a]:font-medium [&>li>a]:tracking-[0.06em] [&>li>a]:uppercase"
       >
-        <li class="col-span-2">
-          <a
-            href={getRelativeLocaleUrl(locale, "posts")}
-            class:list={{ "active-nav": isActive("/posts") }}
-          >
-            Posts(KR)
-          </a>
-        </li>
-        <li class="col-span-2">
-          <a
-            href={getRelativeLocaleUrl(locale, "en")}
-            class:list={{ "active-nav": isActive("/en") }}
-          >
-            Posts(ENG)
-          </a>
-        </li>
-        <li class="col-span-2">
-          <a
-            href={getRelativeLocaleUrl(locale, "books")}
-            class:list={{ "active-nav": isActive("/books") }}
-          >
-            {t.nav.books}
-          </a>
-        </li>
-        <li class="col-span-2">
-          <a
-            href={getRelativeLocaleUrl(locale, "tags")}
-            class:list={{ "active-nav": isActive("/tags") }}
-          >
-            {t.nav.tags}
-          </a>
-        </li>
-        <li class="col-span-2">
-          <a
-            href={getRelativeLocaleUrl(locale, "about")}
-            class:list={{ "active-nav": isActive("/about") }}
-          >
-            {t.nav.about}
-          </a>
-        </li>
         {
-          features.showArchives && (
-            <li class="col-span-2">
-              <LinkButton
-                href={getRelativeLocaleUrl(locale, "archives")}
+          navItems.map(item => (
+            <li>
+              <a
+                href={item.href}
+                lang={item.lang}
                 class:list={[
-                  "focus-outline flex size-full justify-center p-3 sm:relative sm:size-8 sm:p-0",
-                  { "active-nav": isActive("/archives") },
+                  "text-muted-foreground hover:text-foreground transition-colors",
+                  { "active-nav": item.active },
                 ]}
-                title={t.nav.archives}
-                aria-label={t.nav.archives}
+                aria-current={item.active ? "page" : undefined}
               >
-                <IconArchive class="hidden sm:absolute sm:top-1/2 sm:left-1/2 sm:block sm:size-6 sm:-translate-x-1/2 sm:-translate-y-1/2" />
-                <span class="sm:sr-only">{t.nav.archives}</span>
-                {isActive("/archives") && (
-                  <IconUnderline
+                {item.active && (
+                  <span
+                    class="bg-accent me-2 inline-block size-1.5 -translate-y-0.5 rounded-full"
                     aria-hidden="true"
-                    class="scale-125 max-sm:hidden sm:absolute sm:bottom-0 sm:w-6"
                   />
                 )}
-              </LinkButton>
+                {item.label}
+              </a>
             </li>
-          )
+          ))
         }
-        {
-          features.search !== false && (
-            <li class="col-span-1 flex items-center justify-center">
+        <li class="flex items-center justify-center gap-1 lg:ms-2">
+          {
+            features.search !== false && (
               <LinkButton
                 href={getRelativeLocaleUrl(locale, "search")}
-                class:list={["focus-outline relative size-8"]}
+                class="focus-outline text-muted-foreground hover:text-foreground relative size-9 rounded-md"
                 title={t.nav.search}
                 aria-label={t.nav.search}
               >
-                <IconSearch class="absolute top-1/2 left-1/2 size-6 -translate-x-1/2 -translate-y-1/2" />
+                <IconSearch class="absolute top-1/2 left-1/2 size-5 -translate-x-1/2 -translate-y-1/2" />
                 <span class="sr-only">{t.nav.search}</span>
-                {isActive("/search") && (
-                  <IconUnderline
-                    aria-hidden="true"
-                    class="absolute bottom-0 w-6 scale-125 max-sm:inset-s-2"
-                  />
-                )}
               </LinkButton>
-            </li>
-          )
-        }
-        {
-          features.lightAndDarkMode && (
-            <li class="col-span-1 flex items-center justify-center">
+            )
+          }
+          {
+            features.lightAndDarkMode && (
               <button
                 id="theme-btn"
-                class="focus-outline hover:[&>svg]:stroke-accent relative size-12 p-4 sm:size-8"
+                class="focus-outline text-muted-foreground hover:text-foreground relative size-9 rounded-md"
                 title={t.a11y.toggleTheme}
                 aria-label="auto"
                 aria-live="polite"
               >
-                <IconMoon class="absolute top-[50%] left-[50%] translate-[-50%] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
-                <IconSunHigh class="absolute top-[50%] left-[50%] translate-[-50%] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
+                <IconMoon class="absolute top-[50%] left-[50%] size-5 translate-[-50%] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
+                <IconSunHigh class="absolute top-[50%] left-[50%] size-5 translate-[-50%] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
               </button>
-            </li>
-          )
-        }
+            )
+          }
+        </li>
       </ul>
     </nav>
   </div>

@@ -43,7 +43,7 @@ export default defineConfig({
     ],
     rehypePlugins: [rehypeKatex],
     shikiConfig: {
-      themes: { light: "min-light", dark: "night-owl" },
+      themes: { light: "min-light", dark: "everforest-dark" },
       defaultColor: false,
       wrap: false,
       transformers: [
@@ -58,6 +58,14 @@ export default defineConfig({
     plugins: [tailwindcss()],
   },
   fonts: [
+    {
+      name: "DM Sans",
+      cssVariable: "--font-dm-sans",
+      provider: fontProviders.google(),
+      fallbacks: ["sans-serif"],
+      weights: [400, 500, 600, 700],
+      styles: ["normal"],
+    },
     {
       name: "Google Sans Code",
       cssVariable: "--font-google-sans-code",

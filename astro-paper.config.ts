@@ -4,7 +4,7 @@ export default defineAstroPaperConfig({
   site: {
     url: "https://www.financialailab.com",
     title: "Fintech AI Lab",
-    description: "금융 AI, 데이터 사이언스, 그리고 LLM 응용에 대한 기록",
+    description: "Notes from working in fintech and studying AI on the side.",
     author: "Elliot Kim (김태헌)",
     profile: "",
     // public/에 이 파일이 없으면 사이트 제목·설명으로 /og.png를 자동 생성한다(2026-10-26 테마 기본 이미지 삭제).

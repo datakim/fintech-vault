@@ -7,28 +7,37 @@
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border);
-  --font-app: "Pretendard", var(--font-google-sans-code), sans-serif;
+  --color-surface: var(--surface);
+  --font-app: var(--font-dm-sans), "Pretendard", sans-serif;
 }
+
+/*
+ * Fintech AI Lab 팔레트 (2026-10-26)
+ * 딥그린 바탕에 크림색 글자, 세이지 포인트. 밝은 테마는 같은 색을 뒤집어
+ * 웜 아이보리 바탕에 딥그린 글자를 쓴다.
+ */
 
 /* Light theme values */
 :root,
 [data-theme="light"] {
-  --background: #fdfdfd;
-  --foreground: #282728;
-  --accent: #006cac;
-  --accent-foreground: #ffffff;
-  --muted: #e6e6e6;
-  --muted-foreground: #6b7280;
-  --border: #ece9e9;
+  --background: #f6f5f0;
+  --surface: #fbfaf6;
+  --foreground: #1b332f;
+  --accent: #2e6a56;
+  --accent-foreground: #f5f3e9;
+  --muted: #e8e7de;
+  --muted-foreground: #5b6c65;
+  --border: #dad9ce;
 }
 
 /* Dark theme values */
 [data-theme="dark"] {
-  --background: #212737;
-  --foreground: #eaedf3;
-  --accent: #ff6b01;
-  --accent-foreground: #ffffff;
-  --muted: #343f60;
-  --muted-foreground: #afb9ca;
-  --border: #ab4b08;
+  --background: #152c30;
+  --surface: #1a3438;
+  --foreground: #f2f0e6;
+  --accent: #cbd8ad;
+  --accent-foreground: #152c30;
+  --muted: #21403f;
+  --muted-foreground: #a9b8b0;
+  --border: #2b4a4b;
 }

@@ -12,11 +12,11 @@
     h3,
     h4,
     th {
-      @apply text-foreground mb-3;
+      @apply text-foreground mb-3 font-semibold tracking-[-0.025em];
     }
 
-    h3 {
-      @apply italic;
+    h2 {
+      @apply mt-14;
     }
 
     p,
@@ -30,7 +30,7 @@
     }
 
     a {
-      @apply text-foreground hover:text-accent wrap-break-word decoration-dashed underline-offset-4 focus-visible:no-underline;
+      @apply text-foreground hover:text-accent decoration-accent/50 hover:decoration-accent wrap-break-word underline-offset-4 transition-colors focus-visible:no-underline;
     }
 
     ul {
@@ -46,7 +46,7 @@
     }
 
     img {
-      @apply border-border mx-auto border;
+      @apply border-border mx-auto rounded-lg border;
     }
 
     figcaption {
@@ -73,7 +73,7 @@
     }
 
     blockquote {
-      @apply border-s-accent/80 wrap-break-word opacity-80;
+      @apply border-s-accent/80 text-muted-foreground wrap-break-word not-italic;
     }
 
     details {

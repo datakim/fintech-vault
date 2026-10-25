@@ -1,8 +1,9 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import dayjs from "dayjs";
 import { getPostUrl } from "@/utils/getPostPaths";
 import { slugifyStr } from "@/utils/slugify";
-import Datetime from "./Datetime.astro";
+import { topicOf } from "@/utils/knowledgeGraph";
 
 type Props = {
   variant?: "h2" | "h3";
@@ -10,22 +11,36 @@ type Props = {
 
 const { variant: Heading = "h2", id, data, filePath } = Astro.props;
 
-const { title, description, ...props } = data;
+const { title, description, pubDatetime, modDatetime, tags } = data;
+const topic = topicOf(tags);
+const shownDate =
+  modDatetime && modDatetime > pubDatetime ? modDatetime : pubDatetime;
 ---
 
-<li class="my-6">
+<li class="border-border/80 border-b first:border-t">
   <a
     href={getPostUrl(id, filePath, Astro.currentLocale)}
-    class:list={[
-      "text-accent inline-block text-lg font-medium",
-      "decoration-dashed underline-offset-4 hover:underline",
-      "focus-visible:no-underline focus-visible:underline-offset-0",
-    ]}
+    class="group block py-6"
   >
-    <Heading transition:name={slugifyStr(title.replaceAll(".", "-"))}>
+    <span class="eyebrow flex items-center gap-2">
+      <span
+        class="inline-block size-1.5 rounded-full"
+        style={`background:${topic.color};box-shadow:0 0 0 1px rgb(0 0 0 / 0.15)`}
+      ></span>
+      {topic.eyebrow}
+      <span aria-hidden="true">·</span>
+      <time class="tracking-[0.12em]" datetime={shownDate.toISOString()}>
+        {dayjs(shownDate).format("YYYY.MM.DD")}
+      </time>
+    </span>
+    <Heading
+      transition:name={slugifyStr(title.replaceAll(".", "-"))}
+      class="group-hover:text-accent mt-2.5 text-[19px] leading-snug font-medium tracking-[-0.02em] transition-colors"
+    >
       {title}
     </Heading>
+    <p class="text-muted-foreground mt-2 line-clamp-2 text-[14.5px] leading-6">
+      {description}
+    </p>
   </a>
-  <Datetime {...props} />
-  <p>{description}</p>
 </li>

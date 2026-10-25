@@ -1,0 +1,237 @@
+---
+import {
+  getKnowledgeGraph,
+  TOPICS,
+  type GraphLang,
+} from "@/utils/knowledgeGraph";
+
+type Props = { slug: string; lang?: GraphLang };
+
+const { slug, lang = "en" } = Astro.props;
+const graph = await getKnowledgeGraph(lang);
+const t =
+  lang === "en"
+    ? {
+        title: "Related posts",
+        linksTo: "Links to",
+        linkedFrom: "Linked from",
+        sameTopic: "More on this topic",
+        map: "View on the map",
+      }
+    : {
+        title: "연결된 글",
+        linksTo: "이 글이 참고한 글",
+        linkedFrom: "이 글을 참고한 글",
+        sameTopic: "같은 주제의 글",
+        map: "지식 지도에서 보기",
+      };
+const byId = new Map(graph.nodes.map(n => [n.id, n]));
+const color = new Map(TOPICS.map(t => [t.id, t.color]));
+const eyebrow = new Map(TOPICS.map(t => [t.id, t.eyebrow]));
+
+const me = byId.get(slug);
+const outs = me ? me.out.map(id => byId.get(id)!).filter(Boolean) : [];
+const ins = me
+  ? me.in
+      .filter(id => !me.out.includes(id))
+      .map(id => byId.get(id)!)
+      .filter(Boolean)
+  : [];
+const sameTopic =
+  me && outs.length + ins.length === 0
+    ? graph.nodes
+        .filter(n => n.topic === me.topic && n.id !== me.id)
+        .slice(-3)
+        .reverse()
+    : [];
+
+// 가운데에 이 글, 둘레에 이어진 글을 놓는 작은 지도
+const ring = [...outs, ...ins, ...sameTopic].slice(0, 12);
+const W = 680;
+const H = 250;
+const C = { x: W / 2, y: H / 2 };
+const placed = ring.map((n, i) => {
+  const a = -Math.PI / 2 + ((i + 0.5) / ring.length) * Math.PI * 2;
+  return {
+    ...n,
+    px: C.x + Math.cos(a) * 250,
+    py: C.y + Math.sin(a) * 88,
+    side: Math.cos(a),
+    linked: outs.includes(n) || ins.includes(n),
+  };
+});
+const showLabels = ring.length <= 8;
+const labelOf = (s: string) => (s.length > 19 ? `${s.slice(0, 18)}…` : s);
+const mapUrl = `${lang === "en" ? "/graph/" : "/graph/ko/"}?focus=${slug}`;
+---
+
+{
+  me && (
+    <section
+      data-theme="dark"
+      class="related brand-band text-foreground my-12 overflow-hidden rounded-2xl border border-[rgb(203_216_173/0.14)] px-6 py-8 sm:px-9"
+      aria-labelledby="related-title"
+    >
+      <div class="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <p class="eyebrow">Connected</p>
+          <h2
+            id="related-title"
+            class="mt-2 text-[22px] font-semibold tracking-[-0.025em]"
+          >
+            {t.title}
+          </h2>
+        </div>
+        <a
+          href={mapUrl}
+          class="text-muted-foreground hover:text-foreground text-[13px] transition-colors"
+        >
+          {t.map} <span aria-hidden="true">→</span>
+        </a>
+      </div>
+
+      {ring.length > 0 && (
+        <svg
+          class="related-map mt-4 w-full"
+          viewBox={`0 0 ${W} ${H}`}
+          aria-hidden="true"
+        >
+          <ellipse
+            cx={C.x}
+            cy={C.y}
+            rx="250"
+            ry="88"
+            fill="none"
+            stroke="rgb(203 216 173 / 0.1)"
+            stroke-dasharray="2 6"
+          />
+          {placed.map(n => (
+            <line
+              x1={C.x}
+              y1={C.y}
+              x2={n.px}
+              y2={n.py}
+              stroke={
+                n.linked ? "rgb(203 216 173 / 0.35)" : "rgb(203 216 173 / 0.12)"
+              }
+              stroke-dasharray={n.linked ? undefined : "3 5"}
+            />
+          ))}
+          {placed.map(n => (
+            <a href={n.url} tabindex="-1">
+              <title>{n.title}</title>
+              <circle
+                cx={n.px}
+                cy={n.py}
+                r="14"
+                fill={color.get(n.topic)}
+                opacity="0.08"
+              />
+              <circle cx={n.px} cy={n.py} r="5" fill={color.get(n.topic)} />
+              {showLabels && (
+                <text
+                  class="related-label"
+                  x={
+                    Math.abs(n.side) < 0.2
+                      ? n.px
+                      : n.px + (n.side > 0 ? 12 : -12)
+                  }
+                  y={Math.abs(n.side) < 0.2 ? n.py + (n.py < C.y ? -14 : 22) : n.py + 4}
+                  text-anchor={
+                    Math.abs(n.side) < 0.2 ? "middle" : n.side > 0 ? "start" : "end"
+                  }
+                >
+                  {labelOf(n.short)}
+                </text>
+              )}
+            </a>
+          ))}
+          <circle
+            cx={C.x}
+            cy={C.y}
+            r="26"
+            fill={color.get(me.topic)}
+            opacity="0.1"
+          />
+          <circle
+            cx={C.x}
+            cy={C.y}
+            r="15"
+            fill="none"
+            stroke={color.get(me.topic)}
+            opacity="0.7"
+          />
+          <circle cx={C.x} cy={C.y} r="8.5" fill={color.get(me.topic)} />
+        </svg>
+      )}
+
+      <div class="mt-6 grid gap-8 sm:grid-cols-2">
+        {[
+          { label: t.linksTo, items: outs },
+          { label: t.linkedFrom, items: ins },
+        ]
+          .filter(g => g.items.length > 0)
+          .map(g => (
+            <div>
+              <p class="eyebrow">{g.label}</p>
+              <ul class="mt-3">
+                {g.items.map(n => (
+                  <li class="border-t border-white/10">
+                    <a href={n.url} class="group flex gap-3 py-3">
+                      <span
+                        class="mt-[9px] inline-block size-1.5 shrink-0 rounded-full"
+                        style={`background:${color.get(n.topic)}`}
+                      />
+                      <span>
+                        <span class="group-hover:text-accent block text-[15px] leading-6 transition-colors">
+                          {n.title}
+                        </span>
+                        <span class="text-muted-foreground mt-0.5 block text-[12px]">
+                          {eyebrow.get(n.topic)} · {n.date}
+                        </span>
+                      </span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        {sameTopic.length > 0 && (
+          <div class="sm:col-span-2">
+            <p class="eyebrow">{t.sameTopic}</p>
+            <ul class="mt-3 grid gap-x-8 sm:grid-cols-3">
+              {sameTopic.map(n => (
+                <li class="border-t border-white/10">
+                  <a href={n.url} class="group block py-3">
+                    <span class="group-hover:text-accent block text-[15px] leading-6 transition-colors">
+                      {n.title}
+                    </span>
+                    <span class="text-muted-foreground mt-0.5 block text-[12px]">
+                      {n.date}
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .related-label {
+    fill: rgb(242 240 230 / 0.7);
+    font-size: 12.5px;
+    letter-spacing: -0.01em;
+  }
+  .related-map a:hover .related-label {
+    fill: #fff;
+  }
+  @media (max-width: 640px) {
+    .related-label {
+      display: none;
+    }
+  }
+</style>

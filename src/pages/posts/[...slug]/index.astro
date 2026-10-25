@@ -13,6 +13,8 @@ import ShareLinks from "./_components/ShareLinks.astro";
 import BackButton from "./_components/BackButton.astro";
 import BackToTopButton from "./_components/BackToTopButton.astro";
 import AdjacentPostNav from "./_components/AdjacentPostNav.astro";
+import RelatedPosts from "@/components/RelatedPosts.astro";
+import { getKnowledgeGraph, topicOf } from "@/utils/knowledgeGraph";
 import config from "@/config";
 
 export async function getStaticPaths() {
@@ -71,6 +73,11 @@ const {
 } = post.data;
 
 const { Content } = await render(post);
+const topic = topicOf(tags);
+const postSlug = getPostSlug(post.id, post.filePath).replace(/^\//, "");
+const enHref = (await getKnowledgeGraph("ko")).nodes.find(
+  n => n.id === postSlug
+)?.alt;
 
 let ogImageUrl: string | undefined;
 
@@ -101,6 +108,7 @@ const ogImage = ogImageUrl
   pubDatetime={pubDatetime}
   modDatetime={modDatetime}
   tags={tags}
+  lang="ko"
 >
   <Header />
 
@@ -111,9 +119,16 @@ const ogImage = ogImageUrl
     class:list={["app-layout", { "mt-8": !config.features.showBackButton }]}
     data-pagefind-body
   >
+    <p class="eyebrow mt-6 flex items-center gap-2.5">
+      <span
+        class="inline-block size-1.5 rounded-full"
+        style={`background:${topic.color};box-shadow:0 0 0 1px rgb(0 0 0 / 0.15)`}
+      ></span>
+      {topic.eyebrow}
+    </p>
     <h1
       style={{ viewTransitionName: slugifyStr(title.replaceAll(".", "-")) }}
-      class="text-accent inline-block text-2xl font-bold sm:text-3xl"
+      class="mt-4 inline-block text-[1.9rem] leading-tight font-semibold tracking-[-0.035em] sm:text-[2.4rem]"
     >
       {title}
     </h1>
@@ -130,6 +145,17 @@ const ogImage = ogImageUrl
         |
       </span>
       <EditPost {hideEditPost} {post} class="max-sm:hidden" />
+      {
+        enHref && (
+          <a
+            href={enHref}
+            lang="en"
+            class="text-muted-foreground hover:text-foreground ms-auto text-[13px] underline-offset-4 transition-colors hover:underline"
+          >
+            Read in English
+          </a>
+        )
+      }
     </div>
 
     <article
@@ -155,7 +181,7 @@ const ogImage = ogImageUrl
 
     <ShareLinks />
 
-    <hr class="my-8 border-dashed" />
+    <RelatedPosts slug={postSlug} lang="ko" />
 
     <AdjacentPostNav {prevPost} {nextPost} />
   </main>
@@ -197,7 +223,9 @@ const ogImage = ogImageUrl
 
   function addHeadingLinks() {
     const headings = Array.from(
-      document.querySelectorAll("h2, h3, h4, h5, h6")
+      document.querySelectorAll(
+        "#article h2, #article h3, #article h4, #article h5, #article h6"
+      )
     );
     for (const heading of headings) {
       heading.classList.add("group");

@@ -12,6 +12,8 @@ type Props = {
   description?: string;
   ogImage?: string;
   canonicalURL?: string;
+  /** 페이지 언어. 영문 페이지는 "en"을 넘긴다. */
+  lang?: string;
 };
 
 const { site } = config;
@@ -21,6 +23,7 @@ const {
   description = site.description,
   ogImage = resolveDefaultOgImagePath(config),
   canonicalURL = new URL(Astro.url.pathname, Astro.site).href,
+  lang,
 } = Astro.props;
 
 const socialImageURL = new URL(ogImage, Astro.site ?? Astro.url);
@@ -30,7 +33,7 @@ const rssHref = getRelativeLocaleUrl(
 );
 
 // og:locale ("ko" → "ko_KR", "en" → "en_US"). Facebook/Kakao 미리보기 정확도 향상.
-const langCode = Astro.currentLocale ?? site.lang;
+const langCode = lang ?? Astro.currentLocale ?? site.lang;
 const ogLocale =
   langCode === "ko"
     ? "ko_KR"
@@ -44,7 +47,7 @@ const ogLocale =
 <!doctype html>
 <html
   dir={site.dir ?? "ltr"}
-  lang={Astro.currentLocale ?? site.lang}
+  lang={langCode}
   class="overflow-y-scroll scroll-smooth"
 >
   <head>
@@ -56,6 +59,13 @@ const ogLocale =
     <meta name="generator" content={Astro.generator} />
 
     <!-- Font -->
+    <Font
+      cssVariable="--font-dm-sans"
+      preload={[
+        { subset: "latin", weight: 400, style: "normal" },
+        { subset: "latin", weight: 500, style: "normal" },
+      ]}
+    />
     <Font
       cssVariable="--font-google-sans-code"
       preload={[{ subset: "latin", weight: 400, style: "normal" }]}

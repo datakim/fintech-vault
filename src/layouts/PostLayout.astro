@@ -10,6 +10,7 @@ type Props = {
   pubDatetime?: Date;
   modDatetime?: Date | null;
   tags?: string[];
+  lang?: string;
 };
 
 const { site } = config;
@@ -22,6 +23,7 @@ const {
   pubDatetime,
   modDatetime,
   tags,
+  lang,
 } = Astro.props;
 
 const pageUrl = canonicalURL ?? new URL(Astro.url.pathname, Astro.site).href;
@@ -35,7 +37,7 @@ const structuredData = {
   headline: title ?? site.title,
   ...(description && { description }),
   url: pageUrl,
-  inLanguage: site.lang,
+  inLanguage: lang ?? site.lang,
   ...(ogImage && {
     image: { "@type": "ImageObject", url: ogImage },
   }),
@@ -63,7 +65,7 @@ const structuredData = {
 };
 ---
 
-<Layout {title} {description} {ogImage} {canonicalURL}>
+<Layout {title} {description} {ogImage} {canonicalURL} {lang}>
   <Fragment slot="head">
     <!-- Override og:type for article pages -->
     <meta property="og:type" content="article" />

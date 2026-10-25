@@ -15,6 +15,21 @@
   body {
     font-size: 17px;
     line-height: 1.75;
+    letter-spacing: -0.005em;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,
+  h2,
+  h3 {
+    letter-spacing: -0.025em;
+  }
+  /* 한글은 어절 단위로 줄을 바꾼다 */
+  :lang(ko) h1,
+  :lang(ko) h2,
+  :lang(ko) h3,
+  :lang(ko) p {
+    word-break: keep-all;
+    overflow-wrap: break-word;
   }
   a,
   button {
@@ -31,13 +46,40 @@
 }
 
 @utility app-layout {
-  @apply max-w-app mx-auto w-full px-4;
+  @apply max-w-app mx-auto w-full px-5;
+}
+
+/* 머리글·홈·지식 지도처럼 넓게 쓰는 영역 */
+@utility app-wide {
+  @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
+}
+
+/* 자간을 넓힌 작은 대문자 라벨 */
+@utility eyebrow {
+  @apply text-muted-foreground text-[11px] font-medium tracking-[0.22em] uppercase;
+}
+
+/* 큰 제목 */
+@utility display {
+  @apply font-medium tracking-[-0.045em];
+  line-height: 1.12;
 }
 
 @utility active-nav {
-  @apply underline decoration-wavy decoration-2 underline-offset-8;
+  @apply text-foreground;
 }
 
 :target {
   scroll-margin-block: 1rem;
+}
+
+/* 브랜드 띠: 테마와 관계없이 딥그린 */
+.brand-band {
+  background:
+    radial-gradient(
+      ellipse 70% 60% at 72% 40%,
+      rgb(203 216 173 / 0.07),
+      transparent 70%
+    ),
+    var(--background);
 }

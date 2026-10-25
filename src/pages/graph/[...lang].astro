@@ -1,0 +1,135 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import KnowledgeGraph from "@/components/KnowledgeGraph.astro";
+import { getKnowledgeGraph, type GraphLang } from "@/utils/knowledgeGraph";
+import config from "@/config";
+
+// /graph/ 는 영문 글, /graph/ko/ 는 한국어 글의 지식 지도
+export function getStaticPaths() {
+  return [{ params: { lang: undefined } }, { params: { lang: "ko" } }];
+}
+
+const lang: GraphLang = Astro.params.lang === "ko" ? "ko" : "en";
+const graph = await getKnowledgeGraph(lang);
+
+const t =
+  lang === "en"
+    ? {
+        title: "Map",
+        lead: "Each dot is a post. A line means one post links to another.",
+        index: "All posts by topic",
+        links: (n: number) => `${n} ${n === 1 ? "link" : "links"}`,
+        description: `How the ${graph.nodes.length} posts on ${config.site.title} link to each other.`,
+      }
+    : {
+        title: "지식 지도",
+        lead: "점 하나가 글 한 편이고, 선은 한 글이 다른 글을 링크했다는 뜻이다.",
+        index: "주제별 목록",
+        links: (n: number) => `연결 ${n}`,
+        description: `${config.site.title}의 한국어 글 ${graph.nodes.length}편이 서로 어떻게 이어지는지 보여주는 지도.`,
+      };
+
+const sections = graph.topics
+  .filter(tp => tp.count > 0)
+  .map(tp => ({
+    ...tp,
+    posts: graph.nodes
+      .filter(n => n.topic === tp.id)
+      .sort((a, b) => b.date.localeCompare(a.date)),
+  }));
+---
+
+<Layout
+  title={`${t.title} | ${config.site.title}`}
+  description={t.description}
+  lang={lang}
+>
+  <div data-theme="dark" class="brand-band text-foreground">
+    <Header />
+    <main id="main-content" class="app-wide pt-12 pb-16">
+      <div class="flex items-center justify-between gap-4">
+        <p class="eyebrow flex items-center gap-2.5">
+          <span class="bg-accent inline-block size-1.5 rounded-full"></span>
+          Knowledge map
+        </p>
+        <nav
+          class="flex items-center gap-1 text-[12px] font-medium tracking-[0.12em]"
+          aria-label="Language"
+        >
+          <a
+            href="/graph/"
+            lang="en"
+            class:list={[
+              "rounded-md px-2.5 py-1 transition-colors",
+              lang === "en"
+                ? "bg-white/10 text-foreground"
+                : "text-muted-foreground hover:text-foreground",
+            ]}
+            aria-current={lang === "en" ? "page" : undefined}>EN</a
+          >
+          <a
+            href="/graph/ko/"
+            lang="ko"
+            class:list={[
+              "rounded-md px-2.5 py-1 transition-colors",
+              lang === "ko"
+                ? "bg-white/10 text-foreground"
+                : "text-muted-foreground hover:text-foreground",
+            ]}
+            aria-current={lang === "ko" ? "page" : undefined}>한국어</a
+          >
+        </nav>
+      </div>
+      <div class="mt-5 flex flex-wrap items-end justify-between gap-6">
+        <h1 class="display text-[2.4rem] sm:text-[3rem]">{t.title}</h1>
+        <p class="text-muted-foreground max-w-md text-[14.5px] leading-7">
+          {t.lead}
+        </p>
+      </div>
+      <KnowledgeGraph variant="full" lang={lang} class="mt-10" />
+    </main>
+  </div>
+
+  <section class="app-wide pt-20">
+    <h2 class="display text-3xl">{t.index}</h2>
+    <div class="mt-10 grid gap-x-12 gap-y-14 md:grid-cols-2">
+      {
+        sections.map(tp => (
+          <div id={`topic-${tp.id}`}>
+            <div class="border-border/80 flex items-center justify-between border-b pb-3">
+              <h3 class="flex items-center gap-2.5 text-[17px] font-semibold tracking-[-0.02em]">
+                <span
+                  class="inline-block size-2 rounded-full"
+                  style={`background:${tp.color};box-shadow:0 0 0 1px rgb(0 0 0 / 0.12)`}
+                />
+                {tp.name}
+              </h3>
+              <span class="eyebrow">{tp.count}</span>
+            </div>
+            <ul>
+              {tp.posts.map(p => (
+                <li class="border-border/60 border-b">
+                  <a
+                    href={p.url}
+                    class="group flex items-baseline justify-between gap-4 py-3"
+                  >
+                    <span class="group-hover:text-accent text-[15px] leading-6 transition-colors">
+                      {p.title}
+                    </span>
+                    <span class="text-muted-foreground shrink-0 text-[12px] tabular-nums">
+                      {p.degree > 0 ? t.links(p.degree) : ""}
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <Footer />
+</Layout>

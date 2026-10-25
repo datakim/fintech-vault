@@ -1,28 +1,37 @@
 ---
 import { getCollection } from "astro:content";
-import { getRelativeLocaleUrl } from "astro:i18n";
-import IconRss from "@/assets/icons/IconRss.svg";
-import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
+import dayjs from "dayjs";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
-import Socials from "@/components/Socials.astro";
-import Card from "@/components/Card.astro";
-import LinkButton from "@/components/LinkButton.astro";
-import { getSortedPosts } from "@/utils/getSortedPosts";
-import { useTranslations } from "@/i18n";
+import KnowledgeGraph from "@/components/KnowledgeGraph.astro";
+import { getKnowledgeGraph, topicOf } from "@/utils/knowledgeGraph";
 import config from "@/config";
 
-const { socials, posts: postsConfig } = config;
+const { socials } = config;
 
-const locale = Astro.currentLocale ?? config.site.lang;
-const t = useTranslations(locale);
+// 2026-10-26부터 홈은 영어가 기본이다. 한국어 글은 /posts/에 그대로 있다.
+const enPosts = (await getCollection("en", ({ data }) => !data.draft)).sort(
+  (a, b) =>
+    new Date(b.data.pubDatetime).getTime() -
+    new Date(a.data.pubDatetime).getTime()
+);
+const recentPosts = enPosts.slice(0, 6);
 
-const posts = await getCollection("posts");
-const sortedPosts = getSortedPosts(posts);
-const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
-const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
-const homePath = getRelativeLocaleUrl(locale, "");
+const graph = await getKnowledgeGraph("en");
+const byId = new Map(graph.nodes.map(n => [n.id, n]));
+const topicCards = graph.topics
+  .filter(t => t.count > 0 && t.id !== "notes")
+  .map(t => ({
+    ...t,
+    posts: graph.nodes
+      .filter(n => n.topic === t.id)
+      .sort((a, b) => b.degree - a.degree)
+      .slice(0, 3),
+  }));
+
+const description =
+  "Notes from working in fintech and studying AI on the side, by Elliot Kim.";
 
 // 홈 페이지용 WebSite/Person 구조화 데이터 — 검색엔진이 사이트의 정체와 저자를 명확히 인식하도록.
 const linkedin = socials.find(s => s.name === "linkedin")?.url;
@@ -33,8 +42,8 @@ const websiteSchema = {
   "@id": `${config.site.url}/#website`,
   name: config.site.title,
   url: config.site.url,
-  description: config.site.description,
-  inLanguage: config.site.lang,
+  description,
+  inLanguage: ["en", "ko"],
   author: {
     "@type": "Person",
     "@id": `${config.site.url}/#person`,
@@ -49,7 +58,7 @@ const websiteSchema = {
 };
 ---
 
-<Layout>
+<Layout lang="en" {description}>
   <Fragment slot="head">
     <script
       type="application/ld+json"
@@ -57,99 +66,193 @@ const websiteSchema = {
       set:html={JSON.stringify(websiteSchema)}
     />
   </Fragment>
-  <Header />
-  <main
-    id="main-content"
-    data-layout="index"
-    data-home-path={homePath}
-    class="app-layout"
-  >
-    <section id="hero" class="border-border border-b pt-8 pb-6">
-      <h1 class="my-4 inline-block text-4xl font-bold sm:my-8 sm:text-5xl">
-        Elliot's 핀테크/금융 AI 블로그
-      </h1>
-      <a
-        target="_blank"
-        href={getRelativeLocaleUrl(locale, "rss.xml")}
-        class="inline-block"
-        aria-label="RSS Feed"
-        title="RSS Feed"
+
+  <div data-theme="dark" class="brand-band text-foreground">
+    <Header />
+    <main
+      id="main-content"
+      data-layout="index"
+      data-home-path="/"
+      class="app-wide"
+    >
+      <section
+        id="hero"
+        class="grid items-center gap-6 pt-12 pb-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-4 lg:pt-16 lg:pb-20"
       >
-        <IconRss
-          width={20}
-          height={20}
-          class="stroke-accent scale-125 stroke-3 rtl:-rotate-90"
-        />
-        <span class="sr-only">RSS Feed</span>
-      </a>
-
-      <p>
-        금융 AI에 대한 실무 노트,<br />
-        핀테크/금융에서의 AI 기술 활용 최신 내용.
-      </p>
-      <p class="mt-2">
-        업계에서 부딪힌 문제, 모델을 만들면서 배운 것,<br />
-        그리고 논문에서 책상까지 옮기는 동안 잃어버리지 않으려고 적어두는 기록을 모아둠.
-      </p>
-      <p class="mt-2">
-        발표 자료, 강의에서 다 풀어내지 못한 디테일을<br />
-        이 저장소에 차곡차곡 쌓을 예정.
-      </p>
-      {
-        socials.length > 0 && (
-          <div class="mt-4 flex max-sm:flex-col sm:items-center">
-            <div class="me-2 mb-1 whitespace-nowrap sm:mb-0">
-              {t.home.socialLinks}:
-            </div>
-            <Socials />
+        <div class="relative z-10 max-w-xl">
+          <p class="eyebrow flex items-center gap-2.5">
+            <span class="bg-accent inline-block size-1.5 rounded-full"></span>
+            Fintech · AI · Notes
+          </p>
+          <h1 class="display mt-6 text-[2.6rem] sm:text-[3.4rem]">
+            Notes from fintech<br />and AI.
+          </h1>
+          <p class="text-muted-foreground mt-6 text-[15px] leading-7">
+            Things I run into working in fintech, and notes from studying AI on
+            the side.
+          </p>
+          <div class="mt-9 flex flex-wrap items-center gap-x-6 gap-y-4">
+            <a
+              href="/en/"
+              class="inline-flex items-center gap-2 rounded-lg bg-[#d5dfca] px-5 py-3 text-[14px] font-semibold text-[#1d3530] transition-colors hover:bg-[#e2ead8]"
+            >
+              Latest posts <span aria-hidden="true">→</span>
+            </a>
+            <a
+              href="/graph/"
+              class="hover:text-accent inline-flex items-center gap-2 text-[14px] font-medium transition-colors"
+            >
+              Open the map <span aria-hidden="true">→</span>
+            </a>
+            <a
+              href="/posts/"
+              lang="ko"
+              class="text-muted-foreground hover:text-foreground text-[14px] transition-colors"
+            >
+              한국어
+            </a>
           </div>
-        )
-      }
-    </section>
+          <dl class="mt-12 flex gap-10">
+            <div>
+              <dt class="eyebrow">Posts</dt>
+              <dd class="mt-1 text-2xl font-medium tracking-tight">
+                {graph.nodes.length}
+              </dd>
+            </div>
+            <div>
+              <dt class="eyebrow">Links</dt>
+              <dd class="mt-1 text-2xl font-medium tracking-tight">
+                {graph.edges.length}
+              </dd>
+            </div>
+            <div>
+              <dt class="eyebrow">Topics</dt>
+              <dd class="mt-1 text-2xl font-medium tracking-tight">
+                {topicCards.length}
+              </dd>
+            </div>
+          </dl>
+        </div>
 
-    {
-      featuredPosts.length > 0 && (
-        <section
-          id="featured"
-          class:list={[
-            "pt-12 pb-6",
-            { "border-border border-b": recentPosts.length > 0 },
-          ]}
-        >
-          <h2 class="text-2xl font-semibold tracking-wide">
-            {t.home.featured}
-          </h2>
-          <ul>
-            {featuredPosts.map(data => (
-              <Card variant="h3" {...data} />
-            ))}
-          </ul>
-        </section>
-      )
-    }
+        <div class="-mx-5 sm:mx-0">
+          <KnowledgeGraph variant="hero" lang="en" />
+        </div>
+      </section>
+    </main>
+  </div>
 
-    {
-      recentPosts.length > 0 && (
-        <section id="recent-posts" class="pt-12 pb-6">
-          <h2 class="text-2xl font-semibold tracking-wide">
-            {t.home.recentPosts}
-          </h2>
-          <ul>
-            {recentPosts.slice(0, postsConfig.perIndex).map(data => (
-              <Card variant="h3" {...data} />
-            ))}
-          </ul>
-        </section>
-      )
-    }
-
-    <div class="my-8 text-center">
-      <LinkButton href={getRelativeLocaleUrl(locale, "posts")}>
-        {t.home.allPosts}
-        <IconArrowRight class="inline-block rtl:-rotate-180" />
-      </LinkButton>
+  <section class="app-wide pt-20">
+    <div class="flex items-end justify-between gap-4">
+      <div>
+        <p class="eyebrow">Latest</p>
+        <h2 class="display mt-3 text-3xl">Recent posts</h2>
+      </div>
+      <a
+        href="/en/"
+        class="text-muted-foreground hover:text-foreground text-[14px] transition-colors"
+      >
+        All posts <span aria-hidden="true">→</span>
+      </a>
     </div>
-  </main>
+    <ol class="mt-8">
+      {
+        recentPosts.map((post, i) => {
+          const topic = topicOf(post.data.tags);
+          const node = byId.get(post.id);
+          return (
+            <li class="border-border/80 border-t">
+              <a
+                href={`/en/${post.id}/`}
+                class="group grid gap-x-8 gap-y-2 py-7 sm:grid-cols-[3rem_9rem_minmax(0,1fr)_6rem]"
+              >
+                <span class="text-muted-foreground text-[13px] tabular-nums">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span class="eyebrow flex items-start gap-2 pt-0.5">
+                  <span
+                    class="mt-[5px] inline-block size-1.5 shrink-0 rounded-full"
+                    style={`background:${topic.color};box-shadow:0 0 0 1px rgb(0 0 0 / 0.12)`}
+                  />
+                  {topic.eyebrow}
+                </span>
+                <span>
+                  <span class="group-hover:text-accent block text-[19px] leading-snug font-medium tracking-[-0.02em] transition-colors">
+                    {post.data.title}
+                  </span>
+                  <span class="text-muted-foreground mt-2 line-clamp-2 text-[14.5px] leading-6">
+                    {post.data.description}
+                  </span>
+                </span>
+                <span class="text-muted-foreground text-[13px] tabular-nums sm:text-end">
+                  {dayjs(post.data.pubDatetime).format("YYYY.MM.DD")}
+                  {node && node.degree > 0 && (
+                    <span class="mt-1 block opacity-80">
+                      {node.degree} {node.degree === 1 ? "link" : "links"}
+                    </span>
+                  )}
+                </span>
+              </a>
+            </li>
+          );
+        })
+      }
+    </ol>
+  </section>
+
+  <section class="app-wide pt-20">
+    <p class="eyebrow">Topics</p>
+    <h2 class="display mt-3 text-3xl">By topic</h2>
+    <div
+      class="bg-border/80 border-border/80 mt-8 grid gap-px overflow-hidden rounded-2xl border sm:grid-cols-2 lg:grid-cols-3"
+    >
+      {
+        topicCards.map(t => (
+          <a
+            href={`/graph/?topic=${t.id}`}
+            class="bg-background hover:bg-surface group flex flex-col p-7 transition-colors"
+          >
+            <div class="flex items-center justify-between">
+              <span class="eyebrow flex items-center gap-2">
+                <span
+                  class="inline-block size-2 rounded-full"
+                  style={`background:${t.color};box-shadow:0 0 0 1px rgb(0 0 0 / 0.12)`}
+                />
+                {t.eyebrow}
+              </span>
+              <span class="text-muted-foreground text-[13px]">
+                {t.count} {t.count === 1 ? "post" : "posts"}
+              </span>
+            </div>
+            <h3 class="mt-4 text-xl font-medium tracking-[-0.02em]">
+              {t.name}
+            </h3>
+            <ul class="text-muted-foreground mt-4 space-y-1.5 text-[13.5px] leading-6">
+              {t.posts.map(p => (
+                <li class="line-clamp-1">{p.short}</li>
+              ))}
+            </ul>
+            <span class="group-hover:text-accent mt-6 text-[13px] font-medium transition-colors">
+              On the map <span aria-hidden="true">→</span>
+            </span>
+          </a>
+        ))
+      }
+      <a
+        href="/graph/"
+        data-theme="dark"
+        class="brand-band text-foreground group flex flex-col justify-between p-7"
+      >
+        <span class="eyebrow">Map</span>
+        <span class="mt-4 block text-xl font-medium tracking-[-0.02em]">
+          {graph.nodes.length} posts, {graph.edges.length} links
+        </span>
+        <span class="group-hover:text-accent mt-6 text-[13px] font-medium transition-colors">
+          Open the map <span aria-hidden="true">→</span>
+        </span>
+      </a>
+    </div>
+  </section>
+
   <Footer />
 </Layout>
 

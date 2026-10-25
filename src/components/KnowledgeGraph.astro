@@ -1,0 +1,1035 @@
+---
+import {
+  getKnowledgeGraph,
+  TOPICS,
+  type GraphLang,
+} from "@/utils/knowledgeGraph";
+
+type Props = {
+  /** hero: 홈 첫 화면용 / full: 지식 지도 페이지용 (주제 필터와 정보 패널 포함) */
+  variant?: "hero" | "full";
+  lang?: GraphLang;
+  class?: string;
+};
+
+const { variant = "hero", lang = "en", class: className } = Astro.props;
+const graph = await getKnowledgeGraph(lang);
+
+const STRINGS = {
+  en: {
+    aria: `Map of ${graph.nodes.length} posts and ${graph.edges.length} links between them`,
+    topicColors: "Topic colours",
+    filter: "Filter by topic",
+    all: "All",
+    empty: "Click a dot to see the post and the posts it links to or from.",
+    links: "links",
+    read: "Read the post",
+    linksTo: "Links to",
+    linkedFrom: "Linked from",
+    none: "None",
+    otherLang: "한국어로 읽기",
+  },
+  ko: {
+    aria: `글 ${graph.nodes.length}편과 연결 ${graph.edges.length}개를 보여주는 지식 지도`,
+    topicColors: "주제 색",
+    filter: "주제로 거르기",
+    all: "전체",
+    empty: "점을 누르면 글 정보와 이어진 글이 여기에 나온다.",
+    links: "연결",
+    read: "글 읽기",
+    linksTo: "이 글이 참고한 글",
+    linkedFrom: "이 글을 참고한 글",
+    none: "없음",
+    otherLang: "Read in English",
+  },
+};
+const t = STRINGS[lang];
+
+const W = variant === "hero" ? 900 : 1100;
+const H = variant === "hero" ? 760 : 720;
+const PAD_X = variant === "hero" ? 90 : 110;
+const PAD_Y = variant === "hero" ? 80 : 70;
+const px = (x: number) => PAD_X + x * (W - PAD_X * 2);
+const py = (y: number) => PAD_Y + y * (H - PAD_Y * 2);
+
+const byId = new Map(graph.nodes.map(n => [n.id, n]));
+const topicColor = new Map(TOPICS.map(t => [t.id, t.color]));
+const radius = (degree: number) =>
+  (variant === "hero" ? 6 : 5) + Math.sqrt(degree) * (variant === "hero" ? 2.8 : 2.3);
+
+function edgePath(s: string, t: string) {
+  const a = byId.get(s)!;
+  const b = byId.get(t)!;
+  const x1 = px(a.x);
+  const y1 = py(a.y);
+  const x2 = px(b.x);
+  const y2 = py(b.y);
+  const k = 0.14;
+  const cx = (x1 + x2) / 2 - (y2 - y1) * k;
+  const cy = (y1 + y2) / 2 + (x2 - x1) * k;
+  return `M${x1.toFixed(1)} ${y1.toFixed(1)}Q${cx.toFixed(1)} ${cy.toFixed(1)} ${x2.toFixed(1)} ${y2.toFixed(1)}`;
+}
+
+// 지식 지도에서는 연결이 많은 글부터 이름표를 달되, 서로 겹치면 건너뛴다
+const textWidth = (s: string) =>
+  [...s].reduce((w, ch) => w + (ch.charCodeAt(0) > 0x3000 ? 13.5 : 7.4), 0);
+const labelled = new Set<string>();
+if (variant === "full") {
+  const boxes: { x1: number; y1: number; x2: number; y2: number }[] = [];
+  const candidates = [...graph.nodes]
+    .filter(n => n.degree >= 4)
+    .sort((a, b) => b.degree - a.degree);
+  for (const n of candidates) {
+    if (labelled.size >= 12) break;
+    const w = textWidth(n.short);
+    const cx = px(n.x);
+    const top = py(n.y) + radius(n.degree) + 8;
+    const box = { x1: cx - w / 2 - 6, y1: top, x2: cx + w / 2 + 6, y2: top + 18 };
+    const hitsLabel = boxes.some(
+      b => box.x1 < b.x2 && box.x2 > b.x1 && box.y1 < b.y2 && box.y2 > b.y1
+    );
+    const hitsNode = graph.nodes.some(m => {
+      if (m.id === n.id) return false;
+      const mx = px(m.x);
+      const my = py(m.y);
+      const r = radius(m.degree) + 2;
+      return mx + r > box.x1 && mx - r < box.x2 && my + r > box.y1 && my - r < box.y2;
+    });
+    if (hitsLabel || hitsNode) continue;
+    boxes.push(box);
+    labelled.add(n.id);
+  }
+}
+const showLabel = (id: string) => labelled.has(id);
+const topicsShown = graph.topics.filter(t => t.count > 0);
+const topicMeta = Object.fromEntries(
+  graph.topics.map(tp => [tp.id, { label: tp.name, eyebrow: tp.eyebrow }])
+);
+const payload = {
+  lang,
+  strings: t,
+  topics: topicMeta,
+  nodes: graph.nodes.map(n => ({
+    id: n.id,
+    title: n.title,
+    description: n.description,
+    url: n.url,
+    alt: n.alt,
+    date: n.date,
+    topic: n.topic,
+    out: n.out,
+    in: n.in,
+  })),
+};
+---
+
+<div
+  class:list={["kg", `kg--${variant}`, className]}
+  data-kg
+  data-variant={variant}
+>
+  <div class="kg-stage">
+    <canvas class="kg-dust" aria-hidden="true"></canvas>
+    <svg
+      class="kg-svg"
+      viewBox={`0 0 ${W} ${H}`}
+      role="group"
+      aria-label={t.aria}
+    >
+      <g class="kg-orbits" aria-hidden="true">
+        <ellipse
+          cx={W / 2}
+          cy={H / 2}
+          rx={W * 0.47}
+          ry={H * 0.43}
+          transform={`rotate(-8 ${W / 2} ${H / 2})`}></ellipse>
+        <ellipse
+          cx={W / 2}
+          cy={H / 2}
+          rx={W * 0.4}
+          ry={H * 0.47}
+          transform={`rotate(14 ${W / 2} ${H / 2})`}></ellipse>
+      </g>
+
+      <g class="kg-edges" aria-hidden="true">
+        {
+          graph.edges.map((e, i) => (
+            <path
+              d={edgePath(e.source, e.target)}
+              data-s={e.source}
+              data-t={e.target}
+              pathLength="1"
+              style={`--i:${i}`}
+            />
+          ))
+        }
+      </g>
+
+      <g class="kg-nodes">
+        {
+          graph.nodes.map((n, i) => (
+            <g
+              transform={`translate(${px(n.x).toFixed(1)} ${py(n.y).toFixed(1)})`}
+            >
+            <a
+              href={n.url}
+              class="kg-node"
+              data-id={n.id}
+              data-topic={n.topic}
+              aria-label={n.title}
+              style={`--c:${topicColor.get(n.topic)};--i:${i}`}
+            >
+              <g class="kg-node-inner">
+                <circle class="kg-halo" r={radius(n.degree) * 3} />
+                <circle class="kg-ring" r={radius(n.degree) + 5} />
+                <circle class="kg-dot" r={radius(n.degree)} />
+                {showLabel(n.id) && (
+                  <text
+                    class="kg-label"
+                    y={radius(n.degree) + 20}
+                    text-anchor="middle"
+                  >
+                    {n.short}
+                  </text>
+                )}
+              </g>
+            </a>
+            </g>
+          ))
+        }
+      </g>
+    </svg>
+
+    {
+      variant === "hero" && (
+        <ul class="kg-key" aria-label={t.topicColors}>
+          {topicsShown
+            .filter(tp => tp.id !== "notes")
+            .map(tp => (
+              <li style={`--c:${tp.color}`}>
+                <i aria-hidden="true" />
+                {tp.eyebrow}
+              </li>
+            ))}
+        </ul>
+      )
+    }
+
+    {
+      variant === "hero" && (
+        <div class="kg-tip" hidden>
+          <span class="kg-tip-topic eyebrow" />
+          <strong class="kg-tip-title" />
+          <span class="kg-tip-meta" />
+        </div>
+      )
+    }
+  </div>
+
+  {
+    variant === "full" && (
+      <>
+        <div class="kg-legend" role="toolbar" aria-label={t.filter}>
+          <button type="button" class="kg-chip is-on" data-topic-filter="">
+            {t.all} <span>{graph.nodes.length}</span>
+          </button>
+          {topicsShown.map(tp => (
+            <button
+              type="button"
+              class="kg-chip"
+              data-topic-filter={tp.id}
+              style={`--c:${tp.color}`}
+            >
+              <i aria-hidden="true" />
+              {tp.name} <span>{tp.count}</span>
+            </button>
+          ))}
+        </div>
+
+        <aside class="kg-panel" aria-live="polite">
+          <div class="kg-panel-empty">
+            <p class="kg-panel-lead">{t.empty}</p>
+          </div>
+          <div class="kg-panel-body" hidden />
+        </aside>
+      </>
+    )
+  }
+
+  <script
+    is:inline
+    type="application/json"
+    class="kg-data"
+    set:html={JSON.stringify(payload)}
+  />
+</div>
+
+<style>
+  .kg {
+    --kg-ink: #f2f0e6;
+    --kg-line: rgb(203 216 173 / 0.22);
+    --kg-line-on: rgb(226 233 205 / 0.75);
+    position: relative;
+    color: var(--kg-ink);
+  }
+
+  .kg-stage {
+    position: relative;
+  }
+
+  .kg-dust {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .kg-svg {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .kg-orbits ellipse {
+    fill: none;
+    stroke: rgb(203 216 173 / 0.09);
+    stroke-width: 1;
+    stroke-dasharray: 2 7;
+  }
+
+  .kg--hero .kg-edges path {
+    stroke-width: 1.5;
+  }
+
+  .kg-edges path {
+    fill: none;
+    stroke: var(--kg-line);
+    stroke-width: 1.1;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: kg-draw 1.4s cubic-bezier(0.3, 0.6, 0.2, 1) forwards;
+    animation-delay: calc(700ms + var(--i) * 9ms);
+    transition:
+      stroke 0.25s,
+      opacity 0.25s,
+      stroke-width 0.25s;
+  }
+
+  .kg-node {
+    cursor: pointer;
+    outline: none;
+  }
+
+  .kg-node-inner {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: kg-in 1.1s cubic-bezier(0.2, 0.75, 0.2, 1) both;
+    animation-delay: calc(120ms + var(--i) * 26ms);
+    transition:
+      opacity 0.25s,
+      transform 0.35s cubic-bezier(0.2, 0.75, 0.2, 1);
+  }
+
+  .kg-dot {
+    fill: var(--c);
+  }
+
+  .kg-halo {
+    fill: var(--c);
+    opacity: 0.08;
+    transition: opacity 0.3s;
+  }
+
+  .kg-ring {
+    fill: none;
+    stroke: var(--c);
+    stroke-width: 1;
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+
+  .kg-label {
+    fill: rgb(242 240 230 / 0.72);
+    font-size: 14px;
+    letter-spacing: -0.01em;
+    pointer-events: none;
+  }
+
+  .kg-node:hover .kg-node-inner,
+  .kg-node:focus-visible .kg-node-inner,
+  .kg-node.self .kg-node-inner {
+    transform: scale(1.18);
+  }
+  .kg-node:hover .kg-ring,
+  .kg-node:focus-visible .kg-ring,
+  .kg-node.self .kg-ring {
+    opacity: 0.9;
+  }
+  .kg-node:hover .kg-halo,
+  .kg-node.self .kg-halo {
+    opacity: 0.16;
+  }
+
+  /* 한 글에 집중할 때: 이어진 글만 남긴다 */
+  .kg.is-focus .kg-node:not(.on) .kg-node-inner {
+    opacity: 0.16;
+  }
+  .kg.is-focus .kg-edges path:not(.on) {
+    opacity: 0.25;
+  }
+  .kg-edges path.on {
+    stroke: var(--kg-line-on);
+    stroke-width: 1.6;
+  }
+  .kg.is-focus .kg-node.on .kg-label,
+  .kg.is-focus .kg-node.self .kg-label {
+    fill: var(--kg-ink);
+  }
+
+  .kg-key {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.4rem 1.1rem;
+    margin-top: 0.25rem;
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgb(169 184 176 / 0.85);
+  }
+  .kg-key li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+  .kg-key i {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--c);
+  }
+
+  /* 호버 말풍선 (홈) */
+  .kg-tip {
+    position: absolute;
+    z-index: 2;
+    max-width: 17rem;
+    padding: 0.75rem 0.9rem;
+    border: 1px solid rgb(203 216 173 / 0.18);
+    border-radius: 10px;
+    background: rgb(17 37 40 / 0.88);
+    backdrop-filter: blur(8px);
+    pointer-events: none;
+    transform: translate(-50%, calc(-100% - 18px));
+    transition: opacity 0.2s;
+  }
+  .kg-tip strong {
+    display: block;
+    margin: 0.3rem 0 0.25rem;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.45;
+    letter-spacing: -0.01em;
+  }
+  .kg-tip-meta {
+    font-size: 12px;
+    color: rgb(169 184 176);
+  }
+
+  /* 지식 지도 페이지 */
+  .kg--full {
+    display: grid;
+    gap: 1.5rem;
+  }
+  @media (min-width: 1024px) {
+    .kg--full {
+      grid-template-columns: minmax(0, 1fr) 20rem;
+      grid-template-areas:
+        "legend legend"
+        "stage panel";
+      align-items: start;
+    }
+    .kg--full .kg-legend {
+      grid-area: legend;
+    }
+    .kg--full .kg-stage {
+      grid-area: stage;
+    }
+    .kg--full .kg-panel {
+      grid-area: panel;
+      position: sticky;
+      top: 1.5rem;
+    }
+  }
+
+  .kg-legend {
+    order: -1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  @media (max-width: 640px) {
+    .kg-label {
+      display: none;
+    }
+  }
+  .kg-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.4rem 0.8rem;
+    border: 1px solid rgb(203 216 173 / 0.2);
+    border-radius: 999px;
+    font-size: 13px;
+    color: rgb(242 240 230 / 0.78);
+    transition:
+      background 0.2s,
+      color 0.2s,
+      border-color 0.2s;
+  }
+  .kg-chip i {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--c);
+  }
+  .kg-chip span {
+    color: rgb(169 184 176 / 0.8);
+    font-size: 12px;
+  }
+  .kg-chip:hover {
+    border-color: rgb(203 216 173 / 0.45);
+    color: var(--kg-ink);
+  }
+  .kg-chip.is-on {
+    background: rgb(203 216 173 / 0.14);
+    border-color: rgb(203 216 173 / 0.5);
+    color: var(--kg-ink);
+  }
+
+  .kg-panel {
+    min-height: 16rem;
+    padding: 1.4rem 1.4rem 1.5rem;
+    border: 1px solid rgb(203 216 173 / 0.16);
+    border-radius: 14px;
+    background: rgb(255 255 255 / 0.025);
+  }
+  .kg-panel-lead {
+    word-break: keep-all;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+  .kg-panel-hint {
+    margin-top: 0.8rem;
+    font-size: 13px;
+    line-height: 1.7;
+    color: rgb(169 184 176);
+  }
+
+  @keyframes kg-in {
+    from {
+      opacity: 0;
+      transform: translate(var(--sx, 0px), var(--sy, 0px)) scale(0.2);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes kg-draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .kg-node-inner,
+    .kg-edges path {
+      animation: none;
+      stroke-dashoffset: 0;
+    }
+  }
+</style>
+
+<!-- 패널 안쪽은 스크립트로 채워서 스코프 밖 스타일을 쓴다 -->
+<style is:global>
+  .kg-panel-body .kg-p-title {
+    margin: 0.5rem 0 0.4rem;
+    font-size: 19px;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: -0.025em;
+  }
+  .kg-panel-body .kg-p-meta {
+    font-size: 12px;
+    color: rgb(169 184 176);
+  }
+  .kg-panel-body .kg-p-desc {
+    margin-top: 0.8rem;
+    font-size: 14px;
+    line-height: 1.7;
+    color: rgb(242 240 230 / 0.82);
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .kg-panel-body .kg-p-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem 1rem;
+    margin-top: 1rem;
+  }
+  .kg-panel-body .kg-p-alt {
+    font-size: 13px;
+    color: rgb(169 184 176);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .kg-panel-body .kg-p-alt:hover {
+    color: #fff;
+  }
+  .kg-panel-body .kg-p-read {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.55rem 0.95rem;
+    border-radius: 8px;
+    background: #d5dfca;
+    color: #1d3530;
+    font-size: 13px;
+    font-weight: 600;
+    transition: background 0.2s;
+  }
+  .kg-panel-body .kg-p-read:hover {
+    background: #e2ead8;
+  }
+  .kg-panel-body .kg-p-group {
+    margin-top: 1.3rem;
+  }
+  .kg-panel-body .kg-p-group ul {
+    margin-top: 0.4rem;
+  }
+  .kg-panel-body .kg-p-group button {
+    display: flex;
+    width: 100%;
+    gap: 0.55rem;
+    align-items: baseline;
+    padding: 0.35rem 0;
+    text-align: start;
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: rgb(242 240 230 / 0.85);
+    border-top: 1px solid rgb(203 216 173 / 0.1);
+  }
+  .kg-panel-body .kg-p-group button:hover {
+    color: #fff;
+  }
+  .kg-panel-body .kg-p-group i {
+    flex: none;
+    width: 6px;
+    height: 6px;
+    margin-top: 0.45rem;
+    border-radius: 50%;
+  }
+  .kg-panel-body .kg-p-none {
+    margin-top: 0.4rem;
+    font-size: 13px;
+    color: rgb(169 184 176);
+  }
+</style>
+
+<script>
+  type NodeData = {
+    id: string;
+    title: string;
+    description: string;
+    url: string;
+    date: string;
+    topic: string;
+    out: string[];
+    in: string[];
+  };
+  type Payload = {
+    lang: "en" | "ko";
+    strings: Record<string, string>;
+    topics: Record<string, { label: string; eyebrow: string }>;
+    nodes: (NodeData & { alt?: string })[];
+  };
+
+  const cleanups: (() => void)[] = [];
+
+  function escapeHtml(s: string) {
+    return s.replace(
+      /[&<>"']/g,
+      c =>
+        ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[
+          c
+        ]!
+    );
+  }
+
+  function startDust(root: HTMLElement) {
+    const canvas = root.querySelector<HTMLCanvasElement>(".kg-dust");
+    const ctx = canvas?.getContext("2d");
+    if (!canvas || !ctx) return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const count = root.dataset.variant === "hero" ? 150 : 120;
+    let w = 0;
+    let h = 0;
+    let raf = 0;
+    let visible = true;
+    const mouse = { x: -9999, y: -9999 };
+    const parts = Array.from({ length: count }, () => {
+      const band = Math.random();
+      return {
+        a: Math.random() * Math.PI * 2,
+        rx: 0.18 + band * 0.32,
+        ry: 0.16 + band * 0.32,
+        tilt: (Math.random() - 0.5) * 0.5,
+        speed: (0.0006 + Math.random() * 0.0016) * (Math.random() < 0.5 ? 1 : -1),
+        size: Math.random() < 0.85 ? 0.6 + Math.random() * 0.9 : 1.6 + Math.random(),
+        alpha: 0.18 + Math.random() * 0.5,
+        ox: 0,
+        oy: 0,
+      };
+    });
+
+    const resize = () => {
+      const r = canvas.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = r.width;
+      h = r.height;
+      canvas.width = Math.round(w * dpr);
+      canvas.height = Math.round(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      if (reduce) draw();
+    };
+
+    const draw = () => {
+      ctx.clearRect(0, 0, w, h);
+      for (const p of parts) {
+        if (!reduce) p.a += p.speed;
+        const ex = Math.cos(p.a) * p.rx * w;
+        const ey = Math.sin(p.a) * p.ry * h;
+        let x = w / 2 + ex * Math.cos(p.tilt) - ey * Math.sin(p.tilt);
+        let y = h / 2 + ex * Math.sin(p.tilt) + ey * Math.cos(p.tilt);
+        const dx = x + p.ox - mouse.x;
+        const dy = y + p.oy - mouse.y;
+        const d2 = dx * dx + dy * dy;
+        if (d2 < 110 * 110) {
+          const push = (1 - Math.sqrt(d2) / 110) * 2.2;
+          const d = Math.sqrt(d2) || 1;
+          p.ox += (dx / d) * push;
+          p.oy += (dy / d) * push;
+        }
+        p.ox *= 0.94;
+        p.oy *= 0.94;
+        x += p.ox;
+        y += p.oy;
+        ctx.globalAlpha = p.alpha;
+        ctx.fillStyle = "#e6ecd6";
+        ctx.beginPath();
+        ctx.arc(x, y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    };
+
+    const loop = () => {
+      if (visible && !document.hidden) draw();
+      raf = requestAnimationFrame(loop);
+    };
+
+    const onMove = (e: PointerEvent) => {
+      const r = canvas.getBoundingClientRect();
+      mouse.x = e.clientX - r.left;
+      mouse.y = e.clientY - r.top;
+    };
+    const onLeave = () => {
+      mouse.x = -9999;
+      mouse.y = -9999;
+    };
+
+    const ro = new ResizeObserver(resize);
+    ro.observe(canvas);
+    const io = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+    });
+    io.observe(canvas);
+    resize();
+    if (!reduce) {
+      root.addEventListener("pointermove", onMove);
+      root.addEventListener("pointerleave", onLeave);
+      raf = requestAnimationFrame(loop);
+    }
+
+    cleanups.push(() => {
+      cancelAnimationFrame(raf);
+      ro.disconnect();
+      io.disconnect();
+      root.removeEventListener("pointermove", onMove);
+      root.removeEventListener("pointerleave", onLeave);
+    });
+  }
+
+  function initGraph(root: HTMLElement) {
+    if (root.dataset.ready) return;
+    root.dataset.ready = "1";
+
+    const payload: Payload = JSON.parse(
+      root.querySelector(".kg-data")?.textContent ?? "{}"
+    );
+    const variant = root.dataset.variant;
+    const S = payload.strings;
+    const byId = new Map(payload.nodes.map(n => [n.id, n]));
+    const nodeEls = [...root.querySelectorAll<SVGAElement>(".kg-node")];
+    const edgeEls = [...root.querySelectorAll<SVGPathElement>(".kg-edges path")];
+    const nodeById = new Map(nodeEls.map(el => [el.dataset.id!, el]));
+    const colorOf = (id: string) =>
+      nodeById.get(id)?.style.getPropertyValue("--c") ?? "#cbd8ad";
+
+    // 첫 등장 때 흩어진 위치에서 모여들도록 시작점을 흩뿌린다
+    nodeEls.forEach(el => {
+      const inner = el.querySelector<SVGGElement>(".kg-node-inner");
+      inner?.style.setProperty("--sx", `${(Math.random() - 0.5) * 260}px`);
+      inner?.style.setProperty("--sy", `${(Math.random() - 0.5) * 220}px`);
+    });
+
+    let selected: string | null = null;
+    let topicFilter = "";
+
+    const clearMarks = () => {
+      nodeEls.forEach(el => el.classList.remove("on", "self"));
+      edgeEls.forEach(el => el.classList.remove("on"));
+    };
+
+    const focusNode = (id: string | null) => {
+      clearMarks();
+      root.classList.toggle("is-focus", Boolean(id) || Boolean(topicFilter));
+      if (!id) {
+        if (topicFilter) applyTopic(topicFilter);
+        return;
+      }
+      const d = byId.get(id);
+      if (!d) return;
+      const near = new Set([id, ...d.out, ...d.in]);
+      near.forEach(n => nodeById.get(n)?.classList.add("on"));
+      nodeById.get(id)?.classList.add("self");
+      edgeEls.forEach(el => {
+        if (el.dataset.s === id || el.dataset.t === id) el.classList.add("on");
+      });
+    };
+
+    const applyTopic = (topic: string) => {
+      clearMarks();
+      root.classList.toggle("is-focus", Boolean(topic));
+      if (!topic) return;
+      nodeEls.forEach(el => {
+        if (el.dataset.topic === topic) el.classList.add("on");
+      });
+      edgeEls.forEach(el => {
+        const s = byId.get(el.dataset.s!)?.topic;
+        const t = byId.get(el.dataset.t!)?.topic;
+        if (s === topic && t === topic) el.classList.add("on");
+      });
+    };
+
+    // ---- 홈: 말풍선 ----
+    const tip = root.querySelector<HTMLElement>(".kg-tip");
+    const stage = root.querySelector<HTMLElement>(".kg-stage")!;
+    const showTip = (id: string) => {
+      if (!tip) return;
+      const d = byId.get(id);
+      const el = nodeById.get(id);
+      if (!d || !el) return;
+      const r = el.querySelector(".kg-dot")!.getBoundingClientRect();
+      const s = stage.getBoundingClientRect();
+      tip.querySelector(".kg-tip-topic")!.textContent =
+        payload.topics[d.topic]?.eyebrow ?? "";
+      tip.querySelector(".kg-tip-title")!.textContent = d.title;
+      const n = new Set([...d.out, ...d.in]).size;
+      tip.querySelector(".kg-tip-meta")!.textContent =
+        payload.lang === "en"
+          ? `${d.date} · ${n} ${S.links}`
+          : `${d.date} · ${S.links} ${n}`;
+      const x = r.left + r.width / 2 - s.left;
+      const clampedX = Math.max(130, Math.min(s.width - 130, x));
+      tip.style.left = `${clampedX}px`;
+      tip.style.top = `${r.top - s.top}px`;
+      tip.hidden = false;
+    };
+    const hideTip = () => {
+      if (tip) tip.hidden = true;
+    };
+
+    // ---- 지식 지도: 정보 패널 ----
+    const panelEmpty = root.querySelector<HTMLElement>(".kg-panel-empty");
+    const panelBody = root.querySelector<HTMLElement>(".kg-panel-body");
+    const renderList = (ids: string[]) =>
+      ids.length === 0
+        ? `<p class="kg-p-none">${S.none}</p>`
+        : `<ul>${ids
+            .map(i => byId.get(i))
+            .filter(Boolean)
+            .map(
+              n =>
+                `<li><button type="button" data-select="${n!.id}"><i style="background:${colorOf(n!.id)}"></i><span>${escapeHtml(n!.title)}</span></button></li>`
+            )
+            .join("")}</ul>`;
+
+    const select = (id: string | null, updateUrl = true) => {
+      selected = id;
+      focusNode(id);
+      if (!panelBody || !panelEmpty) return;
+      if (!id) {
+        panelBody.hidden = true;
+        panelEmpty.hidden = false;
+      } else {
+        const d = byId.get(id)!;
+        const onlyIn = d.in.filter(i => !d.out.includes(i));
+        const n = new Set([...d.out, ...d.in]).size;
+        const meta =
+          payload.lang === "en" ? `${n} ${S.links}` : `${S.links} ${n}`;
+        const alt = (d as NodeData & { alt?: string }).alt;
+        panelBody.innerHTML = `
+          <p class="eyebrow">${escapeHtml(payload.topics[d.topic]?.eyebrow ?? "")}</p>
+          <h2 class="kg-p-title">${escapeHtml(d.title)}</h2>
+          <p class="kg-p-meta">${d.date} · ${meta}</p>
+          <p class="kg-p-desc">${escapeHtml(d.description)}</p>
+          <div class="kg-p-actions">
+            <a class="kg-p-read" href="${d.url}">${S.read} <span aria-hidden="true">→</span></a>
+            ${alt ? `<a class="kg-p-alt" href="${alt}">${S.otherLang}</a>` : ""}
+          </div>
+          <div class="kg-p-group"><p class="eyebrow">${S.linksTo}</p>${renderList(d.out)}</div>
+          <div class="kg-p-group"><p class="eyebrow">${S.linkedFrom}</p>${renderList(onlyIn)}</div>`;
+        panelBody.hidden = false;
+        panelEmpty.hidden = true;
+      }
+      if (updateUrl) {
+        const url = new URL(window.location.href);
+        if (id) url.searchParams.set("focus", id);
+        else url.searchParams.delete("focus");
+        history.replaceState(history.state, "", url);
+      }
+    };
+
+    panelBody?.addEventListener("click", e => {
+      const btn = (e.target as HTMLElement).closest<HTMLElement>("[data-select]");
+      if (btn) select(btn.dataset.select!);
+    });
+
+    // ---- 노드 이벤트 ----
+    let lastPointer = "mouse";
+    root.addEventListener("pointerdown", e => {
+      lastPointer = e.pointerType;
+    });
+
+    nodeEls.forEach(el => {
+      const id = el.dataset.id!;
+      el.addEventListener("pointerenter", e => {
+        if (e.pointerType !== "mouse") return;
+        if (!selected) focusNode(id);
+        showTip(id);
+      });
+      el.addEventListener("pointerleave", e => {
+        if (e.pointerType !== "mouse") return;
+        if (!selected) focusNode(null);
+        hideTip();
+      });
+      el.addEventListener("focus", () => {
+        if (!el.matches(":focus-visible")) return;
+        if (variant === "full") select(id);
+        else {
+          focusNode(id);
+          showTip(id);
+        }
+      });
+      el.addEventListener("blur", () => {
+        if (variant !== "full") {
+          focusNode(null);
+          hideTip();
+        }
+      });
+      el.addEventListener("click", e => {
+        if (variant === "full") {
+          e.preventDefault();
+          select(id);
+          return;
+        }
+        // 홈에서 터치로 누르면 첫 번째는 미리보기, 같은 점을 한 번 더 누르면 이동
+        if (lastPointer !== "mouse" && tip && tip.dataset.for !== id) {
+          e.preventDefault();
+          focusNode(id);
+          showTip(id);
+          tip.dataset.for = id;
+        }
+      });
+    });
+
+    root.querySelector(".kg-svg")?.addEventListener("click", e => {
+      if (!(e.target as Element).closest(".kg-node")) {
+        if (variant === "full") select(null);
+        else {
+          focusNode(null);
+          hideTip();
+          if (tip) delete tip.dataset.for;
+        }
+      }
+    });
+
+    // ---- 주제 필터 ----
+    const chips = [...root.querySelectorAll<HTMLButtonElement>("[data-topic-filter]")];
+    const setTopic = (topic: string, updateUrl = true) => {
+      topicFilter = topic;
+      chips.forEach(c =>
+        c.classList.toggle("is-on", c.dataset.topicFilter === topic)
+      );
+      select(null, false);
+      applyTopic(topic);
+      if (updateUrl) {
+        const url = new URL(window.location.href);
+        if (topic) url.searchParams.set("topic", topic);
+        else url.searchParams.delete("topic");
+        url.searchParams.delete("focus");
+        history.replaceState(history.state, "", url);
+      }
+    };
+    chips.forEach(c =>
+      c.addEventListener("click", () => setTopic(c.dataset.topicFilter ?? ""))
+    );
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        select(null);
+        hideTip();
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    cleanups.push(() => document.removeEventListener("keydown", onKey));
+
+    if (variant === "full") {
+      const params = new URLSearchParams(window.location.search);
+      const topic = params.get("topic");
+      const focus = params.get("focus");
+      if (topic && payload.topics[topic]) setTopic(topic, false);
+      if (focus && byId.has(focus)) select(focus, false);
+    }
+
+    startDust(root);
+  }
+
+  function initAll() {
+    document.querySelectorAll<HTMLElement>("[data-kg]").forEach(initGraph);
+  }
+
+  document.addEventListener("astro:page-load", initAll);
+  document.addEventListener("astro:before-swap", () => {
+    while (cleanups.length) cleanups.pop()!();
+  });
+</script>
