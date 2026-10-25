@@ -172,7 +172,7 @@ git push
 ## 8. 이미 되어 있는 것 (건드리지 말 것)
 
 - **SEO**: sitemap, robots.txt, canonical, OG(+`og:locale=ko_KR`), Twitter Card, `BlogPosting`/`WebSite` JSON-LD, Google/Naver 검증 메타 — 전부 설정됨. Naver 서치어드바이저·GSC 등록 완료.
-- **도메인**: 2026-10-26부터 대표 주소는 `https://www.financialailab.com`(`astro-paper.config.ts`의 `url`). 옛 주소 `fintech-vault.vercel.app`은 `vercel.json`의 host 조건 리다이렉트로 같은 경로의 새 도메인으로 308 이동한다. 이 리다이렉트를 지우면 검색엔진에 중복 사이트가 생긴다.
+- **도메인**: 2026-10-26부터 대표 주소는 `https://www.financialailab.com`(`astro-paper.config.ts`의 `url`). 옛 주소 `fintech-vault.vercel.app`은 `vercel.json`의 host 조건 리다이렉트로 같은 경로의 새 도메인으로 308 이동한다. 이 리다이렉트를 지우면 검색엔진에 중복 사이트가 생긴다. source 패턴은 `/(.*)`로 둔다(`/:path*`는 `/`와 `/posts/<slug>/`처럼 슬래시로 끝나는 경로를 못 잡는다).
 - **OG 이미지 한글 폰트**(Noto Sans KR), **Pretendard 본문 폰트**, **KaTeX**, **Books 컬렉션** — 모두 구성됨.
 - 새 글을 쓸 때 이 인프라는 자동으로 적용된다. 별도 작업 불필요.
 
