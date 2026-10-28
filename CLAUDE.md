@@ -175,7 +175,8 @@ git push
 - **도메인**: 2026-10-26부터 대표 주소는 `https://www.financialailab.com`(`astro-paper.config.ts`의 `url`). 옛 주소 `fintech-vault.vercel.app`은 `vercel.json`의 host 조건 리다이렉트로 같은 경로의 새 도메인으로 308 이동한다. 이 리다이렉트를 지우면 검색엔진에 중복 사이트가 생긴다. source 패턴은 `/(.*)`로 둔다(`/:path*`는 `/`와 `/posts/<slug>/`처럼 슬래시로 끝나는 경로를 못 잡는다).
 - **사이트 구조 (2026-10-26 개편)**: 영어가 기본이다. 홈(`/`)·Posts 메뉴·지식 지도(`/graph/`)는 영문 글(`src/content/en/`) 기준이고, 한국어 글은 주소 그대로 `/posts/<slug>/`, 한국어 지도는 `/graph/ko/`. 디자인은 딥그린·크림·세이지 팔레트(`src/styles/theme.css`)와 DM Sans + Pretendard.
 - **지식 지도**: `src/utils/knowledgeGraph.ts`가 빌드 때 글 본문의 내부 링크(`/en/<slug>/`, `/posts/<slug>/`)로 연결선을, 태그로 주제를 만든다. 새 글에 관련 글 내부 링크를 걸면 그래프와 글 하단 "연결된 글"에 자동으로 들어간다. **새 태그를 쓰면 `TOPIC_RULES`에 넣어야** 알맞은 주제로 분류된다(안 넣으면 Notes로 간다).
-- **OG 이미지 한글 폰트**(Noto Sans KR), **Pretendard 본문 폰트**, **KaTeX**, **Books 컬렉션** — 모두 구성됨.
+- **OG(링크 미리보기) 이미지 (2026-10-29 개편)**: `src/utils/ogImage.ts` 한 곳에서 그린다. 딥그린 바탕에 지식 지도를 깔고 그 글의 점과 연결선만 밝힌다. 한국어 글 `/posts/<slug>/index.png`, 영문 글 `/en/<slug>/index.png`, 사이트 기본 `/og.png`이 빌드 때 자동 생성된다. 제목의 `[FDS]` 같은 꼬리표는 주제 옆으로, 콜론 뒤는 부제로 나뉜다. 폰트는 DM Sans(ttf) + Noto Sans KR.
+- **Pretendard 본문 폰트**, **KaTeX**, **Books 컬렉션** — 모두 구성됨.
 - 새 글을 쓸 때 이 인프라는 자동으로 적용된다. 별도 작업 불필요.
 
 ---

@@ -65,6 +65,8 @@ export default defineConfig({
       fallbacks: ["sans-serif"],
       weights: [400, 500, 600, 700],
       styles: ["normal"],
+      // ttf는 OG 이미지(satori)용. 브라우저는 woff2를 먼저 받는다.
+      formats: ["woff2", "ttf"],
     },
     {
       name: "Google Sans Code",
