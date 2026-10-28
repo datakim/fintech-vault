@@ -100,7 +100,16 @@ const TOPIC_RULES: [TopicId, string[]][] = [
   ["finance-ai", ["financial-ai", "fintech", "time-series", "credit"]],
   [
     "ai-coding",
-    ["ai-coding", "claude-code", "codex", "ccusage", "tokens", "tdd", "workflow"],
+    [
+      "ai-coding",
+      "claude-code",
+      "codex",
+      "ccusage",
+      "tokens",
+      "tdd",
+      "workflow",
+      "rust",
+    ],
   ],
   [
     "llm",
