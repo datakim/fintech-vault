@@ -176,7 +176,7 @@ git push
 - **사이트 구조 (2026-10-26 개편)**: 영어가 기본이다. 홈(`/`)·Posts 메뉴·지식 지도(`/graph/`)는 영문 글(`src/content/en/`) 기준이고, 한국어 글은 주소 그대로 `/posts/<slug>/`, 한국어 지도는 `/graph/ko/`. 디자인은 딥그린·크림·세이지 팔레트(`src/styles/theme.css`)와 DM Sans + Pretendard.
 - **지식 지도**: `src/utils/knowledgeGraph.ts`가 빌드 때 글 본문의 내부 링크(`/en/<slug>/`, `/posts/<slug>/`)로 연결선을, 태그로 주제를 만든다. 새 글에 관련 글 내부 링크를 걸면 그래프와 글 하단 "연결된 글"에 자동으로 들어간다. **새 태그를 쓰면 `TOPIC_RULES`에 넣어야** 알맞은 주제로 분류된다(안 넣으면 Notes로 간다).
 - **OG(링크 미리보기) 이미지 (2026-10-29 개편)**: `src/utils/ogImage.ts` 한 곳에서 그린다. 딥그린 바탕에 지식 지도를 깔고 그 글의 점과 연결선만 밝힌다. 한국어 글 `/posts/<slug>/index.png`, 영문 글 `/en/<slug>/index.png`, 사이트 기본 `/og.png`이 빌드 때 자동 생성된다. 제목의 `[FDS]` 같은 꼬리표는 주제 옆으로, 콜론 뒤는 부제로 나뉜다. 폰트는 DM Sans(ttf) + Noto Sans KR.
-- **핀테크 ML 사례집 (2026-10-30)**: `/cases/`(영어), `/cases/ko/`(한국어). 핀테크 회사 기술 블로그 글을 분야(투자·신용 리스크·사기 리스크·마케팅·오퍼레이션) × 방법으로 모은 페이지. 데이터는 `src/content/cases/cases.json`, 수집 기준은 `tools/casebook/BRIEF.md`, 새 묶음 합치기는 `python3 tools/casebook/merge.py src/content/cases/cases.json <새 파일>.json`(어휘·기간·중복 검사). 분야·방법 어휘를 바꾸려면 `src/utils/casebookVocab.ts`. 원문 주소를 본문에서 인용한 블로그 글이 있으면 목록에 "관련 글" 링크가 자동으로 붙는다.
+- **핀테크 ML 사례집 (2026-10-30)**: `/cases/`(영어), `/cases/ko/`(한국어). 핀테크 회사 기술 블로그 글을 분야(투자·신용 리스크·사기 리스크·마케팅·오퍼레이션) × 방법으로 모은 페이지. 데이터는 `src/content/cases/cases.json`, 수집 기준은 `tools/casebook/BRIEF.md`, 새 묶음 합치기는 `python3 tools/casebook/merge.py src/content/cases/cases.json <새 파일>.json`(어휘·기간·중복 검사). 분야·방법 어휘를 바꾸려면 `src/utils/casebookVocab.ts`. 원문 주소를 본문에서 인용한 블로그 글이 있으면 목록에 "관련 글" 링크가 자동으로 붙는다. 매주 월요일 클라우드 루틴이 `tools/casebook/WEEKLY.md` 순서대로 새 글을 모아 main에 바로 올린다(피드 목록 `sources.json`, 후보 뽑기 `candidates.py`, 이미 보고 뺀 글 `seen.json`).
 - **Pretendard 본문 폰트**, **KaTeX**, **Books 컬렉션** — 모두 구성됨.
 - 새 글을 쓸 때 이 인프라는 자동으로 적용된다. 별도 작업 불필요.
 
