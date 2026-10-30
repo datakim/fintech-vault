@@ -1,0 +1,135 @@
+---
+import { monthLabel, type Casebook, type CaseLang } from "@/utils/casebook";
+
+type Props = { book: Casebook; lang: CaseLang };
+
+const { book, lang } = Astro.props;
+const { first, last } = book.months;
+const months = last - first + 1;
+
+const W = 1080;
+const LABEL = 132;
+const PAD_R = 8;
+const AXIS = 30;
+const STEP = 10.5;
+// 테두리(바탕색 2px)가 안쪽 1px을 먹으므로 칠한 부분이 8px이 되게 5로 둔다.
+const R = 5;
+const colW = (W - LABEL - PAD_R) / months;
+
+// 분야·월마다 쌓을 글
+const stacks = new Map<string, typeof book.cases>();
+for (const c of [...book.cases].reverse()) {
+  const k = `${c.domain}|${book.monthOf(c)}`;
+  stacks.set(k, [...(stacks.get(k) ?? []), c]);
+}
+
+let y = 0;
+const rows = book.domains.map(d => {
+  let tallest = 1;
+  for (let mi = first; mi <= last; mi++) {
+    tallest = Math.max(tallest, stacks.get(`${d.id}|${mi}`)?.length ?? 0);
+  }
+  const h = Math.max(46, tallest * STEP + 22);
+  const row = { ...d, top: y, h, mid: y + h / 2 };
+  y += h;
+  return row;
+});
+const H = y + AXIS;
+
+// 가운데에서 위아래로 번갈아 쌓는다: 0, -1, +1, -2, +2 …
+const offset = (k: number) => (k % 2 === 1 ? -1 : 1) * Math.ceil(k / 2) * STEP;
+
+const dots = rows.flatMap(row => {
+  const out: { id: string; x: number; y: number }[] = [];
+  for (let mi = first; mi <= last; mi++) {
+    const list = stacks.get(`${row.id}|${mi}`) ?? [];
+    list.forEach((c, k) =>
+      out.push({
+        id: c.id,
+        x: LABEL + colW * (mi - first + 0.5),
+        y: row.mid + offset(k),
+      })
+    );
+  }
+  return out;
+});
+
+const ticks = Array.from({ length: months }, (_, i) => first + i).filter(
+  mi => mi % 3 === 0
+);
+---
+
+<svg
+  class="cb-timeline"
+  viewBox={`0 0 ${W} ${H}`}
+  role="img"
+  aria-label={lang === "en"
+    ? "Posts per month by domain. The full list is below."
+    : "분야별 월간 글 분포. 전체 목록은 아래에 있다."}
+>
+  {
+    ticks.map(mi => (
+      <line
+        class:list={[
+          "cb-rule",
+          mi % 12 === 0 ? "cb-rule-year" : "cb-rule-soft",
+        ]}
+        x1={LABEL + colW * (mi - first)}
+        x2={LABEL + colW * (mi - first)}
+        y1="0"
+        y2={H - AXIS}
+      />
+    ))
+  }
+  {
+    rows.map((row, i) => (
+      <g>
+        {i > 0 && (
+          <line
+            class="cb-rule"
+            x1="0"
+            x2={W}
+            y1={row.top - 0.5}
+            y2={row.top - 0.5}
+          />
+        )}
+        <text class="cb-row-name" x="0" y={row.mid + 4.5}>
+          {row[lang]}
+        </text>
+      </g>
+    ))
+  }
+  <line class="cb-rule" x1="0" x2={W} y1={H - AXIS - 0.5} y2={H - AXIS - 0.5}
+  ></line>
+  {
+    ticks.map(mi => {
+      // 오른쪽 끝에 걸리는 눈금 글자는 끝에 맞춰 붙인다.
+      const x = LABEL + colW * (mi - first) + 4;
+      const end = x + 56 > W;
+      return (
+        <text
+          class="cb-tick"
+          x={end ? W : x}
+          y={H - AXIS + 19}
+          text-anchor={end ? "end" : "start"}
+        >
+          {monthLabel(mi, lang)}
+        </text>
+      );
+    })
+  }
+  <g class="cb-dots">
+    {
+      dots.map(d => (
+        <circle
+          class="cb-dot"
+          data-dot={d.id}
+          cx={d.x.toFixed(1)}
+          cy={d.y.toFixed(1)}
+          r={R}
+        />
+      ))
+    }
+  </g>
+  <circle class="cb-dot-focus" r={R + 4} cx="-20" cy="-20"></circle>
+</svg>

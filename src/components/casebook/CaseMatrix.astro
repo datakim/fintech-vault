@@ -1,0 +1,193 @@
+---
+import type { Casebook, CaseLang } from "@/utils/casebook";
+
+type Props = { book: Casebook; lang: CaseLang; rows?: number };
+
+const { book, lang, rows = 12 } = Astro.props;
+
+const methods = book.methods.slice(0, rows);
+const domains = book.domains;
+
+// 칸마다 글 수
+const cell = new Map<string, number>();
+for (const c of book.cases) {
+  for (const m of c.methods) {
+    const k = `${c.domain}|${m}`;
+    cell.set(k, (cell.get(k) ?? 0) + 1);
+  }
+}
+const maxCell = Math.max(1, ...cell.values());
+const maxRow = Math.max(1, ...methods.map(m => m.count));
+
+const W = 720;
+const LABEL = 150;
+const TOTALS = 118;
+const HEAD = 58;
+const ROW = 34;
+const colW = (W - LABEL - TOTALS) / domains.length;
+const H = HEAD + methods.length * ROW + 6;
+const R_MAX = 14;
+const BAR_X = W - TOTALS + 22;
+const BAR_W = 62;
+
+const radius = (n: number) =>
+  n > 0 ? Math.max(4, R_MAX * Math.sqrt(n / maxCell)) : 0;
+const cx = (i: number) => LABEL + colW * (i + 0.5);
+const cy = (j: number) => HEAD + ROW * (j + 0.5);
+---
+
+<svg
+  class="cb-matrix"
+  viewBox={`0 0 ${W} ${H}`}
+  role="group"
+  aria-label={lang === "en"
+    ? "Posts by method and domain"
+    : "방법과 분야별 글 수"}
+  data-rmax={R_MAX}
+  data-maxcell={maxCell}
+  data-maxrow={maxRow}
+  data-barw={BAR_W}
+>
+  {
+    domains.map((d, i) => (
+      <rect
+        class="cb-band"
+        data-band-domain={d.id}
+        x={LABEL + colW * i}
+        y="0"
+        width={colW}
+        height={H}
+        rx="8"
+      />
+    ))
+  }
+  {
+    methods.map((m, j) => (
+      <rect
+        class="cb-band"
+        data-band-method={m.id}
+        x="0"
+        y={HEAD + ROW * j}
+        width={W}
+        height={ROW}
+      />
+    ))
+  }
+  <line class="cb-rule" x1="0" x2={W} y1={HEAD - 0.5} y2={HEAD - 0.5}></line>
+  {
+    domains.map((d, i) => (
+      <g
+        class="cb-col"
+        data-domain={d.id}
+        role="button"
+        tabindex="0"
+        aria-label={`${d[lang]}: ${d.count}`}
+      >
+        <rect
+          class="cb-hit"
+          x={LABEL + colW * i}
+          y="0"
+          width={colW}
+          height={HEAD}
+        />
+        <text class="cb-col-name" x={cx(i)} y="24" text-anchor="middle">
+          {d[lang]}
+        </text>
+        <text
+          class="cb-col-count"
+          x={cx(i)}
+          y="43"
+          text-anchor="middle"
+          data-domain-count={d.id}
+        >
+          {d.count}
+        </text>
+      </g>
+    ))
+  }
+  {
+    methods.map((m, j) => (
+      <g class="cb-row" data-method={m.id}>
+        {j > 0 && (
+          <line
+            class="cb-rule cb-rule-soft"
+            x1="0"
+            x2={W}
+            y1={HEAD + ROW * j - 0.5}
+            y2={HEAD + ROW * j - 0.5}
+          />
+        )}
+        <g
+          class="cb-row-head"
+          data-method={m.id}
+          role="button"
+          tabindex="0"
+          aria-label={`${m[lang]}: ${m.count}`}
+        >
+          <rect
+            class="cb-hit"
+            x="0"
+            y={HEAD + ROW * j}
+            width={LABEL}
+            height={ROW}
+          />
+          <text class="cb-row-name" x="0" y={cy(j) + 4.5}>
+            {m[lang]}
+          </text>
+        </g>
+        {domains.map((d, i) => {
+          const n = cell.get(`${d.id}|${m.id}`) ?? 0;
+          return n > 0 ? (
+            <g
+              class="cb-cell"
+              data-domain={d.id}
+              data-method={m.id}
+              data-total={n}
+              role="button"
+              tabindex="0"
+              aria-label={`${d[lang]} × ${m[lang]}: ${n}`}
+            >
+              <rect
+                class="cb-hit"
+                x={LABEL + colW * i}
+                y={HEAD + ROW * j}
+                width={colW}
+                height={ROW}
+              />
+              <circle class="cb-ring" cx={cx(i)} cy={cy(j)} r={radius(n)} />
+              <circle class="cb-fill" cx={cx(i)} cy={cy(j)} r={radius(n)} />
+            </g>
+          ) : (
+            <circle class="cb-empty" cx={cx(i)} cy={cy(j)} r="1.5" />
+          );
+        })}
+        <rect
+          class="cb-track"
+          x={BAR_X}
+          y={cy(j) - 3}
+          width={(BAR_W * m.count) / maxRow}
+          height="6"
+          rx="3"
+        />
+        <rect
+          class="cb-bar"
+          x={BAR_X}
+          y={cy(j) - 3}
+          width={(BAR_W * m.count) / maxRow}
+          height="6"
+          rx="3"
+          data-row-bar={m.id}
+        />
+        <text
+          class="cb-row-count"
+          x={W}
+          y={cy(j) + 4}
+          text-anchor="end"
+          data-method-count={m.id}
+        >
+          {m.count}
+        </text>
+      </g>
+    ))
+  }
+</svg>

@@ -1,0 +1,66 @@
+---
+import {
+  DOMAINS,
+  METHODS,
+  REGIONS,
+  type Casebook,
+  type CaseLang,
+} from "@/utils/casebook";
+
+type Props = { book: Casebook; lang: CaseLang };
+
+const { book, lang } = Astro.props;
+
+const domainName = new Map(DOMAINS.map(d => [d.id, d[lang]]));
+const methodName = new Map(METHODS.map(m => [m.id, m[lang]]));
+const regionName = (id: string) => REGIONS[id]?.[lang] ?? id;
+const date = (iso: string) => iso.replaceAll("-", ".");
+const t =
+  lang === "en"
+    ? { open: "Open the original post", ours: "Our notes on this" }
+    : { open: "원문 열기", ours: "이 블로그의 관련 글" };
+---
+
+<ol class="cb-list">
+  {
+    book.cases.map(c => (
+      <li id={`case-${c.id}`} class="cb-item" data-case={c.id}>
+        <div class="cb-item-meta">
+          <span class="tabular-nums">{date(c.date)}</span>
+          <button type="button" class="cb-company" data-company={c.company}>
+            {c.company}
+          </button>
+          <span class="cb-item-region">{regionName(c.region)}</span>
+        </div>
+        <div class="cb-item-body">
+          <p class="cb-item-domain eyebrow">{domainName.get(c.domain)}</p>
+          <h3 class="cb-item-title" lang={c.lang}>
+            <a href={c.url} target="_blank" rel="noopener" title={t.open}>
+              {c.title}
+              <span class="cb-ext" aria-hidden="true">
+                ↗
+              </span>
+            </a>
+          </h3>
+          <p class="cb-item-note">{lang === "en" ? c.note_en : c.note_ko}</p>
+          <div class="cb-item-tags">
+            {c.methods.map(m => (
+              <button type="button" class="cb-tag" data-method={m}>
+                {methodName.get(m)}
+              </button>
+            ))}
+            {c.metric && <span class="cb-metric">{c.metric}</span>}
+            {c.ours && (
+              <a
+                class="cb-related"
+                href={(lang === "ko" && c.ours.ko) || c.ours.en}
+              >
+                {t.ours} →
+              </a>
+            )}
+          </div>
+        </div>
+      </li>
+    ))
+  }
+</ol>

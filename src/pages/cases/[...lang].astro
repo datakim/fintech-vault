@@ -1,0 +1,1134 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import CaseMatrix from "@/components/casebook/CaseMatrix.astro";
+import CaseTimeline from "@/components/casebook/CaseTimeline.astro";
+import CaseList from "@/components/casebook/CaseList.astro";
+import { getCasebook, type CaseLang } from "@/utils/casebook";
+import config from "@/config";
+
+// /cases/ 는 영어, /cases/ko/ 는 한국어. 데이터는 같고 화면 글자와 메모만 바뀐다.
+export function getStaticPaths() {
+  return [{ params: { lang: undefined } }, { params: { lang: "ko" } }];
+}
+
+const lang: CaseLang = Astro.params.lang === "ko" ? "ko" : "en";
+const book = await getCasebook();
+const total = book.cases.length;
+const latest = book.latest?.replaceAll("-", ".") ?? "";
+
+const t =
+  lang === "en"
+    ? {
+        title: "Fintech ML casebook",
+        lead: "What fintech companies have written on their own engineering blogs about the models they run, from October 2024 on.",
+        description: `${total} posts from ${book.companies.length} fintech companies' engineering blogs about the ML systems they run, sorted by domain and method.`,
+        kpi: ["posts", "companies", "regions", "latest post"],
+        all: "All",
+        allMethods: "All methods",
+        allRegions: "All regions",
+        search: "Search titles, companies, notes",
+        company: "Company",
+        clear: "Clear filters",
+        matrix: "Domain × method",
+        matrixNote:
+          "Circle size is the number of posts. Click a circle, a domain or a method to filter.",
+        companies: "Companies",
+        companiesNote: "Top 10 by number of posts",
+        timeline: "By month",
+        timelineNote: "Each dot is one post.",
+        list: "All posts",
+        showing: "Showing {n} of {total}",
+        empty: "No posts match these filters.",
+        posts: (n: number) => `${n} ${n === 1 ? "post" : "posts"}`,
+        note: `Links go to the original posts. The one-line notes are summaries, so check the original for details. Collected up to ${latest}.`,
+      }
+    : {
+        title: "핀테크 ML 사례집",
+        lead: "핀테크 회사들이 자기 기술 블로그에 쓴 모델 이야기를 모았다. 2024년 10월 이후 글이다.",
+        description: `핀테크 회사 ${book.companies.length}곳이 기술 블로그에 쓴 ML 사례 ${total}편을 분야와 방법별로 정리했다.`,
+        kpi: ["글", "회사", "지역", "최근 글"],
+        all: "전체",
+        allMethods: "모든 방법",
+        allRegions: "모든 지역",
+        search: "제목·회사·메모 검색",
+        company: "회사",
+        clear: "필터 지우기",
+        matrix: "분야 × 방법",
+        matrixNote:
+          "원 크기는 글 수다. 원이나 분야, 방법 이름을 누르면 걸러 볼 수 있다.",
+        companies: "회사별",
+        companiesNote: "글이 많은 순 10곳",
+        timeline: "월별",
+        timelineNote: "점 하나가 글 한 편이다.",
+        list: "전체 목록",
+        showing: "{total}편 중 {n}편",
+        empty: "조건에 맞는 글이 없다.",
+        posts: (n: number) => `${n}편`,
+        note: `링크는 원문으로 연결된다. 한 줄 메모는 요약이라 자세한 내용은 원문에서 확인하길 바란다. ${latest}까지 모았다.`,
+      };
+
+const topCompanies = book.companies.slice(0, 10);
+const maxCompany = Math.max(1, ...topCompanies.map(c => c.count));
+
+// 브라우저에서 거를 때 쓰는 최소한의 데이터
+const payload = {
+  strings: {
+    showing: t.showing,
+    posts: lang === "en" ? ["{n} post", "{n} posts"] : ["{n}편", "{n}편"],
+    domains: Object.fromEntries(book.domains.map(d => [d.id, d[lang]])),
+    methods: Object.fromEntries(book.methods.map(m => [m.id, m[lang]])),
+  },
+  maxCompany,
+  items: book.cases.map(c => ({
+    id: c.id,
+    d: c.domain,
+    m: c.methods,
+    r: c.region,
+    c: c.company,
+    t: c.title,
+    dt: c.date.replaceAll("-", "."),
+    p: lang === "en" ? c.problem_en : c.problem_ko,
+    s: [c.title, c.company, c.note_en, c.note_ko, c.problem_en, c.problem_ko]
+      .join(" ")
+      .toLowerCase(),
+  })),
+};
+---
+
+<Layout
+  title={`${t.title} | ${config.site.title}`}
+  description={t.description}
+  lang={lang}
+>
+  <div data-theme="dark" class="brand-band text-foreground" data-casebook>
+    <Header />
+    <main id="main-content" class="app-wide pt-12 pb-16">
+      <div class="flex items-center justify-between gap-4">
+        <p class="eyebrow flex items-center gap-2.5">
+          <span class="bg-accent inline-block size-1.5 rounded-full"></span>
+          Casebook
+        </p>
+        <nav
+          class="flex items-center gap-1 text-[12px] font-medium tracking-[0.12em]"
+          aria-label="Language"
+        >
+          <a
+            href="/cases/"
+            lang="en"
+            class:list={[
+              "rounded-md px-2.5 py-1 transition-colors",
+              lang === "en"
+                ? "text-foreground bg-white/10"
+                : "text-muted-foreground hover:text-foreground",
+            ]}
+            aria-current={lang === "en" ? "page" : undefined}>EN</a
+          >
+          <a
+            href="/cases/ko/"
+            lang="ko"
+            class:list={[
+              "rounded-md px-2.5 py-1 transition-colors",
+              lang === "ko"
+                ? "text-foreground bg-white/10"
+                : "text-muted-foreground hover:text-foreground",
+            ]}
+            aria-current={lang === "ko" ? "page" : undefined}>한국어</a
+          >
+        </nav>
+      </div>
+
+      <div
+        class="mt-5 flex flex-wrap items-end justify-between gap-x-10 gap-y-8"
+      >
+        <div class="max-w-xl">
+          <h1 class="display text-[2.4rem] sm:text-[3rem]">{t.title}</h1>
+          <p class="text-muted-foreground mt-4 text-[15px] leading-7">
+            {t.lead}
+          </p>
+        </div>
+        <dl class="cb-kpis">
+          {
+            [total, book.companies.length, book.regions.length, latest].map(
+              (v, i) => (
+                <div>
+                  <dt class="eyebrow">{t.kpi[i]}</dt>
+                  <dd class:list={["cb-kpi", i === 3 && "cb-kpi-date"]}>{v}</dd>
+                </div>
+              )
+            )
+          }
+        </dl>
+      </div>
+
+      <div class="cb-filters" role="search">
+        <div class="cb-seg" role="group" aria-label="Domain">
+          <button type="button" data-set-domain="" aria-pressed="true">
+            {t.all}
+          </button>
+          {
+            book.domains.map(d => (
+              <button type="button" data-set-domain={d.id} aria-pressed="false">
+                {d[lang]}
+              </button>
+            ))
+          }
+        </div>
+        <select
+          class="cb-select"
+          data-filter="method"
+          aria-label={t.allMethods}
+        >
+          <option value="">{t.allMethods}</option>
+          {
+            book.methods.map(m => (
+              <option value={m.id}>
+                {m[lang]} ({m.count})
+              </option>
+            ))
+          }
+        </select>
+        <select
+          class="cb-select"
+          data-filter="region"
+          aria-label={t.allRegions}
+        >
+          <option value="">{t.allRegions}</option>
+          {
+            book.regions.map(r => (
+              <option value={r.id}>
+                {r[lang]} ({r.count})
+              </option>
+            ))
+          }
+        </select>
+        <input
+          class="cb-search"
+          type="search"
+          data-filter="q"
+          placeholder={t.search}
+          aria-label={t.search}
+        />
+        <button type="button" class="cb-chip" data-company-chip hidden>
+          <span class="text-muted-foreground">{t.company}</span>
+          <span data-company-name></span>
+          <span aria-hidden="true">×</span>
+        </button>
+        <button type="button" class="cb-clear" data-clear hidden>
+          {t.clear}
+        </button>
+      </div>
+
+      <div class="cb-grid">
+        <section class="cb-panel">
+          <header class="cb-panel-head">
+            <h2>{t.matrix}</h2>
+            <p>{t.matrixNote}</p>
+          </header>
+          <div class="cb-scroll">
+            <CaseMatrix book={book} lang={lang} />
+          </div>
+        </section>
+        <section class="cb-panel">
+          <header class="cb-panel-head">
+            <h2>{t.companies}</h2>
+            <p>{t.companiesNote}</p>
+          </header>
+          <ul class="cb-companies">
+            {
+              topCompanies.map(c => (
+                <li>
+                  <button
+                    type="button"
+                    class="cb-company-row"
+                    data-company={c.name}
+                    data-total={c.count}
+                  >
+                    <span class="cb-company-name">{c.name}</span>
+                    <span class="cb-company-bar">
+                      <span
+                        class="cb-company-track"
+                        style={`width:${(100 * c.count) / maxCompany}%`}
+                      />
+                      <span
+                        class="cb-company-fill"
+                        style={`width:${(100 * c.count) / maxCompany}%`}
+                      />
+                    </span>
+                    <span class="cb-company-count tabular-nums">{c.count}</span>
+                  </button>
+                </li>
+              ))
+            }
+          </ul>
+        </section>
+      </div>
+
+      <section class="cb-panel mt-6">
+        <header class="cb-panel-head">
+          <h2>{t.timeline}</h2>
+          <p>{t.timelineNote}</p>
+        </header>
+        <div class="cb-scroll">
+          <CaseTimeline book={book} lang={lang} />
+        </div>
+      </section>
+
+      <div class="cb-tip" role="tooltip" hidden>
+        <strong data-tip-main></strong>
+        <span data-tip-sub></span>
+        <span data-tip-extra></span>
+      </div>
+    </main>
+  </div>
+
+  <section class="app-wide pt-16">
+    <div
+      class="border-border flex flex-wrap items-baseline justify-between gap-4 border-b pb-4"
+    >
+      <h2 class="display text-3xl">{t.list}</h2>
+      <p class="text-muted-foreground text-[13px] tabular-nums" data-showing>
+        {
+          t.showing
+            .replace("{n}", String(total))
+            .replace("{total}", String(total))
+        }
+      </p>
+    </div>
+    <p class="text-muted-foreground py-10 text-[15px]" data-empty hidden>
+      {t.empty}
+    </p>
+    <CaseList book={book} lang={lang} />
+    <p class="text-muted-foreground mt-10 max-w-2xl text-[13px] leading-6">
+      {t.note}
+    </p>
+  </section>
+
+  <script
+    is:inline
+    type="application/json"
+    id="cb-data"
+    set:html={JSON.stringify(payload).replaceAll("<", "\\u003c")}
+  />
+
+  <Footer />
+</Layout>
+
+<script>
+  type Item = {
+    id: string;
+    d: string;
+    m: string[];
+    r: string;
+    c: string;
+    t: string;
+    dt: string;
+    p: string;
+    s: string;
+  };
+  type Payload = {
+    strings: {
+      showing: string;
+      posts: [string, string];
+      domains: Record<string, string>;
+      methods: Record<string, string>;
+    };
+    maxCompany: number;
+    items: Item[];
+  };
+  type State = {
+    domain: string;
+    method: string;
+    region: string;
+    company: string;
+    q: string;
+  };
+
+  const data: Payload = JSON.parse(
+    document.getElementById("cb-data")?.textContent ?? "{}"
+  );
+  const root = document.querySelector<HTMLElement>("[data-casebook]")!;
+  const byId = new Map(data.items.map(it => [it.id, it]));
+  const keys: (keyof State)[] = ["domain", "method", "region", "company", "q"];
+
+  const params = new URLSearchParams(location.search);
+  const state: State = {
+    domain: params.get("domain") ?? "",
+    method: params.get("method") ?? "",
+    region: params.get("region") ?? "",
+    company: params.get("company") ?? "",
+    q: params.get("q") ?? "",
+  };
+
+  const $$ = <T extends Element>(sel: string, el: ParentNode = document) =>
+    Array.from(el.querySelectorAll<T>(sel));
+
+  const matrix = root.querySelector<SVGSVGElement>(".cb-matrix")!;
+  const rMax = Number(matrix.dataset.rmax);
+  const maxCell = Number(matrix.dataset.maxcell);
+  const maxRow = Number(matrix.dataset.maxrow);
+  const barW = Number(matrix.dataset.barw);
+  const radius = (n: number) =>
+    n > 0 ? Math.max(4, rMax * Math.sqrt(n / maxCell)) : 0;
+
+  const postsLabel = (n: number) =>
+    data.strings.posts[n === 1 ? 0 : 1].replace("{n}", String(n));
+
+  function matches(it: Item) {
+    if (state.domain && it.d !== state.domain) return false;
+    if (state.method && !it.m.includes(state.method)) return false;
+    if (state.region && it.r !== state.region) return false;
+    if (state.company && it.c !== state.company) return false;
+    if (state.q && !it.s.includes(state.q.trim().toLowerCase())) return false;
+    return true;
+  }
+
+  function apply() {
+    const on = data.items.filter(matches);
+    const onIds = new Set(on.map(it => it.id));
+
+    // 목록
+    for (const li of $$<HTMLElement>("[data-case]")) {
+      li.hidden = !onIds.has(li.dataset.case!);
+    }
+    const showing = document.querySelector("[data-showing]")!;
+    showing.textContent = data.strings.showing
+      .replace("{n}", String(on.length))
+      .replace("{total}", String(data.items.length));
+    document.querySelector<HTMLElement>("[data-empty]")!.hidden = on.length > 0;
+
+    // 시간축 점
+    for (const dot of $$<SVGCircleElement>("[data-dot]")) {
+      dot.classList.toggle("is-off", !onIds.has(dot.dataset.dot!));
+    }
+
+    // 분야 × 방법
+    const cell = new Map<string, number>();
+    const byDomain = new Map<string, number>();
+    const byMethod = new Map<string, number>();
+    const byCompany = new Map<string, number>();
+    for (const it of on) {
+      byDomain.set(it.d, (byDomain.get(it.d) ?? 0) + 1);
+      byCompany.set(it.c, (byCompany.get(it.c) ?? 0) + 1);
+      for (const m of it.m) {
+        cell.set(`${it.d}|${m}`, (cell.get(`${it.d}|${m}`) ?? 0) + 1);
+        byMethod.set(m, (byMethod.get(m) ?? 0) + 1);
+      }
+    }
+    for (const g of $$<SVGGElement>(".cb-cell")) {
+      const n = cell.get(`${g.dataset.domain}|${g.dataset.method}`) ?? 0;
+      g.dataset.n = String(n);
+      g.querySelector(".cb-fill")!.setAttribute("r", String(radius(n)));
+      g.classList.toggle("is-zero", n === 0);
+      g.classList.toggle(
+        "is-active",
+        state.domain === g.dataset.domain && state.method === g.dataset.method
+      );
+    }
+    for (const el of $$<SVGTextElement>("[data-domain-count]")) {
+      el.textContent = String(byDomain.get(el.dataset.domainCount!) ?? 0);
+    }
+    for (const el of $$<SVGTextElement>("[data-method-count]")) {
+      el.textContent = String(byMethod.get(el.dataset.methodCount!) ?? 0);
+    }
+    for (const el of $$<SVGRectElement>("[data-row-bar]")) {
+      const n = byMethod.get(el.dataset.rowBar!) ?? 0;
+      el.setAttribute("width", String((barW * n) / maxRow));
+    }
+    for (const g of $$<SVGGElement>(".cb-col")) {
+      g.classList.toggle("is-active", g.dataset.domain === state.domain);
+    }
+    for (const g of $$<SVGGElement>(".cb-row-head")) {
+      g.classList.toggle("is-active", g.dataset.method === state.method);
+    }
+    for (const band of $$<SVGRectElement>("[data-band-domain]")) {
+      band.classList.toggle(
+        "is-active",
+        band.dataset.bandDomain === state.domain
+      );
+    }
+    for (const band of $$<SVGRectElement>("[data-band-method]")) {
+      band.classList.toggle(
+        "is-active",
+        band.dataset.bandMethod === state.method
+      );
+    }
+
+    // 회사별
+    for (const btn of $$<HTMLButtonElement>(".cb-company-row")) {
+      const n = byCompany.get(btn.dataset.company!) ?? 0;
+      const fill = btn.querySelector<HTMLElement>(".cb-company-fill")!;
+      fill.style.width = `${(100 * n) / data.maxCompany}%`;
+      btn.querySelector(".cb-company-count")!.textContent = String(n);
+      btn.classList.toggle("is-active", btn.dataset.company === state.company);
+      btn.setAttribute(
+        "aria-pressed",
+        String(btn.dataset.company === state.company)
+      );
+    }
+
+    // 필터 줄
+    for (const b of $$<HTMLButtonElement>("[data-set-domain]")) {
+      b.setAttribute(
+        "aria-pressed",
+        String(b.dataset.setDomain === state.domain)
+      );
+    }
+    for (const el of $$<HTMLSelectElement | HTMLInputElement>(
+      "[data-filter]"
+    )) {
+      const k = el.dataset.filter as keyof State;
+      if (el.value !== state[k]) el.value = state[k];
+    }
+    const chip = root.querySelector<HTMLElement>("[data-company-chip]")!;
+    chip.hidden = !state.company;
+    chip.querySelector("[data-company-name]")!.textContent = state.company;
+    root.querySelector<HTMLElement>("[data-clear]")!.hidden = !keys.some(
+      k => state[k]
+    );
+
+    const url = new URL(location.href);
+    for (const k of keys) {
+      if (state[k]) url.searchParams.set(k, state[k]);
+      else url.searchParams.delete(k);
+    }
+    history.replaceState(null, "", url);
+  }
+
+  function set(patch: Partial<State>) {
+    Object.assign(state, patch);
+    apply();
+  }
+
+  const toggle = (k: keyof State, v: string) =>
+    set({ [k]: state[k] === v ? "" : v } as Partial<State>);
+
+  // 누르기
+  document.addEventListener("click", e => {
+    const el = (e.target as Element).closest<HTMLElement | SVGElement>(
+      "[data-set-domain], .cb-col, .cb-row-head, .cb-cell, [data-company], .cb-tag, [data-company-chip], [data-clear]"
+    );
+    if (!el) return;
+    const ds = (el as HTMLElement).dataset;
+    if (ds.setDomain !== undefined) set({ domain: ds.setDomain });
+    else if (el.classList.contains("cb-col")) toggle("domain", ds.domain!);
+    else if (el.classList.contains("cb-row-head")) toggle("method", ds.method!);
+    else if (el.classList.contains("cb-cell")) {
+      const same = state.domain === ds.domain && state.method === ds.method;
+      set(
+        same
+          ? { domain: "", method: "" }
+          : { domain: ds.domain, method: ds.method }
+      );
+    } else if (el.classList.contains("cb-tag")) toggle("method", ds.method!);
+    else if (ds.companyChip !== undefined) set({ company: "" });
+    else if (ds.clear !== undefined)
+      set({ domain: "", method: "", region: "", company: "", q: "" });
+    else if (ds.company) toggle("company", ds.company);
+  });
+
+  // SVG 단추는 키보드로도
+  root.addEventListener("keydown", e => {
+    const el = (e.target as Element).closest?.(
+      ".cb-col, .cb-row-head, .cb-cell"
+    );
+    if (el && (e.key === "Enter" || e.key === " ")) {
+      e.preventDefault();
+      (el as SVGElement).dispatchEvent(
+        new MouseEvent("click", { bubbles: true })
+      );
+    }
+  });
+
+  let typing: number | undefined;
+  for (const el of $$<HTMLSelectElement | HTMLInputElement>("[data-filter]")) {
+    el.addEventListener("input", () => {
+      const k = el.dataset.filter as keyof State;
+      window.clearTimeout(typing);
+      typing = window.setTimeout(
+        () => set({ [k]: el.value }),
+        k === "q" ? 140 : 0
+      );
+    });
+  }
+
+  // 말풍선
+  const tip = root.querySelector<HTMLElement>(".cb-tip")!;
+  const tipMain = tip.querySelector("[data-tip-main]")!;
+  const tipSub = tip.querySelector("[data-tip-sub]")!;
+  const tipExtra = tip.querySelector("[data-tip-extra]")!;
+
+  function showTip(
+    x: number,
+    y: number,
+    main: string,
+    sub: string,
+    extra = ""
+  ) {
+    tipMain.textContent = main;
+    tipSub.textContent = sub;
+    tipExtra.textContent = extra;
+    tip.hidden = false;
+    const box = root.getBoundingClientRect();
+    const w = tip.offsetWidth;
+    const left = Math.min(Math.max(x - box.left - w / 2, 8), box.width - w - 8);
+    tip.style.left = `${left}px`;
+    tip.style.top = `${y - box.top - tip.offsetHeight - 14}px`;
+  }
+  const hideTip = () => (tip.hidden = true);
+
+  function cellTip(g: SVGGElement) {
+    const n = Number(g.dataset.n ?? g.dataset.total);
+    const total = Number(g.dataset.total);
+    const names = [
+      ...new Set(
+        data.items
+          .filter(
+            it =>
+              it.d === g.dataset.domain &&
+              it.m.includes(g.dataset.method!) &&
+              matches(it)
+          )
+          .map(it => it.c)
+      ),
+    ];
+    const r = g.getBoundingClientRect();
+    showTip(
+      r.left + r.width / 2,
+      r.top + 4,
+      n === total ? postsLabel(n) : `${postsLabel(n)} / ${total}`,
+      `${data.strings.domains[g.dataset.domain!]} × ${data.strings.methods[g.dataset.method!]}`,
+      names.slice(0, 4).join(", ") + (names.length > 4 ? " …" : "")
+    );
+  }
+
+  for (const g of $$<SVGGElement>(".cb-cell")) {
+    g.addEventListener("pointerenter", () => cellTip(g));
+    g.addEventListener("focus", () => cellTip(g));
+    g.addEventListener("pointerleave", hideTip);
+    g.addEventListener("blur", hideTip);
+  }
+
+  // 시간축: 가장 가까운 점을 찾는다
+  const timeline = root.querySelector<SVGSVGElement>(".cb-timeline")!;
+  const ring = timeline.querySelector<SVGCircleElement>(".cb-dot-focus")!;
+  const dots = $$<SVGCircleElement>("[data-dot]", timeline).map(el => ({
+    el,
+    x: Number(el.getAttribute("cx")),
+    y: Number(el.getAttribute("cy")),
+  }));
+  let near: (typeof dots)[number] | undefined;
+
+  timeline.addEventListener("pointermove", e => {
+    const ctm = timeline.getScreenCTM();
+    if (!ctm) return;
+    const p = new DOMPoint(e.clientX, e.clientY).matrixTransform(ctm.inverse());
+    let best: (typeof dots)[number] | undefined;
+    let bestD = 15 * 15;
+    for (const d of dots) {
+      if (d.el.classList.contains("is-off")) continue;
+      const dd = (d.x - p.x) ** 2 + (d.y - p.y) ** 2;
+      if (dd < bestD) {
+        bestD = dd;
+        best = d;
+      }
+    }
+    near = best;
+    timeline.classList.toggle("is-pointing", !!best);
+    if (!best) {
+      ring.classList.remove("is-visible");
+      hideTip();
+      return;
+    }
+    ring.setAttribute("cx", String(best.x));
+    ring.setAttribute("cy", String(best.y));
+    ring.classList.add("is-visible");
+    const it = byId.get(best.el.dataset.dot!)!;
+    const r = best.el.getBoundingClientRect();
+    showTip(r.left + r.width / 2, r.top, it.t, `${it.c} · ${it.dt}`, it.p);
+  });
+  timeline.addEventListener("pointerleave", () => {
+    near = undefined;
+    ring.classList.remove("is-visible");
+    hideTip();
+  });
+  timeline.addEventListener("click", () => {
+    if (!near) return;
+    const li = document.getElementById(`case-${near.el.dataset.dot}`);
+    if (!li) return;
+    li.scrollIntoView({ behavior: "smooth", block: "center" });
+    li.classList.remove("is-flash");
+    void li.offsetWidth;
+    li.classList.add("is-flash");
+  });
+
+  apply();
+</script>
+
+<style is:global>
+  [data-casebook] {
+    position: relative;
+    color-scheme: dark;
+  }
+
+  .cb-kpis {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    gap: 0.5rem 2.75rem;
+  }
+  .cb-kpi {
+    margin-top: 0.45rem;
+    font-size: 2.1rem;
+    font-weight: 500;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+  .cb-kpi-date {
+    font-size: 1.15rem;
+    letter-spacing: -0.01em;
+    line-height: 1.9rem;
+  }
+  @media (max-width: 640px) {
+    .cb-kpis {
+      grid-template-columns: repeat(2, auto);
+      gap: 1.25rem 2.5rem;
+    }
+  }
+
+  /* 필터 줄 */
+  .cb-filters {
+    margin-top: 2.75rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .cb-seg {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    padding: 0.2rem;
+    border: 1px solid var(--border);
+    border-radius: 1.25rem;
+  }
+  .cb-seg button {
+    padding: 0.32rem 0.85rem;
+    border-radius: 999px;
+    font-size: 13px;
+    color: var(--muted-foreground);
+    transition:
+      background 0.2s,
+      color 0.2s;
+  }
+  .cb-seg button:hover {
+    color: var(--foreground);
+  }
+  .cb-seg button[aria-pressed="true"] {
+    background: color-mix(in srgb, var(--accent) 16%, transparent);
+    color: var(--foreground);
+  }
+  .cb-select,
+  .cb-search {
+    height: 2.15rem;
+    padding: 0 0.9rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: transparent;
+    font-size: 13px;
+    color: var(--foreground);
+  }
+  .cb-select option {
+    background: var(--surface);
+  }
+  .cb-search {
+    min-width: 11rem;
+    flex: 1 1 11rem;
+    max-width: 22rem;
+  }
+  .cb-search::placeholder {
+    color: var(--muted-foreground);
+  }
+  .cb-select:focus-visible,
+  .cb-search:focus-visible,
+  .cb-seg button:focus-visible {
+    outline: 1.5px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .cb-chip {
+    display: inline-flex;
+    gap: 0.45rem;
+    align-items: center;
+    height: 2.15rem;
+    padding: 0 0.9rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--accent) 16%, transparent);
+    font-size: 13px;
+  }
+  .cb-clear {
+    font-size: 13px;
+    color: var(--muted-foreground);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .cb-clear:hover {
+    color: var(--foreground);
+  }
+
+  /* 판 */
+  .cb-grid {
+    margin-top: 1.5rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+  }
+  @media (min-width: 1024px) {
+    .cb-grid {
+      grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+    }
+  }
+  .cb-panel {
+    padding: 1.4rem 1.5rem 1.2rem;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    background: color-mix(in srgb, var(--surface) 55%, transparent);
+  }
+  .cb-panel-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.25rem 1rem;
+    margin-bottom: 1rem;
+  }
+  .cb-panel-head h2 {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .cb-panel-head p {
+    font-size: 12.5px;
+    color: var(--muted-foreground);
+  }
+  .cb-scroll {
+    overflow-x: auto;
+  }
+  .cb-matrix,
+  .cb-timeline {
+    display: block;
+    width: 100%;
+    height: auto;
+    font-family: inherit;
+  }
+  .cb-matrix {
+    min-width: 600px;
+  }
+  .cb-timeline {
+    min-width: 760px;
+  }
+
+  /* SVG 공통 */
+  .cb-rule {
+    stroke: var(--border);
+    stroke-width: 1;
+  }
+  .cb-rule-soft {
+    stroke: color-mix(in srgb, var(--border) 55%, transparent);
+  }
+  .cb-hit {
+    fill: transparent;
+  }
+  .cb-row-name {
+    fill: var(--foreground);
+    font-size: 13px;
+  }
+  .cb-col-name {
+    fill: var(--foreground);
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .cb-col-count,
+  .cb-row-count,
+  .cb-tick {
+    fill: var(--muted-foreground);
+    font-size: 11.5px;
+    font-variant-numeric: tabular-nums;
+  }
+  .cb-col,
+  .cb-row-head,
+  .cb-cell {
+    cursor: pointer;
+    outline: none;
+  }
+  .cb-col:hover .cb-col-name,
+  .cb-row-head:hover .cb-row-name,
+  .cb-col.is-active .cb-col-name,
+  .cb-row-head.is-active .cb-row-name {
+    fill: var(--accent);
+  }
+  .cb-col:focus-visible .cb-hit,
+  .cb-row-head:focus-visible .cb-hit,
+  .cb-cell:focus-visible .cb-hit {
+    stroke: var(--accent);
+    stroke-width: 1;
+  }
+  .cb-band {
+    fill: transparent;
+    transition: fill 0.25s;
+  }
+  .cb-band.is-active {
+    fill: color-mix(in srgb, var(--accent) 7%, transparent);
+  }
+  .cb-ring {
+    fill: color-mix(in srgb, var(--accent) 9%, transparent);
+    stroke: color-mix(in srgb, var(--accent) 38%, transparent);
+    stroke-width: 1;
+    transition: stroke 0.2s;
+  }
+  .cb-fill {
+    fill: var(--accent);
+    transition:
+      r 0.35s ease,
+      opacity 0.25s;
+  }
+  .cb-cell.is-zero .cb-fill {
+    opacity: 0;
+  }
+  .cb-cell:hover .cb-ring,
+  .cb-cell:focus-visible .cb-ring,
+  .cb-cell.is-active .cb-ring {
+    stroke: var(--foreground);
+    stroke-width: 1.5;
+  }
+  .cb-empty {
+    fill: var(--border);
+  }
+  .cb-track {
+    fill: color-mix(in srgb, var(--accent) 16%, transparent);
+  }
+  .cb-bar {
+    fill: var(--accent);
+    transition: width 0.35s ease;
+  }
+  .cb-rule-year {
+    stroke: color-mix(in srgb, var(--accent) 22%, transparent);
+  }
+  .cb-dot {
+    fill: var(--accent);
+    stroke: var(--background);
+    stroke-width: 2;
+    transition: opacity 0.25s;
+  }
+  .cb-dot.is-off {
+    opacity: 0.13;
+  }
+  .cb-timeline.is-pointing {
+    cursor: pointer;
+  }
+  .cb-dot-focus {
+    fill: none;
+    stroke: var(--foreground);
+    stroke-width: 1.5;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .cb-dot-focus.is-visible {
+    opacity: 1;
+  }
+
+  /* 회사별 */
+  .cb-companies {
+    display: grid;
+    gap: 0.1rem;
+  }
+  .cb-company-row {
+    display: grid;
+    grid-template-columns: minmax(0, 8.5rem) 1fr 2rem;
+    align-items: center;
+    gap: 0.9rem;
+    width: 100%;
+    padding: 0.42rem 0.5rem;
+    border-radius: 8px;
+    text-align: left;
+    font-size: 13px;
+    transition: background 0.2s;
+  }
+  .cb-company-row:hover,
+  .cb-company-row.is-active {
+    background: color-mix(in srgb, var(--accent) 9%, transparent);
+  }
+  .cb-company-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .cb-company-bar {
+    position: relative;
+    height: 6px;
+  }
+  .cb-company-track,
+  .cb-company-fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    border-radius: 3px;
+  }
+  .cb-company-track {
+    background: color-mix(in srgb, var(--accent) 16%, transparent);
+  }
+  .cb-company-fill {
+    background: var(--accent);
+    transition: width 0.35s ease;
+  }
+  .cb-company-count {
+    text-align: right;
+    color: var(--muted-foreground);
+    font-size: 12px;
+  }
+
+  /* 말풍선 */
+  .cb-tip {
+    position: absolute;
+    z-index: 30;
+    display: grid;
+    gap: 0.2rem;
+    max-width: 290px;
+    padding: 0.65rem 0.8rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface);
+    box-shadow: 0 12px 30px rgb(0 0 0 / 0.35);
+    pointer-events: none;
+    font-size: 12.5px;
+    line-height: 1.45;
+  }
+  .cb-tip[hidden] {
+    display: none;
+  }
+  .cb-tip strong {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--foreground);
+  }
+  .cb-tip span {
+    color: var(--muted-foreground);
+  }
+  .cb-tip span:empty {
+    display: none;
+  }
+
+  /* 목록 */
+  .cb-item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.6rem 2.5rem;
+    overflow-wrap: anywhere;
+    padding: 1.6rem 0.75rem;
+    margin: 0 -0.75rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+    border-radius: 4px;
+    transition: background 0.6s;
+  }
+  .cb-item[hidden] {
+    display: none;
+  }
+  .cb-item.is-flash {
+    animation: cb-flash 1.8s ease;
+  }
+  @keyframes cb-flash {
+    0%,
+    35% {
+      background: color-mix(in srgb, var(--accent) 12%, transparent);
+    }
+    100% {
+      background: transparent;
+    }
+  }
+  @media (min-width: 768px) {
+    .cb-item {
+      grid-template-columns: 11rem minmax(0, 1fr);
+    }
+  }
+  .cb-item-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.15rem 0.75rem;
+    align-content: start;
+    font-size: 12.5px;
+    color: var(--muted-foreground);
+  }
+  @media (min-width: 768px) {
+    .cb-item-meta {
+      flex-direction: column;
+      padding-top: 0.15rem;
+    }
+  }
+  .cb-company {
+    width: fit-content;
+    text-align: left;
+    font-weight: 600;
+    color: var(--foreground);
+  }
+  .cb-company:hover {
+    color: var(--accent);
+  }
+  .cb-item-domain:lang(ko) {
+    letter-spacing: 0.08em;
+  }
+  .cb-item-title {
+    margin-top: 0.35rem;
+    font-size: 17.5px;
+    font-weight: 600;
+    line-height: 1.45;
+    letter-spacing: -0.02em;
+  }
+  .cb-item-title a:hover {
+    color: var(--accent);
+  }
+  .cb-ext {
+    margin-left: 0.25rem;
+    font-size: 0.8em;
+    color: var(--muted-foreground);
+  }
+  .cb-item-note {
+    margin-top: 0.4rem;
+    max-width: 46rem;
+    font-size: 14.5px;
+    line-height: 1.75;
+    color: color-mix(in srgb, var(--foreground) 82%, transparent);
+  }
+  .cb-item-tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 0.45rem;
+    margin-top: 0.8rem;
+  }
+  .cb-tag {
+    padding: 0.12rem 0.6rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 12px;
+    color: var(--muted-foreground);
+    transition:
+      border-color 0.2s,
+      color 0.2s;
+  }
+  .cb-tag:hover {
+    border-color: var(--accent);
+    color: var(--foreground);
+  }
+  .cb-metric {
+    margin-left: 0.35rem;
+    padding-left: 0.6rem;
+    border-left: 2px solid var(--accent);
+    font-size: 12.5px;
+    color: var(--foreground);
+  }
+  .cb-related {
+    margin-left: 0.35rem;
+    font-size: 12.5px;
+    color: var(--accent);
+  }
+</style>

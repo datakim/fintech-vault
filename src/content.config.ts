@@ -1,6 +1,7 @@
 import { defineCollection } from "astro:content";
 import { z } from "astro/zod";
-import { glob } from "astro/loaders";
+import { file, glob } from "astro/loaders";
+import { DOMAIN_IDS, METHOD_IDS } from "@/utils/casebookVocab";
 import config from "@/config";
 
 export const BLOG_PATH = "src/content/posts";
@@ -74,4 +75,26 @@ const en = defineCollection({
     }),
 });
 
-export const collections = { posts, pages, books, en };
+// 핀테크 ML 사례집. 회사 기술 블로그 글 하나가 항목 하나다 (src/utils/casebook.ts).
+const cases = defineCollection({
+  loader: file("src/content/cases/cases.json"),
+  schema: z.object({
+    company: z.string(),
+    region: z.string(),
+    title: z.string(),
+    url: z.url(),
+    date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    lang: z.string(),
+    domain: z.enum(DOMAIN_IDS),
+    methods: z.array(z.enum(METHOD_IDS)).min(1).max(4),
+    problem_en: z.string(),
+    problem_ko: z.string(),
+    note_en: z.string(),
+    note_ko: z.string(),
+    metric: z.string().optional(),
+    // 같은 사례를 다룬 이 블로그 글 (/en/<slug>/)
+    related: z.string().optional(),
+  }),
+});
+
+export const collections = { posts, pages, books, en, cases };
