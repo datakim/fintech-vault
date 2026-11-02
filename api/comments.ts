@@ -1,6 +1,6 @@
 /*
  * GET  /api/comments?thread=<slug>  공개된 댓글 목록
- * POST /api/comments                새 댓글 (승인 대기로 들어간다. 관리 비밀번호가 있으면 작성자 답글로 바로 공개)
+ * POST /api/comments                새 댓글 (바로 공개된다. 관리 비밀번호가 있으면 글쓴이 답글로 표시)
  */
 import { db, ipHash, isAdmin, json, sameSite, THREAD_RE } from "./_lib";
 
@@ -56,7 +56,7 @@ export default async function handler(req: Request): Promise<Response> {
   if (!admin) {
     // 사람에게는 보이지 않는 칸을 채웠거나 너무 빨리 보냈으면 받은 척만 한다.
     const elapsed = Date.now() - Number(input.t ?? 0);
-    if (str(input.website) || elapsed < MIN_FILL_MS) return json({ ok: true, pending: true });
+    if (str(input.website) || elapsed < MIN_FILL_MS) return json({ ok: true });
     if (!(elapsed < MAX_FILL_MS)) return json({ error: "stale" }, 400);
     if ((body.match(/https?:\/\//g) ?? []).length > 2) return json({ error: "too_many_links" }, 400);
   }
@@ -73,6 +73,6 @@ export default async function handler(req: Request): Promise<Response> {
   await sql`
     INSERT INTO comments (thread, name, body, lang, status, is_author, ip_hash)
     VALUES (${thread}, ${name}, ${body}, ${lang},
-            ${admin ? "approved" : "pending"}, ${admin}, ${hash})`;
-  return json({ ok: true, pending: !admin });
+            'approved', ${admin}, ${hash})`;
+  return json({ ok: true });
 }

@@ -1,7 +1,7 @@
 ---
 /*
  * 댓글 (2026-11-03, 로그인 없이)
- * 닉네임과 내용만 받고, 관리 페이지(/admin/comments/)에서 승인한 댓글만 보인다.
+ * 닉네임과 내용만 받고 바로 공개한다. 지울 때는 Neon 관리 화면이나 /admin/comments/(비밀번호 설정 시)를 쓴다.
  * 데이터는 /api/comments (Vercel 함수 + Neon Postgres). 한국어판과 영문판이 같은 term을 쓰면
  * 한 스레드를 함께 쓴다.
  */
@@ -17,13 +17,13 @@ const t =
   lang === "ko"
     ? {
         title: "댓글",
-        note: "로그인 없이 닉네임만 적으면 된다. 댓글은 확인한 뒤에 공개된다.",
+        note: "로그인 없이 닉네임만 적으면 바로 남길 수 있다.",
         empty: "아직 댓글이 없다.",
         name: "닉네임",
         body: "내용",
         submit: "댓글 남기기",
         sending: "보내는 중…",
-        done: "댓글이 접수됐다. 확인한 뒤에 공개된다.",
+        done: "댓글이 등록됐다.",
         author: "글쓴이",
         loadError: "댓글을 불러오지 못했다.",
         errors: {
@@ -37,13 +37,13 @@ const t =
       }
     : {
         title: "Comments",
-        note: "No sign-in needed, just a name. Comments appear once they have been reviewed.",
+        note: "No sign-in needed. Just leave a name and your comment.",
         empty: "No comments yet.",
         name: "Name",
         body: "Comment",
         submit: "Post comment",
         sending: "Sending…",
-        done: "Thanks. Your comment will appear once it has been reviewed.",
+        done: "Thanks, your comment is up.",
         author: "Author",
         loadError: "Couldn't load comments.",
         errors: {
@@ -161,14 +161,15 @@ const t =
     }).format(d);
   }
 
-  async function load(root: HTMLElement, s: Strings) {
+  async function load(root: HTMLElement, s: Strings, fresh = false) {
     const list = root.querySelector<HTMLOListElement>("[data-list]")!;
     const empty = root.querySelector<HTMLElement>("[data-empty]")!;
     const count = root.querySelector<HTMLElement>("[data-count]")!;
     const tpl = root.querySelector<HTMLTemplateElement>("template[data-item]")!;
     try {
       const res = await fetch(
-        `/api/comments?thread=${encodeURIComponent(root.dataset.thread!)}`
+        `/api/comments?thread=${encodeURIComponent(root.dataset.thread!)}` +
+          (fresh ? `&_=${Date.now()}` : "")
       );
       if (!res.ok) throw new Error(String(res.status));
       const { comments } = (await res.json()) as { comments: Comment[] };
@@ -246,6 +247,8 @@ const t =
           if (!res.ok) throw new Error(out.error ?? "default");
           (form.elements.namedItem("body") as HTMLTextAreaElement).value = "";
           status.textContent = s.done;
+          // 방금 남긴 댓글이 바로 보이도록 캐시를 건너뛰고 다시 불러온다.
+          load(root, s, true);
           try {
             localStorage.setItem(NAME_KEY, name);
           } catch {
