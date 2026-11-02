@@ -20,9 +20,11 @@ type Props = {
 
 const { term, lang = "en" } = Astro.props;
 const enabled = Boolean(GISCUS.categoryId);
+// new URL("/파일", ...) 꼴로 쓰면 빌드가 이 CSS를 페이지 스타일로 끌어온다. 문자열로 잇는다.
+const origin = Astro.url.origin;
 const themes = {
-  light: new URL("/giscus-light.css", Astro.url).href,
-  dark: new URL("/giscus-dark.css", Astro.url).href,
+  light: `${origin}/giscus-light.css`,
+  dark: `${origin}/giscus-dark.css`,
 };
 ---
 

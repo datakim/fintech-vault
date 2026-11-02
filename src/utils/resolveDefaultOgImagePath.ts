@@ -1,7 +1,11 @@
 import type { ResolvedAstroPaperConfig } from "@/types/config";
 import { getAssetPath } from "./withBase";
 
-const publicFiles = import.meta.glob("/public/*", { eager: false });
+// 이미지 파일만 훑는다. "/public/*"로 넓게 잡으면 public의 CSS(giscus 테마 등)까지
+// 페이지 스타일시트로 끌려 들어간다.
+const publicFiles = import.meta.glob("/public/*.{png,jpg,jpeg,webp,avif,gif}", {
+  eager: false,
+});
 
 function existsInPublic(filename: string): boolean {
   return `/public/${filename}` in publicFiles;
