@@ -1,0 +1,219 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Main from "@/components/Main.astro";
+import Footer from "@/components/Footer.astro";
+import config from "@/config";
+
+// /saved/ 는 영어, /saved/ko/ 는 한국어. 목록은 브라우저에 저장된 것을 그때그때 그린다.
+export function getStaticPaths() {
+  return [{ params: { lang: undefined } }, { params: { lang: "ko" } }];
+}
+
+const lang = Astro.params.lang === "ko" ? "ko" : "en";
+
+const t =
+  lang === "en"
+    ? {
+        title: "Saved",
+        desc: "Posts and casebook entries you saved. They stay in this browser only, so they won't show up on another device.",
+        posts: "Posts",
+        cases: "Casebook",
+        remove: "Remove",
+        empty:
+          "Nothing saved yet. Use the Save button at the top of a post, or the bookmark on a casebook entry.",
+        browse: [
+          ["Posts", "/en/"],
+          ["Casebook", "/cases/"],
+        ],
+      }
+    : {
+        title: "저장한 글",
+        desc: "저장한 글과 사례다. 이 브라우저에만 남기 때문에 다른 기기에서는 보이지 않는다.",
+        posts: "블로그 글",
+        cases: "사례집",
+        remove: "삭제",
+        empty:
+          "아직 저장한 글이 없다. 글 위쪽의 저장 단추나 사례집 항목의 책갈피를 누르면 여기에 모인다.",
+        browse: [
+          ["한국어 글", "/posts/"],
+          ["사례집", "/cases/ko/"],
+        ],
+      };
+---
+
+<Layout
+  title={`${t.title} | ${config.site.title}`}
+  description={t.desc}
+  lang={lang}
+>
+  <meta name="robots" content="noindex" slot="head" />
+  <Header />
+  <Main pageTitle={t.title} pageDesc={t.desc}>
+    <nav
+      class="-mt-4 mb-8 flex gap-1 text-[12px] font-medium tracking-[0.12em]"
+      aria-label="Language"
+    >
+      {
+        [
+          ["EN", "/saved/", "en"],
+          ["한국어", "/saved/ko/", "ko"],
+        ].map(([label, href, l]) => (
+          <a
+            href={href}
+            lang={l}
+            class:list={[
+              "rounded-md px-2.5 py-1 transition-colors",
+              lang === l
+                ? "bg-muted text-foreground"
+                : "text-muted-foreground hover:text-foreground",
+            ]}
+            aria-current={lang === l ? "page" : undefined}
+          >
+            {label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div data-saved-root>
+      {
+        (
+          [
+            ["post", t.posts],
+            ["case", t.cases],
+          ] as const
+        ).map(([kind, heading]) => (
+          <section class="saved-group" data-group={kind} hidden>
+            <h2 class="border-border flex items-baseline justify-between border-b pb-3 text-[17px] font-semibold tracking-[-0.02em]">
+              {heading}
+              <span class="eyebrow" data-count />
+            </h2>
+            <ul data-list />
+          </section>
+        ))
+      }
+      <div class="saved-empty" data-empty hidden>
+        <p>{t.empty}</p>
+        <p class="mt-4 flex gap-5">
+          {
+            t.browse.map(([label, href]) => (
+              <a
+                href={href}
+                class="text-accent underline-offset-4 hover:underline"
+              >
+                {label} →
+              </a>
+            ))
+          }
+        </p>
+      </div>
+    </div>
+
+    <template id="saved-row">
+      <li class="saved-row">
+        <div class="min-w-0">
+          <a class="saved-title" data-title></a>
+          <p class="saved-meta" data-meta></p>
+        </div>
+        <button type="button" class="saved-remove" data-remove>
+          {t.remove}
+        </button>
+      </li>
+    </template>
+  </Main>
+  <Footer />
+</Layout>
+
+<script>
+  import { getSaved, onSavedChange, removeSaved } from "@/scripts/saved";
+
+  function render() {
+    const root = document.querySelector<HTMLElement>("[data-saved-root]");
+    const tpl = document.querySelector<HTMLTemplateElement>("#saved-row");
+    if (!root || !tpl) return;
+    const items = getSaved().sort((a, b) => b.savedAt - a.savedAt);
+
+    for (const group of root.querySelectorAll<HTMLElement>("[data-group]")) {
+      const list = group.querySelector("[data-list]")!;
+      const mine = items.filter(it => it.kind === group.dataset.group);
+      list.replaceChildren(
+        ...mine.map(it => {
+          const row = tpl.content.firstElementChild!.cloneNode(
+            true
+          ) as HTMLElement;
+          const a = row.querySelector<HTMLAnchorElement>("[data-title]")!;
+          a.textContent = it.title;
+          a.href = it.url;
+          if (it.kind === "case") {
+            a.target = "_blank";
+            a.rel = "noopener";
+          }
+          row.querySelector("[data-meta]")!.textContent = it.meta ?? "";
+          row.querySelector<HTMLElement>("[data-remove]")!.dataset.remove =
+            it.id;
+          return row;
+        })
+      );
+      group.querySelector("[data-count]")!.textContent = String(mine.length);
+      group.hidden = mine.length === 0;
+    }
+    root.querySelector<HTMLElement>("[data-empty]")!.hidden = items.length > 0;
+  }
+
+  document.addEventListener("click", e => {
+    const b = (e.target as Element).closest<HTMLElement>("[data-remove]");
+    if (b?.dataset.remove) removeSaved(b.dataset.remove);
+  });
+
+  onSavedChange(render);
+  document.addEventListener("astro:page-load", render);
+</script>
+
+<style>
+  .saved-group + .saved-group {
+    margin-top: 3rem;
+  }
+  .saved-group :global(.saved-row) {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 1.1rem 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+  }
+  .saved-group :global(.saved-title) {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.5;
+    letter-spacing: -0.015em;
+    overflow-wrap: anywhere;
+  }
+  .saved-group :global(.saved-title:hover) {
+    color: var(--accent);
+  }
+  .saved-group :global(.saved-meta) {
+    margin-top: 0.2rem;
+    font-size: 12.5px;
+    color: var(--muted-foreground);
+  }
+  .saved-group :global(.saved-meta:empty) {
+    display: none;
+  }
+  .saved-group :global(.saved-remove) {
+    flex-shrink: 0;
+    font-size: 12.5px;
+    color: var(--muted-foreground);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .saved-group :global(.saved-remove:hover) {
+    color: var(--foreground);
+  }
+  .saved-empty {
+    padding: 2rem 0 1rem;
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--muted-foreground);
+  }
+</style>

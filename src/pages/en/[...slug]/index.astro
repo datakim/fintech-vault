@@ -7,6 +7,8 @@ import Footer from "@/components/Footer.astro";
 import Datetime from "@/components/Datetime.astro";
 import { slugifyStr } from "@/utils/slugify";
 import RelatedPosts from "@/components/RelatedPosts.astro";
+import SaveButton from "@/components/SaveButton.astro";
+import Comments from "@/components/Comments.astro";
 import { topicOf } from "@/utils/knowledgeGraph";
 import config from "@/config";
 
@@ -44,6 +46,13 @@ let ogImageUrl: string | undefined =
 if (!ogImageUrl && config.features.dynamicOgImage) {
   ogImageUrl = `/en/${post.id}/index.png`;
 }
+const savedMeta = `${new Intl.DateTimeFormat("en-GB", {
+  timeZone: config.site.timezone,
+  day: "numeric",
+  month: "short",
+  year: "numeric",
+}).format(pubDatetime)} · English`;
+
 const ogImage = ogImageUrl
   ? new URL(ogImageUrl, Astro.url.origin).href
   : undefined;
@@ -78,17 +87,27 @@ const ogImage = ogImageUrl
 
     <div class="my-2 flex items-center gap-2">
       <Datetime {pubDatetime} {modDatetime} {timezone} size="lg" />
-      {
-        koHref && (
-          <a
-            href={koHref}
-            lang="ko"
-            class="text-muted-foreground hover:text-foreground ms-auto text-[13px] underline-offset-4 transition-colors hover:underline"
-          >
-            한국어로 읽기
-          </a>
-        )
-      }
+      <div class="ms-auto flex items-center gap-5">
+        {
+          koHref && (
+            <a
+              href={koHref}
+              lang="ko"
+              class="text-muted-foreground hover:text-foreground text-[13px] underline-offset-4 transition-colors hover:underline"
+            >
+              한국어로 읽기
+            </a>
+          )
+        }
+        <SaveButton
+          id={`post:en:${post.id}`}
+          kind="post"
+          title={title}
+          url={`/en/${post.id}/`}
+          meta={savedMeta}
+          lang="en"
+        />
+      </div>
     </div>
 
     <article
@@ -101,6 +120,8 @@ const ogImage = ogImageUrl
     >
       <Content />
     </article>
+
+    <Comments term={koSlug ?? post.id} lang="en" />
 
     <RelatedPosts slug={post.id} lang="en" />
   </main>

@@ -102,208 +102,218 @@ const payload = {
   description={t.description}
   lang={lang}
 >
-  <div data-theme="dark" class="brand-band text-foreground" data-casebook>
-    <Header />
-    <main id="main-content" class="app-wide pt-12 pb-16">
-      <div class="flex items-center justify-between gap-4">
-        <p class="eyebrow flex items-center gap-2.5">
-          <span class="bg-accent inline-block size-1.5 rounded-full"></span>
-          Casebook
-        </p>
-        <nav
-          class="flex items-center gap-1 text-[12px] font-medium tracking-[0.12em]"
-          aria-label="Language"
-        >
-          <a
-            href="/cases/"
-            lang="en"
-            class:list={[
-              "rounded-md px-2.5 py-1 transition-colors",
-              lang === "en"
-                ? "text-foreground bg-white/10"
-                : "text-muted-foreground hover:text-foreground",
-            ]}
-            aria-current={lang === "en" ? "page" : undefined}>EN</a
-          >
-          <a
-            href="/cases/ko/"
-            lang="ko"
-            class:list={[
-              "rounded-md px-2.5 py-1 transition-colors",
-              lang === "ko"
-                ? "text-foreground bg-white/10"
-                : "text-muted-foreground hover:text-foreground",
-            ]}
-            aria-current={lang === "ko" ? "page" : undefined}>한국어</a
-          >
-        </nav>
-      </div>
-
-      <div
-        class="mt-5 flex flex-wrap items-end justify-between gap-x-10 gap-y-8"
-      >
-        <div class="max-w-xl">
-          <h1 class="display text-[2.4rem] sm:text-[3rem]">{t.title}</h1>
-          <p class="text-muted-foreground mt-4 text-[15px] leading-7">
-            {t.lead}
+  <div data-casebook-page>
+    <div data-theme="dark" class="brand-band text-foreground" data-casebook>
+      <Header />
+      <main id="main-content" class="app-wide pt-12 pb-16">
+        <div class="flex items-center justify-between gap-4">
+          <p class="eyebrow flex items-center gap-2.5">
+            <span class="bg-accent inline-block size-1.5 rounded-full"></span>
+            Casebook
           </p>
+          <nav
+            class="flex items-center gap-1 text-[12px] font-medium tracking-[0.12em]"
+            aria-label="Language"
+          >
+            <a
+              href="/cases/"
+              lang="en"
+              class:list={[
+                "rounded-md px-2.5 py-1 transition-colors",
+                lang === "en"
+                  ? "text-foreground bg-white/10"
+                  : "text-muted-foreground hover:text-foreground",
+              ]}
+              aria-current={lang === "en" ? "page" : undefined}>EN</a
+            >
+            <a
+              href="/cases/ko/"
+              lang="ko"
+              class:list={[
+                "rounded-md px-2.5 py-1 transition-colors",
+                lang === "ko"
+                  ? "text-foreground bg-white/10"
+                  : "text-muted-foreground hover:text-foreground",
+              ]}
+              aria-current={lang === "ko" ? "page" : undefined}>한국어</a
+            >
+          </nav>
         </div>
-        <dl class="cb-kpis">
-          {
-            [total, book.companies.length, book.regions.length, latest].map(
-              (v, i) => (
-                <div>
-                  <dt class="eyebrow">{t.kpi[i]}</dt>
-                  <dd class:list={["cb-kpi", i === 3 && "cb-kpi-date"]}>{v}</dd>
-                </div>
-              )
-            )
-          }
-        </dl>
-      </div>
 
-      <div class="cb-filters" role="search">
-        <div class="cb-seg" role="group" aria-label="Domain">
-          <button type="button" data-set-domain="" aria-pressed="true">
-            {t.all}
-          </button>
-          {
-            book.domains.map(d => (
-              <button type="button" data-set-domain={d.id} aria-pressed="false">
-                {d[lang]}
-              </button>
-            ))
-          }
-        </div>
-        <select
-          class="cb-select"
-          data-filter="method"
-          aria-label={t.allMethods}
+        <div
+          class="mt-5 flex flex-wrap items-end justify-between gap-x-10 gap-y-8"
         >
-          <option value="">{t.allMethods}</option>
-          {
-            book.methods.map(m => (
-              <option value={m.id}>
-                {m[lang]} ({m.count})
-              </option>
-            ))
-          }
-        </select>
-        <select
-          class="cb-select"
-          data-filter="region"
-          aria-label={t.allRegions}
-        >
-          <option value="">{t.allRegions}</option>
-          {
-            book.regions.map(r => (
-              <option value={r.id}>
-                {r[lang]} ({r.count})
-              </option>
-            ))
-          }
-        </select>
-        <input
-          class="cb-search"
-          type="search"
-          data-filter="q"
-          placeholder={t.search}
-          aria-label={t.search}
-        />
-        <button type="button" class="cb-chip" data-company-chip hidden>
-          <span class="text-muted-foreground">{t.company}</span>
-          <span data-company-name></span>
-          <span aria-hidden="true">×</span>
-        </button>
-        <button type="button" class="cb-clear" data-clear hidden>
-          {t.clear}
-        </button>
-      </div>
-
-      <div class="cb-grid">
-        <section class="cb-panel">
-          <header class="cb-panel-head">
-            <h2>{t.matrix}</h2>
-            <p>{t.matrixNote}</p>
-          </header>
-          <div class="cb-scroll">
-            <CaseMatrix book={book} lang={lang} />
+          <div class="max-w-xl">
+            <h1 class="display text-[2.4rem] sm:text-[3rem]">{t.title}</h1>
+            <p class="text-muted-foreground mt-4 text-[15px] leading-7">
+              {t.lead}
+            </p>
           </div>
-        </section>
-        <section class="cb-panel">
-          <header class="cb-panel-head">
-            <h2>{t.companies}</h2>
-            <p>{t.companiesNote}</p>
-          </header>
-          <ul class="cb-companies">
+          <dl class="cb-kpis">
             {
-              topCompanies.map(c => (
-                <li>
-                  <button
-                    type="button"
-                    class="cb-company-row"
-                    data-company={c.name}
-                    data-total={c.count}
-                  >
-                    <span class="cb-company-name">{c.name}</span>
-                    <span class="cb-company-bar">
-                      <span
-                        class="cb-company-track"
-                        style={`width:${(100 * c.count) / maxCompany}%`}
-                      />
-                      <span
-                        class="cb-company-fill"
-                        style={`width:${(100 * c.count) / maxCompany}%`}
-                      />
-                    </span>
-                    <span class="cb-company-count tabular-nums">{c.count}</span>
-                  </button>
-                </li>
+              [total, book.companies.length, book.regions.length, latest].map(
+                (v, i) => (
+                  <div>
+                    <dt class="eyebrow">{t.kpi[i]}</dt>
+                    <dd class:list={["cb-kpi", i === 3 && "cb-kpi-date"]}>
+                      {v}
+                    </dd>
+                  </div>
+                )
+              )
+            }
+          </dl>
+        </div>
+
+        <div class="cb-filters" role="search">
+          <div class="cb-seg" role="group" aria-label="Domain">
+            <button type="button" data-set-domain="" aria-pressed="true">
+              {t.all}
+            </button>
+            {
+              book.domains.map(d => (
+                <button
+                  type="button"
+                  data-set-domain={d.id}
+                  aria-pressed="false"
+                >
+                  {d[lang]}
+                </button>
               ))
             }
-          </ul>
-        </section>
-      </div>
-
-      <section class="cb-panel mt-6">
-        <header class="cb-panel-head">
-          <h2>{t.timeline}</h2>
-          <p>{t.timelineNote}</p>
-        </header>
-        <div class="cb-scroll">
-          <CaseTimeline book={book} lang={lang} />
+          </div>
+          <select
+            class="cb-select"
+            data-filter="method"
+            aria-label={t.allMethods}
+          >
+            <option value="">{t.allMethods}</option>
+            {
+              book.methods.map(m => (
+                <option value={m.id}>
+                  {m[lang]} ({m.count})
+                </option>
+              ))
+            }
+          </select>
+          <select
+            class="cb-select"
+            data-filter="region"
+            aria-label={t.allRegions}
+          >
+            <option value="">{t.allRegions}</option>
+            {
+              book.regions.map(r => (
+                <option value={r.id}>
+                  {r[lang]} ({r.count})
+                </option>
+              ))
+            }
+          </select>
+          <input
+            class="cb-search"
+            type="search"
+            data-filter="q"
+            placeholder={t.search}
+            aria-label={t.search}
+          />
+          <button type="button" class="cb-chip" data-company-chip hidden>
+            <span class="text-muted-foreground">{t.company}</span>
+            <span data-company-name></span>
+            <span aria-hidden="true">×</span>
+          </button>
+          <button type="button" class="cb-clear" data-clear hidden>
+            {t.clear}
+          </button>
         </div>
-      </section>
 
-      <div class="cb-tip" role="tooltip" hidden>
-        <strong data-tip-main></strong>
-        <span data-tip-sub></span>
-        <span data-tip-extra></span>
-      </div>
-    </main>
-  </div>
+        <div class="cb-grid">
+          <section class="cb-panel">
+            <header class="cb-panel-head">
+              <h2>{t.matrix}</h2>
+              <p>{t.matrixNote}</p>
+            </header>
+            <div class="cb-scroll">
+              <CaseMatrix book={book} lang={lang} />
+            </div>
+          </section>
+          <section class="cb-panel">
+            <header class="cb-panel-head">
+              <h2>{t.companies}</h2>
+              <p>{t.companiesNote}</p>
+            </header>
+            <ul class="cb-companies">
+              {
+                topCompanies.map(c => (
+                  <li>
+                    <button
+                      type="button"
+                      class="cb-company-row"
+                      data-company={c.name}
+                      data-total={c.count}
+                    >
+                      <span class="cb-company-name">{c.name}</span>
+                      <span class="cb-company-bar">
+                        <span
+                          class="cb-company-track"
+                          style={`width:${(100 * c.count) / maxCompany}%`}
+                        />
+                        <span
+                          class="cb-company-fill"
+                          style={`width:${(100 * c.count) / maxCompany}%`}
+                        />
+                      </span>
+                      <span class="cb-company-count tabular-nums">
+                        {c.count}
+                      </span>
+                    </button>
+                  </li>
+                ))
+              }
+            </ul>
+          </section>
+        </div>
 
-  <section class="app-wide pt-16">
-    <div
-      class="border-border flex flex-wrap items-baseline justify-between gap-4 border-b pb-4"
-    >
-      <h2 class="display text-3xl">{t.list}</h2>
-      <p class="text-muted-foreground text-[13px] tabular-nums" data-showing>
-        {
-          t.showing
-            .replace("{n}", String(total))
-            .replace("{total}", String(total))
-        }
-      </p>
+        <section class="cb-panel mt-6">
+          <header class="cb-panel-head">
+            <h2>{t.timeline}</h2>
+            <p>{t.timelineNote}</p>
+          </header>
+          <div class="cb-scroll">
+            <CaseTimeline book={book} lang={lang} />
+          </div>
+        </section>
+
+        <div class="cb-tip" role="tooltip" hidden>
+          <strong data-tip-main></strong>
+          <span data-tip-sub></span>
+          <span data-tip-extra></span>
+        </div>
+      </main>
     </div>
-    <p class="text-muted-foreground py-10 text-[15px]" data-empty hidden>
-      {t.empty}
-    </p>
-    <CaseList book={book} lang={lang} />
-    <p class="text-muted-foreground mt-10 max-w-2xl text-[13px] leading-6">
-      {t.note}
-    </p>
-  </section>
+
+    <section class="app-wide pt-16">
+      <div
+        class="border-border flex flex-wrap items-baseline justify-between gap-4 border-b pb-4"
+      >
+        <h2 class="display text-3xl">{t.list}</h2>
+        <p class="text-muted-foreground text-[13px] tabular-nums" data-showing>
+          {
+            t.showing
+              .replace("{n}", String(total))
+              .replace("{total}", String(total))
+          }
+        </p>
+      </div>
+      <p class="text-muted-foreground py-10 text-[15px]" data-empty hidden>
+        {t.empty}
+      </p>
+      <CaseList book={book} lang={lang} />
+      <p class="text-muted-foreground mt-10 max-w-2xl text-[13px] leading-6">
+        {t.note}
+      </p>
+    </section>
+  </div>
 
   <script
     is:inline
@@ -345,325 +355,352 @@ const payload = {
     q: string;
   };
 
-  const data: Payload = JSON.parse(
-    document.getElementById("cb-data")?.textContent ?? "{}"
-  );
-  const root = document.querySelector<HTMLElement>("[data-casebook]")!;
-  const byId = new Map(data.items.map(it => [it.id, it]));
-  const keys: (keyof State)[] = ["domain", "method", "region", "company", "q"];
+  // 화면 전환(ClientRouter)으로 다시 들어와도 매번 새로 붙인다.
+  function initCasebook() {
+    const page = document.querySelector<HTMLElement>("[data-casebook-page]");
+    if (!page || page.dataset.ready) return;
+    page.dataset.ready = "1";
 
-  const params = new URLSearchParams(location.search);
-  const state: State = {
-    domain: params.get("domain") ?? "",
-    method: params.get("method") ?? "",
-    region: params.get("region") ?? "",
-    company: params.get("company") ?? "",
-    q: params.get("q") ?? "",
-  };
+    const data: Payload = JSON.parse(
+      document.getElementById("cb-data")?.textContent ?? "{}"
+    );
+    const root = document.querySelector<HTMLElement>("[data-casebook]")!;
+    const byId = new Map(data.items.map(it => [it.id, it]));
+    const keys: (keyof State)[] = [
+      "domain",
+      "method",
+      "region",
+      "company",
+      "q",
+    ];
 
-  const $$ = <T extends Element>(sel: string, el: ParentNode = document) =>
-    Array.from(el.querySelectorAll<T>(sel));
+    const params = new URLSearchParams(location.search);
+    const state: State = {
+      domain: params.get("domain") ?? "",
+      method: params.get("method") ?? "",
+      region: params.get("region") ?? "",
+      company: params.get("company") ?? "",
+      q: params.get("q") ?? "",
+    };
 
-  const matrix = root.querySelector<SVGSVGElement>(".cb-matrix")!;
-  const rMax = Number(matrix.dataset.rmax);
-  const maxCell = Number(matrix.dataset.maxcell);
-  const maxRow = Number(matrix.dataset.maxrow);
-  const barW = Number(matrix.dataset.barw);
-  const radius = (n: number) =>
-    n > 0 ? Math.max(4, rMax * Math.sqrt(n / maxCell)) : 0;
+    const $$ = <T extends Element>(sel: string, el: ParentNode = document) =>
+      Array.from(el.querySelectorAll<T>(sel));
 
-  const postsLabel = (n: number) =>
-    data.strings.posts[n === 1 ? 0 : 1].replace("{n}", String(n));
+    const matrix = root.querySelector<SVGSVGElement>(".cb-matrix")!;
+    const rMax = Number(matrix.dataset.rmax);
+    const maxCell = Number(matrix.dataset.maxcell);
+    const maxRow = Number(matrix.dataset.maxrow);
+    const barW = Number(matrix.dataset.barw);
+    const radius = (n: number) =>
+      n > 0 ? Math.max(4, rMax * Math.sqrt(n / maxCell)) : 0;
 
-  function matches(it: Item) {
-    if (state.domain && it.d !== state.domain) return false;
-    if (state.method && !it.m.includes(state.method)) return false;
-    if (state.region && it.r !== state.region) return false;
-    if (state.company && it.c !== state.company) return false;
-    if (state.q && !it.s.includes(state.q.trim().toLowerCase())) return false;
-    return true;
-  }
+    const postsLabel = (n: number) =>
+      data.strings.posts[n === 1 ? 0 : 1].replace("{n}", String(n));
 
-  function apply() {
-    const on = data.items.filter(matches);
-    const onIds = new Set(on.map(it => it.id));
-
-    // 목록
-    for (const li of $$<HTMLElement>("[data-case]")) {
-      li.hidden = !onIds.has(li.dataset.case!);
-    }
-    const showing = document.querySelector("[data-showing]")!;
-    showing.textContent = data.strings.showing
-      .replace("{n}", String(on.length))
-      .replace("{total}", String(data.items.length));
-    document.querySelector<HTMLElement>("[data-empty]")!.hidden = on.length > 0;
-
-    // 시간축 점
-    for (const dot of $$<SVGCircleElement>("[data-dot]")) {
-      dot.classList.toggle("is-off", !onIds.has(dot.dataset.dot!));
+    function matches(it: Item) {
+      if (state.domain && it.d !== state.domain) return false;
+      if (state.method && !it.m.includes(state.method)) return false;
+      if (state.region && it.r !== state.region) return false;
+      if (state.company && it.c !== state.company) return false;
+      if (state.q && !it.s.includes(state.q.trim().toLowerCase())) return false;
+      return true;
     }
 
-    // 분야 × 방법
-    const cell = new Map<string, number>();
-    const byDomain = new Map<string, number>();
-    const byMethod = new Map<string, number>();
-    const byCompany = new Map<string, number>();
-    for (const it of on) {
-      byDomain.set(it.d, (byDomain.get(it.d) ?? 0) + 1);
-      byCompany.set(it.c, (byCompany.get(it.c) ?? 0) + 1);
-      for (const m of it.m) {
-        cell.set(`${it.d}|${m}`, (cell.get(`${it.d}|${m}`) ?? 0) + 1);
-        byMethod.set(m, (byMethod.get(m) ?? 0) + 1);
+    function apply() {
+      const on = data.items.filter(matches);
+      const onIds = new Set(on.map(it => it.id));
+
+      // 목록
+      for (const li of $$<HTMLElement>("[data-case]")) {
+        li.hidden = !onIds.has(li.dataset.case!);
       }
-    }
-    for (const g of $$<SVGGElement>(".cb-cell")) {
-      const n = cell.get(`${g.dataset.domain}|${g.dataset.method}`) ?? 0;
-      g.dataset.n = String(n);
-      g.querySelector(".cb-fill")!.setAttribute("r", String(radius(n)));
-      g.classList.toggle("is-zero", n === 0);
-      g.classList.toggle(
-        "is-active",
-        state.domain === g.dataset.domain && state.method === g.dataset.method
+      const showing = document.querySelector("[data-showing]")!;
+      showing.textContent = data.strings.showing
+        .replace("{n}", String(on.length))
+        .replace("{total}", String(data.items.length));
+      document.querySelector<HTMLElement>("[data-empty]")!.hidden =
+        on.length > 0;
+
+      // 시간축 점
+      for (const dot of $$<SVGCircleElement>("[data-dot]")) {
+        dot.classList.toggle("is-off", !onIds.has(dot.dataset.dot!));
+      }
+
+      // 분야 × 방법
+      const cell = new Map<string, number>();
+      const byDomain = new Map<string, number>();
+      const byMethod = new Map<string, number>();
+      const byCompany = new Map<string, number>();
+      for (const it of on) {
+        byDomain.set(it.d, (byDomain.get(it.d) ?? 0) + 1);
+        byCompany.set(it.c, (byCompany.get(it.c) ?? 0) + 1);
+        for (const m of it.m) {
+          cell.set(`${it.d}|${m}`, (cell.get(`${it.d}|${m}`) ?? 0) + 1);
+          byMethod.set(m, (byMethod.get(m) ?? 0) + 1);
+        }
+      }
+      for (const g of $$<SVGGElement>(".cb-cell")) {
+        const n = cell.get(`${g.dataset.domain}|${g.dataset.method}`) ?? 0;
+        g.dataset.n = String(n);
+        g.querySelector(".cb-fill")!.setAttribute("r", String(radius(n)));
+        g.classList.toggle("is-zero", n === 0);
+        g.classList.toggle(
+          "is-active",
+          state.domain === g.dataset.domain && state.method === g.dataset.method
+        );
+      }
+      for (const el of $$<SVGTextElement>("[data-domain-count]")) {
+        el.textContent = String(byDomain.get(el.dataset.domainCount!) ?? 0);
+      }
+      for (const el of $$<SVGTextElement>("[data-method-count]")) {
+        el.textContent = String(byMethod.get(el.dataset.methodCount!) ?? 0);
+      }
+      for (const el of $$<SVGRectElement>("[data-row-bar]")) {
+        const n = byMethod.get(el.dataset.rowBar!) ?? 0;
+        el.setAttribute("width", String((barW * n) / maxRow));
+      }
+      for (const g of $$<SVGGElement>(".cb-col")) {
+        g.classList.toggle("is-active", g.dataset.domain === state.domain);
+      }
+      for (const g of $$<SVGGElement>(".cb-row-head")) {
+        g.classList.toggle("is-active", g.dataset.method === state.method);
+      }
+      for (const band of $$<SVGRectElement>("[data-band-domain]")) {
+        band.classList.toggle(
+          "is-active",
+          band.dataset.bandDomain === state.domain
+        );
+      }
+      for (const band of $$<SVGRectElement>("[data-band-method]")) {
+        band.classList.toggle(
+          "is-active",
+          band.dataset.bandMethod === state.method
+        );
+      }
+
+      // 회사별
+      for (const btn of $$<HTMLButtonElement>(".cb-company-row")) {
+        const n = byCompany.get(btn.dataset.company!) ?? 0;
+        const fill = btn.querySelector<HTMLElement>(".cb-company-fill")!;
+        fill.style.width = `${(100 * n) / data.maxCompany}%`;
+        btn.querySelector(".cb-company-count")!.textContent = String(n);
+        btn.classList.toggle(
+          "is-active",
+          btn.dataset.company === state.company
+        );
+        btn.setAttribute(
+          "aria-pressed",
+          String(btn.dataset.company === state.company)
+        );
+      }
+
+      // 필터 줄
+      for (const b of $$<HTMLButtonElement>("[data-set-domain]")) {
+        b.setAttribute(
+          "aria-pressed",
+          String(b.dataset.setDomain === state.domain)
+        );
+      }
+      for (const el of $$<HTMLSelectElement | HTMLInputElement>(
+        "[data-filter]"
+      )) {
+        const k = el.dataset.filter as keyof State;
+        if (el.value !== state[k]) el.value = state[k];
+      }
+      const chip = root.querySelector<HTMLElement>("[data-company-chip]")!;
+      chip.hidden = !state.company;
+      chip.querySelector("[data-company-name]")!.textContent = state.company;
+      root.querySelector<HTMLElement>("[data-clear]")!.hidden = !keys.some(
+        k => state[k]
       );
-    }
-    for (const el of $$<SVGTextElement>("[data-domain-count]")) {
-      el.textContent = String(byDomain.get(el.dataset.domainCount!) ?? 0);
-    }
-    for (const el of $$<SVGTextElement>("[data-method-count]")) {
-      el.textContent = String(byMethod.get(el.dataset.methodCount!) ?? 0);
-    }
-    for (const el of $$<SVGRectElement>("[data-row-bar]")) {
-      const n = byMethod.get(el.dataset.rowBar!) ?? 0;
-      el.setAttribute("width", String((barW * n) / maxRow));
-    }
-    for (const g of $$<SVGGElement>(".cb-col")) {
-      g.classList.toggle("is-active", g.dataset.domain === state.domain);
-    }
-    for (const g of $$<SVGGElement>(".cb-row-head")) {
-      g.classList.toggle("is-active", g.dataset.method === state.method);
-    }
-    for (const band of $$<SVGRectElement>("[data-band-domain]")) {
-      band.classList.toggle(
-        "is-active",
-        band.dataset.bandDomain === state.domain
-      );
-    }
-    for (const band of $$<SVGRectElement>("[data-band-method]")) {
-      band.classList.toggle(
-        "is-active",
-        band.dataset.bandMethod === state.method
-      );
+
+      const url = new URL(location.href);
+      for (const k of keys) {
+        if (state[k]) url.searchParams.set(k, state[k]);
+        else url.searchParams.delete(k);
+      }
+      history.replaceState(null, "", url);
     }
 
-    // 회사별
-    for (const btn of $$<HTMLButtonElement>(".cb-company-row")) {
-      const n = byCompany.get(btn.dataset.company!) ?? 0;
-      const fill = btn.querySelector<HTMLElement>(".cb-company-fill")!;
-      fill.style.width = `${(100 * n) / data.maxCompany}%`;
-      btn.querySelector(".cb-company-count")!.textContent = String(n);
-      btn.classList.toggle("is-active", btn.dataset.company === state.company);
-      btn.setAttribute(
-        "aria-pressed",
-        String(btn.dataset.company === state.company)
-      );
+    function set(patch: Partial<State>) {
+      Object.assign(state, patch);
+      apply();
     }
 
-    // 필터 줄
-    for (const b of $$<HTMLButtonElement>("[data-set-domain]")) {
-      b.setAttribute(
-        "aria-pressed",
-        String(b.dataset.setDomain === state.domain)
+    const toggle = (k: keyof State, v: string) =>
+      set({ [k]: state[k] === v ? "" : v } as Partial<State>);
+
+    // 누르기
+    page.addEventListener("click", e => {
+      const el = (e.target as Element).closest<HTMLElement | SVGElement>(
+        "[data-set-domain], .cb-col, .cb-row-head, .cb-cell, [data-company], .cb-tag, [data-company-chip], [data-clear]"
       );
-    }
+      if (!el) return;
+      const ds = (el as HTMLElement).dataset;
+      if (ds.setDomain !== undefined) set({ domain: ds.setDomain });
+      else if (el.classList.contains("cb-col")) toggle("domain", ds.domain!);
+      else if (el.classList.contains("cb-row-head"))
+        toggle("method", ds.method!);
+      else if (el.classList.contains("cb-cell")) {
+        const same = state.domain === ds.domain && state.method === ds.method;
+        set(
+          same
+            ? { domain: "", method: "" }
+            : { domain: ds.domain, method: ds.method }
+        );
+      } else if (el.classList.contains("cb-tag")) toggle("method", ds.method!);
+      else if (ds.companyChip !== undefined) set({ company: "" });
+      else if (ds.clear !== undefined)
+        set({ domain: "", method: "", region: "", company: "", q: "" });
+      else if (ds.company) toggle("company", ds.company);
+    });
+
+    // SVG 단추는 키보드로도
+    root.addEventListener("keydown", e => {
+      const el = (e.target as Element).closest?.(
+        ".cb-col, .cb-row-head, .cb-cell"
+      );
+      if (el && (e.key === "Enter" || e.key === " ")) {
+        e.preventDefault();
+        (el as SVGElement).dispatchEvent(
+          new MouseEvent("click", { bubbles: true })
+        );
+      }
+    });
+
+    let typing: number | undefined;
     for (const el of $$<HTMLSelectElement | HTMLInputElement>(
       "[data-filter]"
     )) {
-      const k = el.dataset.filter as keyof State;
-      if (el.value !== state[k]) el.value = state[k];
+      el.addEventListener("input", () => {
+        const k = el.dataset.filter as keyof State;
+        window.clearTimeout(typing);
+        typing = window.setTimeout(
+          () => set({ [k]: el.value }),
+          k === "q" ? 140 : 0
+        );
+      });
     }
-    const chip = root.querySelector<HTMLElement>("[data-company-chip]")!;
-    chip.hidden = !state.company;
-    chip.querySelector("[data-company-name]")!.textContent = state.company;
-    root.querySelector<HTMLElement>("[data-clear]")!.hidden = !keys.some(
-      k => state[k]
-    );
 
-    const url = new URL(location.href);
-    for (const k of keys) {
-      if (state[k]) url.searchParams.set(k, state[k]);
-      else url.searchParams.delete(k);
+    // 말풍선
+    const tip = root.querySelector<HTMLElement>(".cb-tip")!;
+    const tipMain = tip.querySelector("[data-tip-main]")!;
+    const tipSub = tip.querySelector("[data-tip-sub]")!;
+    const tipExtra = tip.querySelector("[data-tip-extra]")!;
+
+    function showTip(
+      x: number,
+      y: number,
+      main: string,
+      sub: string,
+      extra = ""
+    ) {
+      tipMain.textContent = main;
+      tipSub.textContent = sub;
+      tipExtra.textContent = extra;
+      tip.hidden = false;
+      const box = root.getBoundingClientRect();
+      const w = tip.offsetWidth;
+      const left = Math.min(
+        Math.max(x - box.left - w / 2, 8),
+        box.width - w - 8
+      );
+      tip.style.left = `${left}px`;
+      tip.style.top = `${y - box.top - tip.offsetHeight - 14}px`;
     }
-    history.replaceState(null, "", url);
-  }
+    const hideTip = () => (tip.hidden = true);
 
-  function set(patch: Partial<State>) {
-    Object.assign(state, patch);
+    function cellTip(g: SVGGElement) {
+      const n = Number(g.dataset.n ?? g.dataset.total);
+      const total = Number(g.dataset.total);
+      const names = [
+        ...new Set(
+          data.items
+            .filter(
+              it =>
+                it.d === g.dataset.domain &&
+                it.m.includes(g.dataset.method!) &&
+                matches(it)
+            )
+            .map(it => it.c)
+        ),
+      ];
+      const r = g.getBoundingClientRect();
+      showTip(
+        r.left + r.width / 2,
+        r.top + 4,
+        n === total ? postsLabel(n) : `${postsLabel(n)} / ${total}`,
+        `${data.strings.domains[g.dataset.domain!]} × ${data.strings.methods[g.dataset.method!]}`,
+        names.slice(0, 4).join(", ") + (names.length > 4 ? " …" : "")
+      );
+    }
+
+    for (const g of $$<SVGGElement>(".cb-cell")) {
+      g.addEventListener("pointerenter", () => cellTip(g));
+      g.addEventListener("focus", () => cellTip(g));
+      g.addEventListener("pointerleave", hideTip);
+      g.addEventListener("blur", hideTip);
+    }
+
+    // 시간축: 가장 가까운 점을 찾는다
+    const timeline = root.querySelector<SVGSVGElement>(".cb-timeline")!;
+    const ring = timeline.querySelector<SVGCircleElement>(".cb-dot-focus")!;
+    const dots = $$<SVGCircleElement>("[data-dot]", timeline).map(el => ({
+      el,
+      x: Number(el.getAttribute("cx")),
+      y: Number(el.getAttribute("cy")),
+    }));
+    let near: (typeof dots)[number] | undefined;
+
+    timeline.addEventListener("pointermove", e => {
+      const ctm = timeline.getScreenCTM();
+      if (!ctm) return;
+      const p = new DOMPoint(e.clientX, e.clientY).matrixTransform(
+        ctm.inverse()
+      );
+      let best: (typeof dots)[number] | undefined;
+      let bestD = 15 * 15;
+      for (const d of dots) {
+        if (d.el.classList.contains("is-off")) continue;
+        const dd = (d.x - p.x) ** 2 + (d.y - p.y) ** 2;
+        if (dd < bestD) {
+          bestD = dd;
+          best = d;
+        }
+      }
+      near = best;
+      timeline.classList.toggle("is-pointing", !!best);
+      if (!best) {
+        ring.classList.remove("is-visible");
+        hideTip();
+        return;
+      }
+      ring.setAttribute("cx", String(best.x));
+      ring.setAttribute("cy", String(best.y));
+      ring.classList.add("is-visible");
+      const it = byId.get(best.el.dataset.dot!)!;
+      const r = best.el.getBoundingClientRect();
+      showTip(r.left + r.width / 2, r.top, it.t, `${it.c} · ${it.dt}`, it.p);
+    });
+    timeline.addEventListener("pointerleave", () => {
+      near = undefined;
+      ring.classList.remove("is-visible");
+      hideTip();
+    });
+    timeline.addEventListener("click", () => {
+      if (!near) return;
+      const li = document.getElementById(`case-${near.el.dataset.dot}`);
+      if (!li) return;
+      li.scrollIntoView({ behavior: "smooth", block: "center" });
+      li.classList.remove("is-flash");
+      void li.offsetWidth;
+      li.classList.add("is-flash");
+    });
+
     apply();
   }
 
-  const toggle = (k: keyof State, v: string) =>
-    set({ [k]: state[k] === v ? "" : v } as Partial<State>);
-
-  // 누르기
-  document.addEventListener("click", e => {
-    const el = (e.target as Element).closest<HTMLElement | SVGElement>(
-      "[data-set-domain], .cb-col, .cb-row-head, .cb-cell, [data-company], .cb-tag, [data-company-chip], [data-clear]"
-    );
-    if (!el) return;
-    const ds = (el as HTMLElement).dataset;
-    if (ds.setDomain !== undefined) set({ domain: ds.setDomain });
-    else if (el.classList.contains("cb-col")) toggle("domain", ds.domain!);
-    else if (el.classList.contains("cb-row-head")) toggle("method", ds.method!);
-    else if (el.classList.contains("cb-cell")) {
-      const same = state.domain === ds.domain && state.method === ds.method;
-      set(
-        same
-          ? { domain: "", method: "" }
-          : { domain: ds.domain, method: ds.method }
-      );
-    } else if (el.classList.contains("cb-tag")) toggle("method", ds.method!);
-    else if (ds.companyChip !== undefined) set({ company: "" });
-    else if (ds.clear !== undefined)
-      set({ domain: "", method: "", region: "", company: "", q: "" });
-    else if (ds.company) toggle("company", ds.company);
-  });
-
-  // SVG 단추는 키보드로도
-  root.addEventListener("keydown", e => {
-    const el = (e.target as Element).closest?.(
-      ".cb-col, .cb-row-head, .cb-cell"
-    );
-    if (el && (e.key === "Enter" || e.key === " ")) {
-      e.preventDefault();
-      (el as SVGElement).dispatchEvent(
-        new MouseEvent("click", { bubbles: true })
-      );
-    }
-  });
-
-  let typing: number | undefined;
-  for (const el of $$<HTMLSelectElement | HTMLInputElement>("[data-filter]")) {
-    el.addEventListener("input", () => {
-      const k = el.dataset.filter as keyof State;
-      window.clearTimeout(typing);
-      typing = window.setTimeout(
-        () => set({ [k]: el.value }),
-        k === "q" ? 140 : 0
-      );
-    });
-  }
-
-  // 말풍선
-  const tip = root.querySelector<HTMLElement>(".cb-tip")!;
-  const tipMain = tip.querySelector("[data-tip-main]")!;
-  const tipSub = tip.querySelector("[data-tip-sub]")!;
-  const tipExtra = tip.querySelector("[data-tip-extra]")!;
-
-  function showTip(
-    x: number,
-    y: number,
-    main: string,
-    sub: string,
-    extra = ""
-  ) {
-    tipMain.textContent = main;
-    tipSub.textContent = sub;
-    tipExtra.textContent = extra;
-    tip.hidden = false;
-    const box = root.getBoundingClientRect();
-    const w = tip.offsetWidth;
-    const left = Math.min(Math.max(x - box.left - w / 2, 8), box.width - w - 8);
-    tip.style.left = `${left}px`;
-    tip.style.top = `${y - box.top - tip.offsetHeight - 14}px`;
-  }
-  const hideTip = () => (tip.hidden = true);
-
-  function cellTip(g: SVGGElement) {
-    const n = Number(g.dataset.n ?? g.dataset.total);
-    const total = Number(g.dataset.total);
-    const names = [
-      ...new Set(
-        data.items
-          .filter(
-            it =>
-              it.d === g.dataset.domain &&
-              it.m.includes(g.dataset.method!) &&
-              matches(it)
-          )
-          .map(it => it.c)
-      ),
-    ];
-    const r = g.getBoundingClientRect();
-    showTip(
-      r.left + r.width / 2,
-      r.top + 4,
-      n === total ? postsLabel(n) : `${postsLabel(n)} / ${total}`,
-      `${data.strings.domains[g.dataset.domain!]} × ${data.strings.methods[g.dataset.method!]}`,
-      names.slice(0, 4).join(", ") + (names.length > 4 ? " …" : "")
-    );
-  }
-
-  for (const g of $$<SVGGElement>(".cb-cell")) {
-    g.addEventListener("pointerenter", () => cellTip(g));
-    g.addEventListener("focus", () => cellTip(g));
-    g.addEventListener("pointerleave", hideTip);
-    g.addEventListener("blur", hideTip);
-  }
-
-  // 시간축: 가장 가까운 점을 찾는다
-  const timeline = root.querySelector<SVGSVGElement>(".cb-timeline")!;
-  const ring = timeline.querySelector<SVGCircleElement>(".cb-dot-focus")!;
-  const dots = $$<SVGCircleElement>("[data-dot]", timeline).map(el => ({
-    el,
-    x: Number(el.getAttribute("cx")),
-    y: Number(el.getAttribute("cy")),
-  }));
-  let near: (typeof dots)[number] | undefined;
-
-  timeline.addEventListener("pointermove", e => {
-    const ctm = timeline.getScreenCTM();
-    if (!ctm) return;
-    const p = new DOMPoint(e.clientX, e.clientY).matrixTransform(ctm.inverse());
-    let best: (typeof dots)[number] | undefined;
-    let bestD = 15 * 15;
-    for (const d of dots) {
-      if (d.el.classList.contains("is-off")) continue;
-      const dd = (d.x - p.x) ** 2 + (d.y - p.y) ** 2;
-      if (dd < bestD) {
-        bestD = dd;
-        best = d;
-      }
-    }
-    near = best;
-    timeline.classList.toggle("is-pointing", !!best);
-    if (!best) {
-      ring.classList.remove("is-visible");
-      hideTip();
-      return;
-    }
-    ring.setAttribute("cx", String(best.x));
-    ring.setAttribute("cy", String(best.y));
-    ring.classList.add("is-visible");
-    const it = byId.get(best.el.dataset.dot!)!;
-    const r = best.el.getBoundingClientRect();
-    showTip(r.left + r.width / 2, r.top, it.t, `${it.c} · ${it.dt}`, it.p);
-  });
-  timeline.addEventListener("pointerleave", () => {
-    near = undefined;
-    ring.classList.remove("is-visible");
-    hideTip();
-  });
-  timeline.addEventListener("click", () => {
-    if (!near) return;
-    const li = document.getElementById(`case-${near.el.dataset.dot}`);
-    if (!li) return;
-    li.scrollIntoView({ behavior: "smooth", block: "center" });
-    li.classList.remove("is-flash");
-    void li.offsetWidth;
-    li.classList.add("is-flash");
-  });
-
-  apply();
+  document.addEventListener("astro:page-load", initCasebook);
 </script>
 
 <style is:global>

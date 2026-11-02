@@ -6,6 +6,7 @@ import {
   type Casebook,
   type CaseLang,
 } from "@/utils/casebook";
+import SaveButton from "@/components/SaveButton.astro";
 
 type Props = { book: Casebook; lang: CaseLang };
 
@@ -33,7 +34,18 @@ const t =
           <span class="cb-item-region">{regionName(c.region)}</span>
         </div>
         <div class="cb-item-body">
-          <p class="cb-item-domain eyebrow">{domainName.get(c.domain)}</p>
+          <div class="flex items-center justify-between gap-4">
+            <p class="cb-item-domain eyebrow">{domainName.get(c.domain)}</p>
+            <SaveButton
+              id={`case:${c.id}`}
+              kind="case"
+              title={c.title}
+              url={c.url}
+              meta={`${c.company} · ${date(c.date)}`}
+              lang={lang}
+              variant="icon"
+            />
+          </div>
           <h3 class="cb-item-title" lang={c.lang}>
             <a href={c.url} target="_blank" rel="noopener" title={t.open}>
               {c.title}
