@@ -26,6 +26,7 @@ export default defineConfig({
     sitemap({
       filter: page =>
         !page.includes("/saved/") &&
+        !page.includes("/admin/") &&
         (config.features?.showArchives !== false ||
           !page.endsWith("/archives/")),
     }),

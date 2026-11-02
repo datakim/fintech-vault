@@ -1,0 +1,315 @@
+---
+/*
+ * 댓글 관리 (2026-11-03). 비밀번호는 Vercel 환경 변수 COMMENTS_ADMIN_TOKEN과 같아야 한다.
+ * 브라우저에만 기억하고, 검색엔진에는 노출하지 않는다.
+ */
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Main from "@/components/Main.astro";
+import config from "@/config";
+---
+
+<Layout
+  title={`댓글 관리 | ${config.site.title}`}
+  description="댓글 관리"
+  lang="ko"
+>
+  <meta name="robots" content="noindex, nofollow" slot="head" />
+  <Header />
+  <Main
+    pageTitle="댓글 관리"
+    pageDesc="승인 대기 댓글을 공개하거나 지우고, 글쓴이로 답글을 단다."
+  >
+    <form class="adm-login" data-login>
+      <input
+        class="adm-input"
+        type="password"
+        name="token"
+        placeholder="관리 비밀번호"
+        autocomplete="current-password"
+        aria-label="관리 비밀번호"
+      />
+      <button class="adm-btn" type="submit">들어가기</button>
+      <button class="adm-link" type="button" data-logout hidden>나가기</button>
+    </form>
+    <p class="adm-msg" data-msg aria-live="polite"></p>
+
+    <section data-panel hidden>
+      <h2 class="adm-h2">승인 대기 <span data-pending-count></span></h2>
+      <ol data-pending></ol>
+      <p class="adm-empty" data-pending-empty hidden>승인할 댓글이 없다.</p>
+
+      <h2 class="adm-h2 mt-12">최근 공개된 댓글</h2>
+      <ol data-recent></ol>
+
+      <h2 class="adm-h2 mt-12">글쓴이로 답글 달기</h2>
+      <form class="adm-reply" data-reply>
+        <input
+          class="adm-input"
+          name="thread"
+          placeholder="글 슬러그 (예: risk-metrics-ks-auc)"
+          aria-label="글 슬러그"
+          required
+        />
+        <input
+          class="adm-input"
+          name="name"
+          value="Elliot"
+          aria-label="표시 이름"
+          required
+        />
+        <textarea
+          class="adm-input"
+          name="body"
+          rows="4"
+          aria-label="답글"
+          required></textarea>
+        <button class="adm-btn" type="submit">답글 공개</button>
+      </form>
+    </section>
+
+    <template data-row>
+      <li class="adm-row">
+        <div class="adm-meta">
+          <a data-thread target="_blank" rel="noopener"></a>
+          <span data-who></span>
+          <span data-when></span>
+        </div>
+        <p class="adm-text" data-text></p>
+        <div class="adm-actions">
+          <button class="adm-btn" type="button" data-approve>공개</button>
+          <button class="adm-link" type="button" data-reply-to>답글</button>
+          <button class="adm-link adm-danger" type="button" data-delete
+            >삭제</button
+          >
+        </div>
+      </li>
+    </template>
+  </Main>
+</Layout>
+
+<script>
+  type Row = {
+    id: number;
+    thread: string;
+    name: string;
+    body: string;
+    is_author: boolean;
+    created_at: string;
+  };
+  const KEY = "fal-comments-admin";
+  const $ = <T extends Element>(sel: string) => document.querySelector<T>(sel)!;
+
+  const getToken = () => {
+    try {
+      return localStorage.getItem(KEY) ?? "";
+    } catch {
+      return "";
+    }
+  };
+
+  async function api(path: string, init: RequestInit = {}) {
+    const res = await fetch(path, {
+      ...init,
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${getToken()}`,
+        ...(init.headers ?? {}),
+      },
+    });
+    const out = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(out.error ?? String(res.status));
+    return out;
+  }
+
+  function fill(list: HTMLElement, rows: Row[], pending: boolean) {
+    const tpl = $<HTMLTemplateElement>("template[data-row]");
+    list.replaceChildren(
+      ...rows.map(r => {
+        const li = tpl.content.firstElementChild!.cloneNode(
+          true
+        ) as HTMLElement;
+        const a = li.querySelector<HTMLAnchorElement>("[data-thread]")!;
+        a.textContent = r.thread;
+        a.href = `/posts/${r.thread}/`;
+        li.querySelector("[data-who]")!.textContent =
+          r.name + (r.is_author ? " (글쓴이)" : "");
+        li.querySelector("[data-when]")!.textContent = new Date(
+          r.created_at
+        ).toLocaleString("ko-KR", { timeZone: "Asia/Seoul" });
+        li.querySelector("[data-text]")!.textContent = r.body;
+        li.querySelector<HTMLElement>("[data-approve]")!.hidden = !pending;
+        for (const b of li.querySelectorAll<HTMLElement>("button")) {
+          b.dataset.id = String(r.id);
+          b.dataset.slug = r.thread;
+        }
+        return li;
+      })
+    );
+  }
+
+  async function refresh() {
+    const msg = $<HTMLElement>("[data-msg]");
+    try {
+      const { pending, recent } = (await api("/api/comments-admin")) as {
+        pending: Row[];
+        recent: Row[];
+      };
+      fill($("[data-pending]"), pending, true);
+      fill($("[data-recent]"), recent, false);
+      $<HTMLElement>("[data-pending-count]").textContent = String(
+        pending.length
+      );
+      $<HTMLElement>("[data-pending-empty]").hidden = pending.length > 0;
+      $<HTMLElement>("[data-panel]").hidden = false;
+      $<HTMLElement>("[data-logout]").hidden = false;
+      msg.textContent = "";
+    } catch (e) {
+      $<HTMLElement>("[data-panel]").hidden = true;
+      const code = e instanceof Error ? e.message : "";
+      msg.textContent =
+        code === "unauthorized"
+          ? "비밀번호가 맞지 않다."
+          : code === "not_configured"
+            ? "서버 설정(DATABASE_URL, COMMENTS_ADMIN_TOKEN)이 아직 없다."
+            : "불러오지 못했다.";
+    }
+  }
+
+  function init() {
+    if (!document.querySelector("[data-login]")) return;
+    $<HTMLFormElement>("[data-login]").onsubmit = e => {
+      e.preventDefault();
+      const v = new FormData(e.target as HTMLFormElement).get("token");
+      try {
+        localStorage.setItem(KEY, String(v ?? ""));
+      } catch {
+        // 저장이 막히면 이번 화면에서만 쓴다.
+      }
+      refresh();
+    };
+    $<HTMLElement>("[data-logout]").onclick = () => {
+      try {
+        localStorage.removeItem(KEY);
+      } catch {
+        // 무시
+      }
+      location.reload();
+    };
+    $<HTMLElement>("[data-panel]").onclick = async e => {
+      const b = (e.target as Element).closest<HTMLElement>("button[data-id]");
+      if (!b) return;
+      if (b.hasAttribute("data-reply-to")) {
+        const form = $<HTMLFormElement>("[data-reply]");
+        (form.elements.namedItem("thread") as HTMLInputElement).value =
+          b.dataset.slug!;
+        (form.elements.namedItem("body") as HTMLTextAreaElement).focus();
+        return;
+      }
+      const action = b.hasAttribute("data-approve") ? "approve" : "delete";
+      if (action === "delete" && !confirm("이 댓글을 지울까?")) return;
+      await api("/api/comments-admin", {
+        method: "POST",
+        body: JSON.stringify({ action, id: Number(b.dataset.id) }),
+      });
+      refresh();
+    };
+    $<HTMLFormElement>("[data-reply]").onsubmit = async e => {
+      e.preventDefault();
+      const form = e.target as HTMLFormElement;
+      const d = new FormData(form);
+      await api("/api/comments", {
+        method: "POST",
+        body: JSON.stringify({
+          thread: String(d.get("thread") ?? "").trim(),
+          name: String(d.get("name") ?? "").trim(),
+          body: String(d.get("body") ?? ""),
+          lang: "ko",
+        }),
+      });
+      (form.elements.namedItem("body") as HTMLTextAreaElement).value = "";
+      refresh();
+    };
+    if (getToken()) refresh();
+  }
+
+  document.addEventListener("astro:page-load", init);
+</script>
+
+<style>
+  .adm-login,
+  .adm-reply {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+  .adm-reply {
+    display: grid;
+    max-width: 40rem;
+  }
+  .adm-input {
+    padding: 0.55rem 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: var(--surface);
+    font-size: 14px;
+  }
+  .adm-btn {
+    padding: 0.45rem 0.9rem;
+    border-radius: 9px;
+    background: var(--accent);
+    color: var(--accent-foreground);
+    font-size: 13px;
+    font-weight: 600;
+    width: fit-content;
+  }
+  .adm-link {
+    font-size: 13px;
+    color: var(--muted-foreground);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .adm-danger {
+    color: #b4533d;
+  }
+  .adm-msg {
+    margin-top: 0.75rem;
+    font-size: 13px;
+    color: #b4533d;
+  }
+  .adm-h2 {
+    margin-top: 2rem;
+    font-size: 17px;
+    font-weight: 600;
+  }
+  .adm-empty {
+    margin-top: 0.75rem;
+    font-size: 14px;
+    color: var(--muted-foreground);
+  }
+  :global(.adm-row) {
+    padding: 0.9rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  :global(.adm-meta) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    font-size: 12.5px;
+    color: var(--muted-foreground);
+  }
+  :global(.adm-meta a) {
+    color: var(--accent);
+  }
+  :global(.adm-text) {
+    margin: 0.4rem 0 0.6rem;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    font-size: 14.5px;
+  }
+  :global(.adm-actions) {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+  }
+</style>

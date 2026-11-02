@@ -1,17 +1,10 @@
 ---
 /*
- * 댓글 (giscus, 2026-11-02)
- * 댓글은 저장소의 GitHub Discussions에 쌓인다. 한국어판과 영문판이 같은 term을 쓰면
- * 한 스레드를 함께 쓴다. categoryId가 비어 있으면 아무것도 그리지 않는다.
- * 값은 https://giscus.app 에서 저장소를 넣으면 나온다.
+ * 댓글 (2026-11-03, 로그인 없이)
+ * 닉네임과 내용만 받고, 관리 페이지(/admin/comments/)에서 승인한 댓글만 보인다.
+ * 데이터는 /api/comments (Vercel 함수 + Neon Postgres). 한국어판과 영문판이 같은 term을 쓰면
+ * 한 스레드를 함께 쓴다.
  */
-const GISCUS = {
-  repo: "datakim/fintech-vault",
-  repoId: "R_kgDOSkq5rQ",
-  category: "Announcements",
-  categoryId: "DIC_kwDOSkq5rc4DKQI_",
-};
-
 type Props = {
   /** 스레드를 가르는 값. 보통 한국어 글 슬러그 */
   term: string;
@@ -19,91 +12,387 @@ type Props = {
 };
 
 const { term, lang = "en" } = Astro.props;
-const enabled = Boolean(GISCUS.categoryId);
-// new URL("/파일", ...) 꼴로 쓰면 빌드가 이 CSS를 페이지 스타일로 끌어온다. 문자열로 잇는다.
-const origin = Astro.url.origin;
-const themes = {
-  light: `${origin}/giscus-light.css`,
-  dark: `${origin}/giscus-dark.css`,
-};
+
+const t =
+  lang === "ko"
+    ? {
+        title: "댓글",
+        note: "로그인 없이 닉네임만 적으면 된다. 댓글은 확인한 뒤에 공개된다.",
+        empty: "아직 댓글이 없다.",
+        name: "닉네임",
+        body: "내용",
+        submit: "댓글 남기기",
+        sending: "보내는 중…",
+        done: "댓글이 접수됐다. 확인한 뒤에 공개된다.",
+        author: "글쓴이",
+        loadError: "댓글을 불러오지 못했다.",
+        errors: {
+          rate_limited: "잠시 뒤에 다시 남겨 달라.",
+          too_many_links: "링크는 두 개까지만 넣을 수 있다.",
+          stale: "페이지를 새로 고친 뒤 다시 남겨 달라.",
+          default: "댓글을 보내지 못했다. 잠시 뒤에 다시 시도해 달라.",
+        },
+        privacy:
+          "닉네임과 내용만 공개된다. 도배를 막으려고 IP는 원래 값을 알 수 없는 해시로만 남긴다.",
+      }
+    : {
+        title: "Comments",
+        note: "No sign-in needed, just a name. Comments appear once they have been reviewed.",
+        empty: "No comments yet.",
+        name: "Name",
+        body: "Comment",
+        submit: "Post comment",
+        sending: "Sending…",
+        done: "Thanks. Your comment will appear once it has been reviewed.",
+        author: "Author",
+        loadError: "Couldn't load comments.",
+        errors: {
+          rate_limited: "Please wait a little before posting again.",
+          too_many_links: "Please keep it to two links at most.",
+          stale: "Please reload the page and try again.",
+          default: "Couldn't send your comment. Please try again in a moment.",
+        },
+        privacy:
+          "Only your name and comment are shown. To stop flooding, your IP is kept only as a one-way hash.",
+      };
 ---
 
-{
-  enabled && (
-    <section class="comments mt-14" aria-labelledby="comments-title">
-      <h2
-        id="comments-title"
-        class="text-[19px] font-semibold tracking-[-0.02em]"
-      >
-        {lang === "ko" ? "댓글" : "Comments"}
-      </h2>
-      <p class="text-muted-foreground mt-1.5 text-[13px] leading-6">
-        {lang === "ko"
-          ? "GitHub 계정으로 남길 수 있다. 한국어판과 영문판이 같은 댓글을 공유한다."
-          : "Sign in with GitHub to comment. The English and Korean versions share one thread."}
-      </p>
-      <div
-        class="giscus-host mt-6"
-        data-repo={GISCUS.repo}
-        data-repo-id={GISCUS.repoId}
-        data-category={GISCUS.category}
-        data-category-id={GISCUS.categoryId}
-        data-term={term}
-        data-lang={lang}
-        data-theme-light={themes.light}
-        data-theme-dark={themes.dark}
-      />
-    </section>
-  )
-}
+<section
+  class="comments mt-14"
+  aria-labelledby="comments-title"
+  data-comments
+  data-thread={term}
+  data-lang={lang}
+  data-strings={JSON.stringify({
+    done: t.done,
+    sending: t.sending,
+    submit: t.submit,
+    author: t.author,
+    loadError: t.loadError,
+    errors: t.errors,
+  })}
+>
+  <div class="flex items-baseline justify-between gap-4">
+    <h2
+      id="comments-title"
+      class="text-[19px] font-semibold tracking-[-0.02em]"
+    >
+      {t.title}
+      <span class="cm-count tabular-nums" data-count></span>
+    </h2>
+  </div>
+  <p class="text-muted-foreground mt-1.5 text-[13px] leading-6">{t.note}</p>
+
+  <ol class="cm-list" data-list></ol>
+  <p class="cm-empty" data-empty hidden>{t.empty}</p>
+
+  <form class="cm-form" data-form novalidate>
+    <label class="cm-hp" aria-hidden="true">
+      Website
+      <input type="text" name="website" tabindex="-1" autocomplete="off" />
+    </label>
+    <input
+      class="cm-input cm-name"
+      type="text"
+      name="name"
+      maxlength="30"
+      required
+      autocomplete="nickname"
+      placeholder={t.name}
+      aria-label={t.name}
+    />
+    <textarea
+      class="cm-input cm-body"
+      name="body"
+      rows="4"
+      maxlength="2000"
+      required
+      placeholder={t.body}
+      aria-label={t.body}></textarea>
+    <div class="cm-actions">
+      <p class="cm-privacy">{t.privacy}</p>
+      <button type="submit" class="cm-submit" data-submit>{t.submit}</button>
+    </div>
+    <p class="cm-status" data-status aria-live="polite"></p>
+  </form>
+
+  <template data-item>
+    <li class="cm-item">
+      <div class="cm-meta">
+        <span class="cm-name-text" data-name></span>
+        <span class="cm-badge" data-badge hidden></span>
+        <span class="cm-date" data-date></span>
+      </div>
+      <p class="cm-text" data-text></p>
+    </li>
+  </template>
+</section>
 
 <script>
-  const currentTheme = (host: HTMLElement) =>
-    document.documentElement.dataset.theme === "dark"
-      ? host.dataset.themeDark!
-      : host.dataset.themeLight!;
+  type Comment = {
+    id: number;
+    name: string;
+    body: string;
+    is_author: boolean;
+    created_at: string;
+  };
+  type Strings = {
+    done: string;
+    sending: string;
+    submit: string;
+    author: string;
+    loadError: string;
+    errors: Record<string, string>;
+  };
+  const NAME_KEY = "fal-comment-name";
 
-  // 글마다 giscus 스크립트를 새로 붙인다(화면 전환 후에도).
-  function mount() {
-    const host = document.querySelector<HTMLElement>(".giscus-host");
-    if (!host || host.dataset.mounted) return;
-    host.dataset.mounted = "1";
-    const ds = host.dataset;
-    const s = document.createElement("script");
-    s.src = "https://giscus.app/client.js";
-    s.async = true;
-    s.crossOrigin = "anonymous";
-    const attrs: Record<string, string> = {
-      "data-repo": ds.repo!,
-      "data-repo-id": ds.repoId!,
-      "data-category": ds.category!,
-      "data-category-id": ds.categoryId!,
-      "data-mapping": "specific",
-      "data-term": ds.term!,
-      "data-strict": "1",
-      "data-reactions-enabled": "1",
-      "data-emit-metadata": "0",
-      "data-input-position": "top",
-      "data-theme": currentTheme(host),
-      "data-lang": ds.lang!,
-      "data-loading": "lazy",
-    };
-    for (const [k, v] of Object.entries(attrs)) s.setAttribute(k, v);
-    host.appendChild(s);
+  function formatDate(iso: string, lang: string) {
+    const d = new Date(iso);
+    if (lang === "ko") {
+      return new Intl.DateTimeFormat("sv-SE", { timeZone: "Asia/Seoul" })
+        .format(d)
+        .replaceAll("-", ".");
+    }
+    return new Intl.DateTimeFormat("en-GB", {
+      timeZone: "Asia/Seoul",
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    }).format(d);
   }
 
-  // 사이트 테마를 바꾸면 댓글 창도 따라 바꾼다.
-  new MutationObserver(() => {
-    const host = document.querySelector<HTMLElement>(".giscus-host");
-    const frame = document.querySelector<HTMLIFrameElement>(
-      "iframe.giscus-frame"
-    );
-    if (!host || !frame?.contentWindow) return;
-    frame.contentWindow.postMessage(
-      { giscus: { setConfig: { theme: currentTheme(host) } } },
-      "https://giscus.app"
-    );
-  }).observe(document.documentElement, { attributeFilter: ["data-theme"] });
+  async function load(root: HTMLElement, s: Strings) {
+    const list = root.querySelector<HTMLOListElement>("[data-list]")!;
+    const empty = root.querySelector<HTMLElement>("[data-empty]")!;
+    const count = root.querySelector<HTMLElement>("[data-count]")!;
+    const tpl = root.querySelector<HTMLTemplateElement>("template[data-item]")!;
+    try {
+      const res = await fetch(
+        `/api/comments?thread=${encodeURIComponent(root.dataset.thread!)}`
+      );
+      if (!res.ok) throw new Error(String(res.status));
+      const { comments } = (await res.json()) as { comments: Comment[] };
+      list.replaceChildren(
+        ...comments.map(c => {
+          const li = tpl.content.firstElementChild!.cloneNode(
+            true
+          ) as HTMLElement;
+          li.querySelector("[data-name]")!.textContent = c.name;
+          li.querySelector("[data-text]")!.textContent = c.body;
+          li.querySelector("[data-date]")!.textContent = formatDate(
+            c.created_at,
+            root.dataset.lang!
+          );
+          const badge = li.querySelector<HTMLElement>("[data-badge]")!;
+          badge.hidden = !c.is_author;
+          badge.textContent = s.author;
+          li.classList.toggle("is-author", c.is_author);
+          return li;
+        })
+      );
+      empty.hidden = comments.length > 0;
+      count.textContent = comments.length ? String(comments.length) : "";
+    } catch {
+      empty.hidden = false;
+      empty.textContent = s.loadError;
+    }
+  }
 
-  document.addEventListener("astro:page-load", mount);
+  function init() {
+    for (const root of document.querySelectorAll<HTMLElement>(
+      "[data-comments]"
+    )) {
+      if (root.dataset.ready) continue;
+      root.dataset.ready = "1";
+      const s = JSON.parse(root.dataset.strings!) as Strings;
+      const form = root.querySelector<HTMLFormElement>("[data-form]")!;
+      const status = root.querySelector<HTMLElement>("[data-status]")!;
+      const submit = root.querySelector<HTMLButtonElement>("[data-submit]")!;
+      const openedAt = Date.now();
+      try {
+        const saved = localStorage.getItem(NAME_KEY);
+        if (saved)
+          (form.elements.namedItem("name") as HTMLInputElement).value = saved;
+      } catch {
+        // 저장소를 못 쓰면 닉네임을 기억하지 않는다.
+      }
+      load(root, s);
+
+      form.addEventListener("submit", async e => {
+        e.preventDefault();
+        if (!form.reportValidity()) return;
+        const data = new FormData(form);
+        const name = String(data.get("name") ?? "").trim();
+        submit.disabled = true;
+        submit.textContent = s.sending;
+        status.textContent = "";
+        status.classList.remove("is-error");
+        try {
+          const res = await fetch("/api/comments", {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({
+              thread: root.dataset.thread,
+              lang: root.dataset.lang,
+              name,
+              body: String(data.get("body") ?? ""),
+              website: String(data.get("website") ?? ""),
+              t: openedAt,
+            }),
+          });
+          const out = (await res.json().catch(() => ({}))) as {
+            error?: string;
+          };
+          if (!res.ok) throw new Error(out.error ?? "default");
+          (form.elements.namedItem("body") as HTMLTextAreaElement).value = "";
+          status.textContent = s.done;
+          try {
+            localStorage.setItem(NAME_KEY, name);
+          } catch {
+            // 무시
+          }
+        } catch (err) {
+          const key = err instanceof Error ? err.message : "default";
+          status.textContent = s.errors[key] ?? s.errors.default;
+          status.classList.add("is-error");
+        } finally {
+          submit.disabled = false;
+          submit.textContent = s.submit;
+        }
+      });
+    }
+  }
+
+  document.addEventListener("astro:page-load", init);
 </script>
+
+<style>
+  .cm-count {
+    margin-left: 0.25rem;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--muted-foreground);
+  }
+  .cm-list {
+    margin-top: 1.25rem;
+  }
+  .cm-list :global(.cm-item) {
+    padding: 1rem 0;
+    border-top: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+  }
+  .cm-list :global(.cm-item.is-author) {
+    margin: 0 -0.9rem;
+    padding: 1rem 0.9rem;
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--accent) 7%, transparent);
+  }
+  .cm-list :global(.cm-meta) {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    font-size: 13px;
+  }
+  .cm-list :global(.cm-name-text) {
+    font-weight: 600;
+  }
+  .cm-list :global(.cm-badge) {
+    padding: 0 0.45rem;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--accent-foreground);
+    font-size: 11px;
+    line-height: 1.6;
+  }
+  .cm-list :global(.cm-date) {
+    color: var(--muted-foreground);
+    font-size: 12px;
+  }
+  .cm-list :global(.cm-text) {
+    margin-top: 0.35rem;
+    font-size: 15px;
+    line-height: 1.75;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+  .cm-empty {
+    margin-top: 1.25rem;
+    font-size: 14px;
+    color: var(--muted-foreground);
+  }
+  .cm-form {
+    display: grid;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+    padding: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--surface);
+  }
+  .cm-hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+  .cm-input {
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: var(--background);
+    font-size: 14.5px;
+    color: var(--foreground);
+  }
+  .cm-name {
+    max-width: 16rem;
+  }
+  .cm-body {
+    resize: vertical;
+    min-height: 6.5rem;
+    line-height: 1.7;
+  }
+  .cm-input::placeholder {
+    color: var(--muted-foreground);
+  }
+  .cm-input:focus-visible,
+  .cm-submit:focus-visible {
+    outline: 1.5px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .cm-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem 1rem;
+  }
+  .cm-privacy {
+    flex: 1 1 16rem;
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--muted-foreground);
+  }
+  .cm-submit {
+    padding: 0.5rem 1rem;
+    border-radius: 9px;
+    background: var(--accent);
+    color: var(--accent-foreground);
+    font-size: 13.5px;
+    font-weight: 600;
+    transition: opacity 0.2s;
+  }
+  .cm-submit:disabled {
+    opacity: 0.6;
+  }
+  .cm-status {
+    font-size: 13px;
+    color: var(--accent);
+  }
+  .cm-status:empty {
+    display: none;
+  }
+  .cm-status.is-error {
+    color: #b4533d;
+  }
+</style>
