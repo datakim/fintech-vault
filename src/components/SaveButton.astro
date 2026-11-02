@@ -1,0 +1,148 @@
+---
+import type { SavedKind } from "@/scripts/saved";
+
+type Props = {
+  id: string;
+  kind: SavedKind;
+  title: string;
+  url: string;
+  meta?: string;
+  lang?: "en" | "ko";
+  /** label: 아이콘 + 글자 / icon: 아이콘만 */
+  variant?: "label" | "icon";
+  class?: string;
+};
+
+const {
+  id,
+  kind,
+  title,
+  url,
+  meta,
+  lang = "en",
+  variant = "label",
+  class: className,
+} = Astro.props;
+
+const labels =
+  lang === "ko" ? { off: "저장", on: "저장됨" } : { off: "Save", on: "Saved" };
+---
+
+<button
+  type="button"
+  class:list={["save-btn", `save-btn-${variant}`, className]}
+  data-save-id={id}
+  data-save-kind={kind}
+  data-save-title={title}
+  data-save-url={url}
+  data-save-meta={meta}
+  data-label-on={labels.on}
+  data-label-off={labels.off}
+  aria-pressed="false"
+  aria-label={labels.off}
+  title={labels.off}
+>
+  <svg viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M6.5 4.5h11v15.5L12 16.2 6.5 20Z"></path>
+  </svg>
+  {variant === "label" && <span class="save-btn-text">{labels.off}</span>}
+</button>
+
+<script>
+  import { getSaved, onSavedChange, toggleSaved } from "@/scripts/saved";
+  import type { SavedKind } from "@/scripts/saved";
+
+  function refresh() {
+    const ids = new Set(getSaved().map(it => it.id));
+    for (const b of document.querySelectorAll<HTMLButtonElement>(
+      "[data-save-id]"
+    )) {
+      const on = ids.has(b.dataset.saveId!);
+      const label = on ? b.dataset.labelOn! : b.dataset.labelOff!;
+      b.setAttribute("aria-pressed", String(on));
+      b.setAttribute("aria-label", label);
+      b.title = label;
+      const text = b.querySelector(".save-btn-text");
+      if (text) text.textContent = label;
+    }
+  }
+
+  document.addEventListener("click", e => {
+    const b = (e.target as Element).closest<HTMLButtonElement>(
+      "[data-save-id]"
+    );
+    if (!b) return;
+    const ds = b.dataset;
+    const on = toggleSaved({
+      id: ds.saveId!,
+      kind: ds.saveKind as SavedKind,
+      title: ds.saveTitle!,
+      url: ds.saveUrl!,
+      meta: ds.saveMeta,
+    });
+    if (on) {
+      b.classList.remove("is-pop");
+      void b.offsetWidth;
+      b.classList.add("is-pop");
+    }
+  });
+
+  onSavedChange(refresh);
+  document.addEventListener("astro:page-load", refresh);
+</script>
+
+<style is:global>
+  .save-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--muted-foreground);
+    transition: color 0.2s;
+  }
+  .save-btn:hover,
+  .save-btn[aria-pressed="true"] {
+    color: var(--foreground);
+  }
+  .save-btn svg {
+    width: 1.05rem;
+    height: 1.05rem;
+    flex-shrink: 0;
+  }
+  .save-btn path {
+    fill: transparent;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linejoin: round;
+    transition: fill 0.2s;
+  }
+  .save-btn[aria-pressed="true"] path {
+    fill: var(--accent);
+    stroke: var(--accent);
+  }
+  .save-btn-label {
+    font-size: 13px;
+  }
+  .save-btn-icon {
+    padding: 0.25rem;
+    margin: -0.25rem;
+    border-radius: 6px;
+  }
+  .save-btn:focus-visible {
+    outline: 1.5px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+  .save-btn.is-pop svg {
+    animation: save-pop 0.35s ease;
+  }
+  @keyframes save-pop {
+    40% {
+      transform: scale(1.25);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .save-btn.is-pop svg {
+      animation: none;
+    }
+  }
+</style>

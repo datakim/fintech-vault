@@ -145,6 +145,29 @@ const navItems = [
               </LinkButton>
             )
           }
+          <a
+            href="/saved/"
+            class="focus-outline text-muted-foreground hover:text-foreground relative size-9 rounded-md"
+            title="Saved"
+            aria-label="Saved"
+            data-saved-link
+          >
+            <svg
+              class="absolute top-1/2 left-1/2 size-[1.15rem] -translate-x-1/2 -translate-y-1/2"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M6.5 4.5h11v15.5L12 16.2 6.5 20Z"></path>
+            </svg>
+            <span
+              class="bg-accent text-accent-foreground absolute top-1 right-0.5 min-w-4 rounded-full px-1 text-center text-[10px] leading-4 font-semibold tabular-nums"
+              data-saved-count
+              hidden></span>
+          </a>
           {
             features.lightAndDarkMode && (
               <button
@@ -166,6 +189,8 @@ const navItems = [
 </header>
 
 <script>
+  import { getSaved, onSavedChange } from "@/scripts/saved";
+
   function toggleNav() {
     const menuBtn = document.querySelector<HTMLButtonElement>("#menu-btn");
     const menuItems = document.querySelector("#menu-items");
@@ -193,4 +218,22 @@ const navItems = [
   toggleNav();
 
   document.addEventListener("astro:after-swap", toggleNav);
+
+  // 저장한 글 수를 머리글 아이콘에 표시한다.
+  function showSavedCount() {
+    const n = getSaved().length;
+    for (const el of document.querySelectorAll<HTMLElement>(
+      "[data-saved-count]"
+    )) {
+      el.textContent = String(n);
+      el.hidden = n === 0;
+    }
+    for (const a of document.querySelectorAll("[data-saved-link]")) {
+      a.setAttribute("aria-label", n ? `Saved (${n})` : "Saved");
+    }
+  }
+
+  showSavedCount();
+  onSavedChange(showSavedCount);
+  document.addEventListener("astro:after-swap", showSavedCount);
 </script>

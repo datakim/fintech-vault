@@ -14,6 +14,8 @@ import BackButton from "./_components/BackButton.astro";
 import BackToTopButton from "./_components/BackToTopButton.astro";
 import AdjacentPostNav from "./_components/AdjacentPostNav.astro";
 import RelatedPosts from "@/components/RelatedPosts.astro";
+import SaveButton from "@/components/SaveButton.astro";
+import Comments from "@/components/Comments.astro";
 import { getKnowledgeGraph, topicOf } from "@/utils/knowledgeGraph";
 import config from "@/config";
 
@@ -95,6 +97,12 @@ if (!ogImageUrl && config.features.dynamicOgImage) {
   ogImageUrl = `${postUrl}/index.png`;
 }
 
+const savedMeta = `${new Intl.DateTimeFormat("sv-SE", {
+  timeZone: config.site.timezone,
+})
+  .format(pubDatetime)
+  .replaceAll("-", ".")} · 한국어`;
+
 const ogImage = ogImageUrl
   ? new URL(ogImageUrl, Astro.url.origin).href
   : undefined;
@@ -145,17 +153,27 @@ const ogImage = ogImageUrl
         |
       </span>
       <EditPost {hideEditPost} {post} class="max-sm:hidden" />
-      {
-        enHref && (
-          <a
-            href={enHref}
-            lang="en"
-            class="text-muted-foreground hover:text-foreground ms-auto text-[13px] underline-offset-4 transition-colors hover:underline"
-          >
-            Read in English
-          </a>
-        )
-      }
+      <div class="ms-auto flex items-center gap-5">
+        {
+          enHref && (
+            <a
+              href={enHref}
+              lang="en"
+              class="text-muted-foreground hover:text-foreground text-[13px] underline-offset-4 transition-colors hover:underline"
+            >
+              Read in English
+            </a>
+          )
+        }
+        <SaveButton
+          id={`post:ko:${postSlug}`}
+          kind="post"
+          title={title}
+          url={Astro.url.pathname}
+          meta={savedMeta}
+          lang="ko"
+        />
+      </div>
     </div>
 
     <article
@@ -180,6 +198,8 @@ const ogImage = ogImageUrl
     </ul>
 
     <ShareLinks />
+
+    <Comments term={postSlug} lang="ko" />
 
     <RelatedPosts slug={postSlug} lang="ko" />
 

@@ -55,7 +55,7 @@
     "problem_ko": "기업 신용 심사용 재무제표 스프레딩",
     "note_en": "Agentic pipeline extracts and aggregates financial statement line items with multi-pass OCR and deterministic checks, benchmarked on 200 analyst-reviewed statements; an ML model then makes credit decisions.",
     "note_ko": "에이전트 파이프라인이 다중 OCR과 결정론적 검증으로 재무제표 항목을 추출·집계하고 애널리스트 검수 재무제표 200건으로 평가하며, 이후 ML 모델이 신용 결정을 내린다.",
-    "metric": "automatically decisions more than 30% of credit risk account reviews"
+    "metric": "automatically decides more than 30% of credit risk account reviews"
   },
   {
     "id": "revolut-pragma-production-serving",
