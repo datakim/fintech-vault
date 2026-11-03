@@ -9,15 +9,31 @@ import config from "@/config";
 
 export async function getStaticPaths() {
   const books = await getCollection("books", ({ data }) => !data.draft);
-  return books.map(book => ({
-    params: { slug: book.id },
-    props: { book },
-  }));
+  return books.map(book => {
+    // Chapters of the same book, in publishing order, for prev/next links.
+    const siblings = books
+      .filter(b => b.data.bookTitle === book.data.bookTitle)
+      .sort(
+        (a, b) =>
+          new Date(a.data.pubDatetime).getTime() -
+          new Date(b.data.pubDatetime).getTime()
+      );
+    const i = siblings.findIndex(b => b.id === book.id);
+    return {
+      params: { slug: book.id },
+      props: { book, prev: siblings[i - 1], next: siblings[i + 1] },
+    };
+  });
 }
 
-type Props = { book: CollectionEntry<"books"> };
+type Props = {
+  book: CollectionEntry<"books">;
+  prev?: CollectionEntry<"books">;
+  next?: CollectionEntry<"books">;
+};
 
-const { book } = Astro.props;
+const { book, prev, next } = Astro.props;
+const shortTitle = (t: string) => t.replace(/^\[[^\]]*\]\s*/, "");
 const {
   title,
   description,
@@ -25,6 +41,7 @@ const {
   pubDatetime,
   modDatetime,
   timezone,
+  bookTitle,
 } = book.data;
 
 const { Content } = await render(book);
@@ -40,6 +57,12 @@ const { Content } = await render(book);
   <Header />
 
   <main id="main-content" class="app-layout mt-8" data-pagefind-body>
+    <p class="text-muted-foreground mb-3 text-sm" data-pagefind-ignore>
+      <a href="/books/" class="hover:text-accent underline-offset-4 hover:underline">
+        Publications
+      </a>
+      {bookTitle && <span> · {bookTitle}</span>}
+    </p>
     <h1
       style={{ viewTransitionName: slugifyStr(title.replaceAll(".", "-")) }}
       class="text-accent inline-block text-2xl font-bold sm:text-3xl"
@@ -61,6 +84,35 @@ const { Content } = await render(book);
     >
       <Content />
     </article>
+
+    {
+      (prev || next) && (
+        <nav
+          class="border-border mt-12 grid gap-4 border-t pt-6 sm:grid-cols-2"
+          aria-label="chapters"
+          data-pagefind-ignore
+        >
+          {prev ? (
+            <a href={`/books/${prev.id}/`} class="group block">
+              <span class="text-muted-foreground text-xs">← 이전 장</span>
+              <span class="text-accent block font-medium group-hover:underline">
+                {shortTitle(prev.data.title)}
+              </span>
+            </a>
+          ) : (
+            <span />
+          )}
+          {next && (
+            <a href={`/books/${next.id}/`} class="group block sm:text-end">
+              <span class="text-muted-foreground text-xs">다음 장 →</span>
+              <span class="text-accent block font-medium group-hover:underline">
+                {shortTitle(next.data.title)}
+              </span>
+            </a>
+          )}
+        </nav>
+      )
+    }
   </main>
 
   <Footer />

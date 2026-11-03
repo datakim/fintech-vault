@@ -21,7 +21,7 @@ src/content/en/*.md         영문 글 (24편). frontmatter의 koSlug로 한국�
 src/content/pages/about.md, about-en.md
 src/content/books/          책 연습문제 해답 코너 (별도 섹션)
 src/pages/en/               영문 라우트 (/en/, /en/<slug>/, /en/about/)
-src/components/Header.astro 상단 탭: Posts(KR) · Posts(ENG) · Books · Tags · About
+src/components/Header.astro 상단 탭: Posts · 한국어 · Map · Cases · Publications(/books/) · About
 public/*.svg, *.png         이미지. 마크다운에서 /파일명 으로 참조
 tools/diagrams/             손그림 스타일 SVG 다이어그램 생성기 (아래 8절)
 CLAUDE.md                   이전 도구용 가이드. 내용은 이 문서에 흡수됨

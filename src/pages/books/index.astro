@@ -6,7 +6,6 @@ import Header from "@/components/Header.astro";
 import Breadcrumb from "@/components/Breadcrumb.astro";
 import Main from "@/components/Main.astro";
 import Footer from "@/components/Footer.astro";
-import Datetime from "@/components/Datetime.astro";
 import { useTranslations } from "@/i18n";
 import config from "@/config";
 
@@ -28,6 +27,18 @@ for (const arr of grouped.values()) {
   );
 }
 
+// What each book is and what kind of companion material lives under it.
+// Keyed by the `bookTitle` used in the chapter frontmatter.
+const BOOK_META: Record<string, { role: string; original?: string; companion: string }> = {
+  "단단한 머신러닝": {
+    role: "역서 · Translation",
+    original: "周志华, 《机器学习》 (Zhou Zhihua, Machine Learning)",
+    companion: "장별 연습문제 해답",
+  },
+};
+
+const shortTitle = (title: string) => title.replace(/^\[[^\]]*\]\s*/, "");
+
 const locale = Astro.currentLocale ?? config.site.lang;
 const t = useTranslations(locale);
 ---
@@ -41,35 +52,49 @@ const t = useTranslations(locale);
     {
       books.length === 0 ? (
         <p class="text-muted-foreground mt-6">
-          곧 책 연습문제 해답이 챕터별로 올라옵니다.
+          아직 올라온 책이 없습니다.
         </p>
       ) : (
-        [...grouped.entries()].map(([bookTitle, entries]) => (
-          <section class="mt-10">
-            <h2 class="text-xl font-semibold tracking-wide">{bookTitle}</h2>
-            <ul>
-              {entries.map(entry => (
-                <li class="my-4">
-                  <a
-                    href={getRelativeLocaleUrl(locale, `books/${entry.id}`)}
-                    class:list={[
-                      "text-accent inline-block text-lg font-medium",
-                      "decoration-dashed underline-offset-4 hover:underline",
-                    ]}
-                  >
-                    <h3>{entry.data.title}</h3>
-                  </a>
-                  <Datetime
-                    pubDatetime={entry.data.pubDatetime}
-                    modDatetime={entry.data.modDatetime}
-                    timezone={entry.data.timezone}
-                  />
-                  <p>{entry.data.description}</p>
-                </li>
-              ))}
-            </ul>
-          </section>
-        ))
+        [...grouped.entries()].map(([bookTitle, entries]) => {
+          const meta = BOOK_META[bookTitle];
+          return (
+            <section class="border-border mt-10 rounded-lg border p-5 sm:p-6">
+              {meta && (
+                <p class="text-accent text-xs font-semibold tracking-widest uppercase">
+                  {meta.role}
+                </p>
+              )}
+              <h2 class="mt-1 text-2xl font-semibold">{bookTitle}</h2>
+              {meta?.original && (
+                <p class="text-muted-foreground mt-1 text-sm">{meta.original}</p>
+              )}
+              <h3 class="mt-6 text-base font-semibold">
+                {meta?.companion ?? "Companion notes"}
+                <span class="text-muted-foreground ms-2 text-sm font-normal">
+                  {entries.length}
+                </span>
+              </h3>
+              <ul class="mt-2">
+                {entries.map(entry => (
+                  <li class="border-border border-t py-3 first:border-t-0">
+                    <a
+                      href={getRelativeLocaleUrl(locale, `books/${entry.id}`)}
+                      class:list={[
+                        "text-accent inline-block font-medium",
+                        "decoration-dashed underline-offset-4 hover:underline",
+                      ]}
+                    >
+                      {shortTitle(entry.data.title)}
+                    </a>
+                    <p class="text-muted-foreground mt-1 text-sm">
+                      {entry.data.description}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          );
+        })
       )
     }
   </Main>

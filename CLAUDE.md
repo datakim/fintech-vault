@@ -134,8 +134,9 @@ grep -nE '["”\)]\*\*[가-힣]' src/content/posts/<slug>.md
 
 ---
 
-## 6. Books 코너 (책 연습문제 해답 등)
+## 6. Publications 코너 (저자가 쓰거나 번역한 책 + 부속 자료)
 
+- 2026-11-04에 메뉴 이름을 Books에서 **Publications**로 바꿨다. 저자가 출간한 책(현재 역서 『단단한 머신러닝』)을 소개하고, 연습문제 해답 같은 부산물을 그 책 아래에 묶는 곳이다. 주소는 검색 노출 때문에 `/books/`를 그대로 쓴다. 책 소개 문구(역서/원서/부속 자료 이름)는 `src/pages/books/index.astro`의 `BOOK_META`에서 `bookTitle`별로 정한다. 챕터 페이지 위에는 Publications 링크, 아래에는 같은 책의 이전 장·다음 장 링크가 자동으로 붙는다.
 - 블로그 글(`/posts/`)과 분리된 별도 섹션. 파일: `src/content/books/<책폴더>/<slug>.md`, 노출: `/books/<책폴더>/<slug>`.
 - 같은 책의 챕터는 frontmatter `bookTitle`을 동일하게 두면 `/books`에서 한 그룹으로 묶인다.
 - frontmatter 예: `bookTitle: "단단한 머신러닝"`, `tags: [books, 단단한-머신러닝]`.

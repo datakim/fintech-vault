@@ -4,7 +4,7 @@ export default {
   nav: {
     home: "Home",
     posts: "Posts",
-    books: "Books",
+    books: "Publications",
     tags: "Tags",
     about: "About",
     archives: "Archives",
@@ -48,8 +48,8 @@ export default {
     postsTitle: "Posts",
     postsDesc: "All the articles I've posted.",
 
-    booksTitle: "Books",
-    booksDesc: "Exercise solutions and notes from books I've translated or studied.",
+    booksTitle: "Publications",
+    booksDesc: "Books I've written or translated, with the companion material that grew out of them.",
 
     archivesTitle: "Archives",
     archivesDesc: "All the articles I've archived.",
