@@ -30,7 +30,7 @@ TL = {
             (1, 8, 24, "지급청산협회 자율공약", "8장 34조"),
             (2, 1, 16, "알리페이 ACT", ""),
             (2, 4, 2, "은련 APOP", ""),
-            (2, 4, 28, "앤트 AMP", "9.11 세계 확대"),
+            (2, 4, 28, "앤트 AMP", "9.11 해외 확대"),
             (2, 6, 11, "징둥 A2P2", "L0~L5"),
             (2, 6, 17, "위챗 AI 전용 카드", "(제품)"),
             (2, 9, 10, "앤트·비자·마스터카드", "KYA 협력 시작"),
@@ -107,8 +107,8 @@ LV = {
         "axis": "에이전트 자율성",
         "rows": [
             ["사용자 본인만 결정", "에이전트 보조 결제", "L0 매 결제를 사람이 확인"],
-            ["사용자가 위임한 범위에서 결정\n위임 범위를 넘으면 안 된다", "미리 정한 조건 안에서\n자율 결제", "L3 한 작업 안에서 자율 발의\nL4 정해 둔 금액·장면 안 자율 완료"],
-            ["에이전트 자율 결정\n알 권리·최종 결정권은 사용자", "넓은 조건에서 자율 결제", "L5 완전 자율"],
+            ["사용자가 위임한 범위에서 결정\n위임 범위를 넘으면 안 된다", "미리 정한 조건 안에서\n자율 결제", "L3 한 작업 안에서 자율 발의\nL4 정해 둔 금액·사용처 안 자율 완료"],
+            ["에이전트 자율 결정\n알 권리·최종 결정권은 사용자", "포괄적 조건에서 자율 결제", "L5 완전 자율"],
         ],
         "note": "비슷한 수준끼리 필자가 나란히 놓았다. A2P2의 L1~L2는 공개 설명이 적어 뺐다.",
     },
@@ -119,7 +119,7 @@ LV = {
         "rows": [
             ["Only the user decides", "Agent-assisted payment", "L0 a person confirms\nevery payment"],
             ["Decides within what the user\nauthorised, never beyond it", "Autonomous payment\nunder preset conditions", "L3 initiates payments in one task\nL4 completes them within set limits"],
-            ["Agent decides on its own;\nuser keeps final say", "Autonomous payment\nunder broad conditions", "L5 fully autonomous"],
+            ["Agent decides on its own;\nuser keeps final say", "Autonomous payment\nunder general conditions", "L5 fully autonomous"],
         ],
         "note": "Lined up by the author. A2P2's L1 and L2 are left out because little is published about them.",
     },
@@ -158,14 +158,14 @@ PC = {
     "ko": {
         "title": "지급청산협회 자율공약: 지금 해야 하는 것과 앞으로 만들 것",
         "must": "해야 한다 (应)",
-        "explore": "탐색한다 (探索)",
+        "explore": "모색한다 (探索)",
         "must_items": [
             ("12조", "등록·신고된 에이전트만 쓴다"),
             ("13조", "위임 약정: 한도, 결제 계좌와 우선순위, 유효기간 등"),
             ("14조", "사용자 신원과 결제 의사를 확인한다"),
             ("15조", "위임 범위 안에서만 결제한다"),
             ("16조", "사용자가 위임을 거둘 수 있게 한다"),
-            ("26조", "자율 결제는 출시 전 협회에 보고한다"),
+            ("26조", "자율 결제는 출시 전 협회에 사전 신고한다"),
         ],
         "explore_items": [
             ("9조", "KYA: 에이전트 신원을 식별·검증한다"),
@@ -174,7 +174,7 @@ PC = {
             ("18조", "위임·모델 결정·결제 지시·위험 통제의 증거 체인"),
             ("26조", "에이전트 자율 결제 자체를 신중히 시도한다"),
         ],
-        "foot": "26조의 다섯 가지 장치: 사람 상담, 위험 모니터링, 여론 모니터링, 비상 대응, 되돌리기",
+        "foot": "26조의 다섯 가지 장치: 사람이 직접 처리하는 창구, 위험 모니터링, 민원·평판 모니터링, 비상 대응, 이전 방식으로 되돌리는 장치",
     },
     "en": {
         "title": "PCAC convention: what is required now and what is to be built",
@@ -186,7 +186,7 @@ PC = {
             ("Art. 14", "verify the user's identity and intent to pay"),
             ("Art. 15", "pay only within what was authorised"),
             ("Art. 16", "let users withdraw the authorisation"),
-            ("Art. 26", "report autonomous payment before launch"),
+            ("Art. 26", "file autonomous payment before launch"),
         ],
         "explore_items": [
             ("Art. 9", "KYA: identify and verify the agent"),
@@ -195,7 +195,7 @@ PC = {
             ("Art. 18", "evidence chain: mandate, model decision,\npayment instruction, risk control"),
             ("Art. 26", "approach autonomous payment itself with care"),
         ],
-        "foot": "Art. 26 safeguards: human service, risk monitoring, public-opinion monitoring, emergency response, fallback",
+        "foot": "Art. 26 safeguards: human handling, risk monitoring, complaint and reputation monitoring, emergency response, fallback",
     },
 }
 
