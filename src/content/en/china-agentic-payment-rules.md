@@ -1,6 +1,6 @@
 ---
-title: "The Rules China Set for AI Agents That Pay: Three Supervisory Documents and Four Company Protocols"
-description: "Between May and August 2026, China stacked its rules for agent payments in three layers, ministry opinions, financial-regulator guidance and an industry self-regulatory convention, while UnionPay, JD, Alipay and Ant released protocols of their own the same year. What is already an obligation and what is still only to be explored, read clause by clause from the original texts."
+title: "What Changes When AI Agents Pay? A Preview from China's Rules and Protocols"
+description: "Once AI agents pay on our behalf, who decides, what gets written into the user's agreement and who is liable when things go wrong all have to be settled anew. Reading China's 2026 ministry opinions, financial-regulator guidance and industry convention, and the protocols from UnionPay, JD, Alipay and Ant, clause by clause gives an early view of those changes."
 pubDatetime: 2026-11-03T05:10:00Z
 koSlug: china-agentic-payment-rules
 tags:
@@ -12,7 +12,7 @@ tags:
 
 On 24 August 2026 the Payment & Clearing Association of China (PCAC) published its self-regulatory convention on agent payment applications (智能体支付应用自律公约). It runs to 8 chapters and 34 articles and sets out how member banks, payment institutions and clearing houses should run services in which an AI agent pays on a user's behalf. It took effect on the day it was published.
 
-Around it, the government and industry put out a string of related documents. In May three ministries issued opinions on AI agents in general, and in June the National Financial Regulatory Administration (NFRA) issued guidance on AI in banking and insurance. Over the same months UnionPay, JD, Alipay and Ant International each released or expanded an agent payment protocol. Read one by one, the documents are a tangle, but laying the three supervisory documents and four company protocols side by side, clause by clause, gives a fairly consistent picture.
+Around it, the government and industry put out a string of related documents. In May three ministries issued opinions on AI agents in general, and in June the National Financial Regulatory Administration (NFRA) issued guidance on AI in banking and insurance. Over the same months UnionPay, JD, Alipay and Ant International each released or expanded an agent payment protocol. Read one by one, the documents are a tangle, but laying the three supervisory documents and four company protocols side by side, clause by clause, gives a fairly consistent picture, and an early view of what changes once AI agents pay on our behalf. Who decides to pay, what is written into the agreement with the user, how the agent's identity is checked and who is liable when something goes wrong are all being settled anew.
 
 ## 1. The documents that arrived through 2026
 
