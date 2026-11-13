@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """각 SVG가 실제로 쓰는 글자만 손글씨 폰트에서 추려 인라인으로 심는다.
 
+손그림 스타일(style.py)은 나눔펜, 카드형(style_card.py)은 Gaegu 보통·굵게를 심는다.
+
 외부 폰트 로딩 없이 어디서 열어도 손글씨로 보이게 하려는 것.
 사용: python3 embed_fonts.py <입력폴더> <출력폴더>
 """
@@ -9,6 +11,19 @@ import sys, os, re, base64, subprocess, tempfile
 HERE = os.path.dirname(os.path.abspath(__file__))
 FONT = os.path.join(HERE, "NanumPen.ttf")
 PYFT = os.path.join(HERE, "fontenv", "bin", "pyftsubset")
+
+CARD = [(os.path.join(HERE, "Gaegu-Regular.ttf"), 400), (os.path.join(HERE, "Gaegu-Bold.ttf"), 700)]
+
+
+def subset_b64(font, txt, td, tag):
+    tf = os.path.join(td, f"chars{tag}.txt")
+    open(tf, "w", encoding="utf-8").write(txt)
+    of = os.path.join(td, f"sub{tag}.woff2")
+    subprocess.run([PYFT, font, f"--text-file={tf}", f"--output-file={of}",
+                    "--flavor=woff2", "--layout-features=", "--no-hinting",
+                    "--desubroutinize"], check=True, capture_output=True)
+    return base64.b64encode(open(of, "rb").read()).decode()
+
 
 def embed(svg_path, out_path):
     svg = open(svg_path, encoding="utf-8").read()
@@ -19,24 +34,29 @@ def embed(svg_path, out_path):
     txt = "".join(sorted(chars))
 
     with tempfile.TemporaryDirectory() as td:
-        tf = os.path.join(td, "chars.txt")
-        open(tf, "w", encoding="utf-8").write(txt)
-        of = os.path.join(td, "sub.woff2")
-        subprocess.run([PYFT, FONT, f"--text-file={tf}", f"--output-file={of}",
-                        "--flavor=woff2", "--layout-features=", "--no-hinting",
-                        "--desubroutinize"], check=True, capture_output=True)
-        b64 = base64.b64encode(open(of, "rb").read()).decode()
-
-    style = ("<defs><style>"
-             "@font-face{font-family:'PenKR';font-style:normal;font-weight:400;"
-             f"src:url(data:font/woff2;base64,{b64}) format('woff2');}}"
-             "text{font-family:'PenKR','Nanum Pen Script',-apple-system,sans-serif;}"
-             "</style></defs>")
-    svg = svg.replace("__HANDFONT__, ", "")
+        if "__CARDFONT__" in svg:
+            # 카드형(style_card.py): Gaegu 보통·굵게 두 벌
+            faces = ""
+            for i, (font, weight) in enumerate(CARD):
+                b64 = subset_b64(font, txt, td, i)
+                faces += ("@font-face{font-family:'CardKR';font-style:normal;"
+                          f"font-weight:{weight};src:url(data:font/woff2;base64,{b64}) format('woff2');}}")
+            style = ("<defs><style>" + faces +
+                     "text{font-family:'CardKR','Gaegu',-apple-system,sans-serif;}</style></defs>")
+            svg = svg.replace("__CARDFONT__, ", "")
+        else:
+            b64 = subset_b64(FONT, txt, td, 0)
+            style = ("<defs><style>"
+                     "@font-face{font-family:'PenKR';font-style:normal;font-weight:400;"
+                     f"src:url(data:font/woff2;base64,{b64}) format('woff2');}}"
+                     "text{font-family:'PenKR','Nanum Pen Script',-apple-system,sans-serif;}"
+                     "</style></defs>")
+            svg = svg.replace("__HANDFONT__, ", "")
     i = svg.index(">") + 1
     svg = svg[:i] + style + svg[i:]
     open(out_path, "w", encoding="utf-8").write(svg)
     return len(chars), os.path.getsize(out_path)
+
 
 if __name__ == "__main__":
     indir, outdir = sys.argv[1], sys.argv[2]
