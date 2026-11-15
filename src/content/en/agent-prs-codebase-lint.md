@@ -9,19 +9,19 @@ tags:
   - engineering
 ---
 
-One team shipped 11,000 pull requests to production last month, and only about 0.5% of them were reverted. Lauren Tan gave the figure in a talk published on the AI Engineer channel on 14 November. She works on Grok Bot at SpaceXSI (formerly xAI), the SpaceX subsidiary that makes Grok, and Grok Bot is a desktop app released in beta in August that hands work to agents, each with its own computer.
+One team shipped 11,000 pull requests to production last month, and only about 0.5% of them were reverted. Lauren Tan gave the figure in a talk published on the AI Engineer channel on 14 November. She works on Grok Bot at SpaceXSI (formerly xAI), the SpaceX subsidiary that makes Grok. SpaceXSI also owns Cursor, which is why Cursor's history and features come up throughout the talk. Grok Bot is a desktop app released in beta in August that hands work to agents, each with its own computer.
 
 Tan herself shipped 3,000 pull requests last month, many of them merged while she slept, and says it took six months to get there. Nobody can read hundreds of pull requests a day, so the talk's answer is less about reviewing faster and more about leaving less to review, by turning each correction to an agent into an automatic check. She separates this from blind trust and describes it as investing in the agents' environment until you can trust them to do the right thing.
 
 ## 1. 11,000 pull requests in a month, 0.5% reverted
 
-The team figures are 11,000 pull requests shipped last month and a new stable release roughly once a day. In October 227 people contributed at least one pull request, many of them drive-by contributors without much context. At that pace the revert rate held at around half a percent and fell in relative terms. Startup, typing, opening new chats and switching between them have all become faster since launch, which is no small thing for an app that is still built on Electron (a framework for building desktop apps with web technology).
+The team figures are 11,000 pull requests shipped last month and a new stable release roughly once a day. In October 227 people contributed at least one pull request, many of them drive-by contributors without much context. At that pace the revert rate held at around half a percent and fell in relative terms. Startup, typing, opening new chats and switching between them have all become faster since launch, which is no small thing for an app still built on Electron, a framework that runs desktop apps on web technology.
 
-Tan explains where to spend time on an agent's environment with an inverted pyramid. The widest layer at the top is the code itself: API design, architecture and refactoring. Below it come deterministic checks (checks that always give the same result for the same code) such as lint rules, type systems, compilers and tests. Together these two layers constrain what agents can do, so that even code written without much thought takes the right path by default.
+Tan explains where to spend time on an agent's environment with an inverted pyramid. The widest layer at the top is the code itself: API design, architecture and refactoring. Below it come deterministic checks, which always give the same result for the same code: lint rules, type systems, compilers and tests. Together these two layers constrain what agents can do, so that the easiest path an agent can take is also the right one.
 
 The third layer is verification, runtime and formal, which checks the properties the system has to keep and whether the agent understood what you meant. Prose that needs judgement (rules, skills, AGENTS.md) sits in the narrowest layer at the bottom, and there should be little of it.
 
-![Four layers stacked as an inverted pyramid. The widest, layer 1, is the code itself: API design, architecture and refactoring, with the examples ban useEffect and split main and renderer. Layer 2 is deterministic checks: lint rules, types, compiler and tests, with the examples import boundaries and no timer patches. Layer 3 is verification, runtime and formal, with the examples run videos, TLA+, Lean and Bombadil. The narrowest, layer 4, is prose that needs judgement: rules, skills and AGENTS.md, kept to a minimum.](/agentpr-pyramid-en.svg)
+![Four layers stacked as an inverted pyramid. The widest, at the top, layer 1, is the code itself: API design, architecture and refactoring, with the examples ban useEffect and split main and renderer. Layer 2 is deterministic checks: lint rules, types, compiler and tests, with the examples import boundaries and no timer patches. Layer 3 is verification, runtime and formal, with the examples run videos, TLA+, Lean and Bombadil. The narrowest, at the bottom, layer 4, is prose that needs judgement: rules, skills and AGENTS.md, kept to a minimum.](/agentpr-pyramid-en.svg)
 
 _The talk's trust pyramid, redrawn. The wider the layer, the more time it deserves._
 
@@ -39,13 +39,13 @@ My own version of the picture is a kitchen where 300 part-time cooks work at onc
 
 A linter reads code without running it and flags any pattern the team has banned. It is a bit like a spell checker in a word processor, except the team writes the rules. Common tools are ESLint for JavaScript and TypeScript, and Ruff or Pylint for Python.
 
-Violations show up as red underlines in the editor and as failures in CI (the automatic checks that run when a pull request is opened), so a pull request that breaks a rule cannot be merged. If type checking catches mistakes in data types and tests check what the code does when it runs, linting catches the shape of code that the team has decided not to write.
+Violations show up as red underlines in the editor and as failures in the CI checks that run when a pull request is opened, so a pull request that breaks a rule cannot be merged. If type checking catches mistakes in data types and tests check what the code does when it runs, linting catches the shape of code that the team has decided not to write.
 
 The Grok Bot team applied this through Dune, its own client framework. Tan describes it as something like Next.js for Electron apps and says it is not technically interesting; what matters is that the lessons the team learned building desktop apps are encoded in it as constraints and lint rules. One of those lessons is that anything that needs nuance to use well tends to end up as slop, code that works but is full of patches and excuses.
 
-React's useEffect (the hook for running side effects such as fetching data after the screen renders) is her example. It has its uses, but it is misused far more often than not, and agents are bad at it. The team banned it in product code and allowed it only in a few places inside Dune's own APIs, and the problem has not needed catching in code review since.
+React's useEffect, the hook for running side effects, is her example. It has its uses, but it is misused far more often than not, and agents are bad at it. The team banned it in product code and allowed it only in a few places inside Dune's own APIs, and the problem has not needed catching in code review since.
 
-At Cursor, another Electron app, agents often imported main-process code into the renderer (the part that draws the screen), causing long tasks and jank. In Grok Bot and Dune the two top-level directories are literally called electron-main and electron-renderer, so the folder structure itself carries the rule, and imports between them are blocked by a dependency graph analyser and lint rules. Written with ESLint's built-in rules, the same constraint looks roughly like this (an example built for this post, not a slide from the talk).
+At Cursor, another Electron app, agents often imported main-process code into the renderer, the part that draws the screen, causing long tasks and jank. In Grok Bot and Dune the two top-level directories are literally called electron-main and electron-renderer, so the folder structure itself carries the rule, and imports between them are blocked by a dependency graph analyser and lint rules. Written with ESLint's built-in rules, the same constraint looks roughly like this; it is an example built for this post, not a slide from the talk.
 
 ```js
 // eslint.config.js
@@ -77,7 +77,7 @@ The error message deserves attention. To a person it is a warning, but to an age
 
 The surprising part of the talk is how agents treat markdown and comments. They use documentation, code comments, rules and skills as a place to write down why they did not do the right thing, and they also over-rotate on a small correction, treating it as a hard rule that can never be broken again.
 
-The example comes from Cursor. Agents loved imperative timers such as setTimeout, requestAnimationFrame and requestIdleCallback as quick fixes, when what they were really doing was papering over a clash between VS Code's imperative style and React's declarative one. Timers created and destroyed in rapid succession trigger major garbage collection in JavaScript, which makes the app lag.
+The example comes from Cursor. Agents loved imperative timers such as setTimeout, requestAnimationFrame and requestIdleCallback as quick fixes, when what they were really doing was papering over a clash between VS Code's imperative style and React's declarative one. Tan explains that timers created and destroyed in rapid succession cause a lot of major garbage collection, which makes the app lag.
 
 Each time, the agents left a comment justifying the patch, and the next agent read the comment and applied the same patch. Before long timers had spread everywhere and the app's performance suffered badly.
 
@@ -93,7 +93,7 @@ Verification is the other axis that makes agents more autonomous and their work 
 
 The basic form is runtime verification, which lets an agent run the code itself and use the same debugging tools human developers use, such as the Chrome DevTools Protocol. The verification skill includes a feature map, a sitemap-style list of everything the app can do from the user's point of view. When someone says "the thing in the left sidebar", the agent does not have to guess, and people and agents call each feature by the same name.
 
-The skill also ships custom CLIs that launch and drive the app, so agents reuse the same driver every time. That cuts token use, and the CLI itself can be tested.
+The skill also ships custom CLIs that launch and drive the app, so agents call the same driver every time instead of writing new scripts for each check. That cuts token use, and the CLI itself can be tested.
 
 The team has recently started on formal verification too, model checking large user flows such as notifications across devices and platforms with TLA+. TLA+ is a specification language that lays out every state a system can pass through and searches for cases where a desired property breaks. Lean, a language in which a computer checks proofs, is used on the team's own virtualisation library, which draws only the visible part of a long list, to prove that it does not flicker or jitter. Formal verification has already found a fair number of bugs, but it is no silver bullet, and the team treats it as one more layer in the agents' environment.
 
@@ -107,15 +107,13 @@ Put together, the path one pull request takes looks like this.
 
 _The talk's approach redrawn as the path of a single pull request. The dashed arrow is the loop that keeps shrinking what is left to review._
 
-Whatever a person catches while reviewing the evidence becomes an automatic check in an earlier stage next time, so the share left for people keeps shrinking.
-
-Automation goes on top once these foundations are in place. Now, whenever the team cuts a new release, Grok Bot uses Cursor's projects feature to spin up agents that fuzz the whole app by using it like a real user. For each bug they find they open a fix and merge it automatically. The talk's warning is that doing this in the wrong order, automating a loop that produces slop, only produces more slop and burns ever more tokens covering it up.
+Automation goes on top once these foundations are in place. Now, whenever the team cuts a new release, Grok Bot spins up a new Cursor project whose agents fuzz the whole app by using it like a real user. For each bug they find they open a fix and merge it automatically. The talk's warning is that doing this in the wrong order, automating a loop that produces slop, only produces more slop and burns ever more tokens covering it up.
 
 ## 6. Bringing it to data and financial code
 
 Applied to modelling and financial code, the first places to work on are money and time. Calculating amounts in floating point lets rounding errors pile up, so amounts should only be handled through a dedicated type such as Money, and putting a bare number into an amount field should fail type checking. It is the same structure as keeping useEffect inside Dune: wrap the hard calculation in one place and leave the rest of the code a single easy path.
 
-On the time side, a common accident in credit models is data leakage, where training uses information that would not have been known at that point in time. If feature code cannot read the current time directly and has to take an as-of date as an argument, there are fewer places for that mistake to creep in. Team-specific bans like this are a job for a tool where you can write your own rules, such as Semgrep, with an error message that names the function to use instead.
+On the time side, a common accident in credit models is data leakage, where training uses information that would not have been known at that point in time. If feature code cannot read the current time directly and has to take an as-of date as an argument, there are fewer places for that mistake to creep in. Team-specific bans like this are a job for a tool where you can write your own rules, such as Semgrep, with an error message that names the function to use instead. The rule below is simplified to show the idea; a real one would list every clock function the team's code uses.
 
 ```yaml
 rules:
@@ -125,12 +123,15 @@ rules:
     paths:
       include: ["features/"]
     pattern-either:
-      - pattern: datetime.now(...)
-      - pattern: date.today()
+      - pattern: datetime.datetime.now(...)
+      - pattern: datetime.date.today()
+      - pattern: pandas.Timestamp.now(...)
+      - pattern: pandas.Timestamp.today(...)
+      - pattern: time.time()
     message: "Don't read the current time in feature code. Take an as_of argument and use the functions in asof.py."
 ```
 
-Folder boundaries can be enforced with import-linter. Split features, models and serving, and stop serving code from importing research notebook utilities, and an agent dragging a line of experimental code onto the production path gets caught before review. On the verification side, pandera can enforce schemas on input and output data, and a pull request that changes a model should carry backtest results as its evidence rather than a code diff. Numbers such as KS by period or the change in approval rate take the place of the Grok Bot team's videos and screenshots.
+Folder boundaries can be enforced with import-linter. Split features, models and serving, and stop serving code from importing research notebook utilities, and an agent dragging a line of experimental code onto the production path gets caught before review. On the verification side, pandera can enforce schemas on input and output data, and a pull request that changes a model should carry backtest results, such as KS by period or the change in approval rate, as its evidence rather than a code diff.
 
 ## 7. My take
 
